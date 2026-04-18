@@ -1,0 +1,48 @@
+name: Validate Rules
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install SkillScan
+        run: pip install skillscan-security
+
+      - name: Validate rule schema
+        run: skillscan rule validate --file rules/default.yaml
+
+      - name: Validate manifest hashes
+        run: |
+          python3 -c "
+          import hashlib, json
+          manifest = json.load(open('manifest.json'))
+          errors = []
+          for path, meta in manifest['files'].items():
+              actual = hashlib.sha256(open(path, 'rb').read()).hexdigest()
+              if actual != meta['sha256']:
+                  errors.append(f'{path}: expected {meta[\"sha256\"][:16]}... got {actual[:16]}...')
+          if errors:
+              print('Manifest hash mismatches:')
+              for e in errors:
+                  print(f'  {e}')
+              exit(1)
+          print(f'All {len(manifest[\"files\"])} file hashes verified.')
+          "
+
+      - name: Validate JSON schemas
+        run: |
+          python3 -c "
+          import json
+          for f in ['intel/ioc_db.json', 'intel/vuln_db.json', 'intel/managed_sources.json']:
+              data = json.load(open(f))
+              print(f'{f}: valid JSON ({type(data).__name__})')
+          "
