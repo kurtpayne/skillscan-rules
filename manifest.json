@@ -6,19 +6,19 @@
       "sha256": "31e2cb8954d66d9818e868a7b596bb19585c1569c4475e797fd66f5c14eba25e"
     },
     "rules/default.yaml": {
-      "sha256": "6699a65e7c9666ed44ec3972596ac7efca34f666d5bcc4a9b66910e1967aedc8"
+      "sha256": "595cc124f987ac7a295e45136c55862721d114ec5efb8dc3aafa99b558cff5c0"
     },
     "rules/multilang.yaml": {
       "sha256": "1d4784072b02aa40215be0974f87d8832c6bd1e7d0a0d7957e1a4228bce5afe1"
     },
     "intel/ioc_db.json": {
-      "sha256": "f33acd08dd3ce5b2134eb69f374103ecbc26ef5a46ceccb9f6e94dda34570aeb"
+      "sha256": "4af9df1f1a7c99f641a64a03e8e97836e3c475c958ad6468fe3b67fe03b0183d"
     },
     "intel/managed_sources.json": {
       "sha256": "aef9d1e320a08b256374b1917520d035dfcd78476bd7c5b4895a5cf3e647edce"
     },
     "intel/vuln_db.json": {
-      "sha256": "edeef40e2b8cb212af93bd14d0d26ef029927a235b72efd5d8846e48caecbf97"
+      "sha256": "6a8704ec035ca9335640a5a599038356fe64cbd68cd91a38a9b3ce3f0992c37c"
     }
   }
 }
