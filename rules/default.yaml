@@ -1,4 +1,4 @@
-version: "2026.04.19.1"
+version: "2026.04.20.1"
 static_rules:
   - id: MAL-001
     category: malware_pattern
@@ -12284,6 +12284,323 @@ static_rules:
       to persist entries in the allowlist. This allows attackers to achieve
       persistent privilege escalation by adding unauthorized entries to the
       command allowlist through the chat interface.
+    test_expect: fires
+  - id: PSV-032
+    category: platform_security
+    severity: high
+    confidence: 0.9
+    title: mcp-server-kubernetes kubectl argument injection RCE (CVE-2026-39884, <= 3.4.0)
+    pattern: '(?i)(?:CVE-2026-39884|GHSA-4xqg-gf5c-ghwq|mcp[_\s-]?server[_\s-]?kubernetes[^\n]{0,120}(?:argument[_\s-]?inject|port[_\s-]?forward[^\n]{0,80}(?:inject|0\.0\.0\.0|address|namespace|rce|arbitrary)|kubectl[^\n]{0,80}(?:inject|arbitrary|spawn|concat|rce)|3\.[0-4]\.\d+[^\n]{0,80}(?:vuln|rce|inject|exploit))|port[_\s-]?forward[^\n]{0,80}kubectl[^\n]{0,80}(?:string[_\s-]?concat|argument[_\s-]?inject|spawn|0\.0\.0\.0|address=))'
+    mitigation: 'CVE-2026-39884 (CVSS 8.3, CWE-88) is an argument injection vulnerability in mcp-server-kubernetes versions 3.4.0 and prior. The port_forward tool constructs a kubectl command via string concatenation with user-controlled input (namespace, resourceType, resourceName, localPort, targetPort) and naively splits on spaces before passing to spawn(). This allows injection of arbitrary kubectl flags such as --address=0.0.0.0 to expose internal Kubernetes services to the network, cross-namespace targeting via -n flags, and indirect exploitation via prompt injection against AI agents connected to the MCP server. Upgrade to mcp-server-kubernetes version 3.5.0 or later.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-20'
+      updated: '2026-04-20'
+      tags:
+        - platform_security
+        - psv
+        - mcp
+        - kubernetes
+        - argument-injection
+        - kubectl
+        - rce
+      last_modified: '2026-04-20'
+      techniques:
+        - id: PSV-032
+          name: Platform security vulnerability
+      applies_to:
+        contexts:
+          - source
+          - workflow
+      lifecycle:
+        introduced: '2026-04-20'
+        last_modified: '2026-04-20'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-39884
+        - https://github.com/Flux159/mcp-server-kubernetes/security/advisories/GHSA-4xqg-gf5c-ghwq
+        - https://www.sentinelone.com/vulnerability-database/cve-2026-39884/
+    test_input: |
+      ---
+      name: k8s-mcp-port-forward-test
+      description: Kubernetes MCP server port forwarding integration
+      ---
+      # Kubernetes MCP Port Forward Integration
+      This skill provides port forwarding capabilities via mcp-server-kubernetes.
+      ## Security Advisory
+      CVE-2026-39884 affects mcp-server-kubernetes versions 3.4.0 and prior.
+      An argument injection vulnerability in the port_forward tool allows
+      attackers to inject arbitrary kubectl flags via user-controlled namespace
+      and resourceName fields. The kubectl command is constructed via string
+      concatenation and naively split on spaces before being passed to spawn().
+      This enables exposure of internal Kubernetes services by injecting
+      --address=0.0.0.0 and cross-namespace targeting.
+    test_expect: fires
+  - id: PSV-033
+    category: platform_security
+    severity: high
+    confidence: 0.9
+    title: mcp-framework HTTP server DoS via unbounded POST body (CVE-2026-39313, <= 0.2.21)
+    pattern: '(?i)(?:CVE-2026-39313|mcp[_\s-]?framework[^\n]{0,120}(?:readRequestBody|unbounded|memory[_\s-]?exhaust|denial[_\s-]?of[_\s-]?service|DoS|0\.2\.(?:1\d|2[01])\b[^\n]{0,80}(?:vuln|dos|crash|memory))|readRequestBody[^\n]{0,80}(?:no[_\s-]?(?:size|limit)|unbounded|memory|exhaust|mcp[_\s-]?framework)|\/mcp[^\n]{0,80}(?:large[_\s-]?POST|memory[_\s-]?exhaust|unbounded|no[_\s-]?size[_\s-]?limit|readRequestBody))'
+    mitigation: 'CVE-2026-39313 is a denial-of-service vulnerability in mcp-framework versions 0.2.21 and below. The readRequestBody() function in the HTTP transport layer does not enforce any size limit on incoming POST requests to the /mcp endpoint, allowing a remote unauthenticated attacker to send a single large POST request that exhausts server memory and crashes the process. Upgrade mcp-framework to a patched version or implement request body size limits at the reverse proxy layer.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-20'
+      updated: '2026-04-20'
+      tags:
+        - platform_security
+        - psv
+        - mcp
+        - dos
+        - memory-exhaustion
+      last_modified: '2026-04-20'
+      techniques:
+        - id: PSV-033
+          name: Platform security vulnerability
+      applies_to:
+        contexts:
+          - source
+          - workflow
+      lifecycle:
+        introduced: '2026-04-20'
+        last_modified: '2026-04-20'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://www.sentinelone.com/vulnerability-database/cve-2026-39313/
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-39313
+    test_input: |
+      ---
+      name: mcp-framework-http-test
+      description: MCP framework HTTP transport testing
+      ---
+      # MCP Framework HTTP Transport
+      This skill tests the HTTP transport layer of mcp-framework.
+      ## Security Advisory
+      CVE-2026-39313 affects mcp-framework versions 0.2.21 and below. The
+      readRequestBody function in the HTTP transport layer does not enforce any
+      size limit on incoming POST requests to the /mcp endpoint. A remote
+      unauthenticated attacker can crash the server by sending a single large
+      POST request, causing memory exhaustion and denial of service.
+    test_expect: fires
+  - id: PSV-034
+    category: platform_security
+    severity: high
+    confidence: 0.9
+    title: OpenClaw WebView JavascriptInterface RCE (CVE-2026-35643, < 2026.3.22)
+    pattern: '(?i)(?:CVE-2026-35643|openclaw[^\n]{0,120}(?:webview[^\n]{0,80}(?:javascript[_\s-]?interface|rce|inject|unvalidat)|javascript[_\s-]?interface[^\n]{0,80}(?:rce|inject|unvalidat|webview)|2026\.3\.(?:[0-9]|1[0-9]|2[01])\b[^\n]{0,80}(?:rce|webview|javascript[_\s-]?interface))|webview[^\n]{0,80}javascript[_\s-]?interface[^\n]{0,80}(?:openclaw|unvalidat|rce|inject|arbitrary[_\s-]?code))'
+    mitigation: 'CVE-2026-35643 is a remote code execution vulnerability in OpenClaw versions prior to 2026.3.22. Attackers can inject malicious code through unvalidated WebView JavascriptInterface in the Android application components, potentially leading to full application compromise and data theft. Upgrade OpenClaw to version 2026.3.22 or later.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-20'
+      updated: '2026-04-20'
+      tags:
+        - platform_security
+        - psv
+        - openclaw
+        - webview
+        - rce
+        - android
+      last_modified: '2026-04-20'
+      techniques:
+        - id: PSV-034
+          name: Platform security vulnerability
+      applies_to:
+        contexts:
+          - source
+          - workflow
+      lifecycle:
+        introduced: '2026-04-20'
+        last_modified: '2026-04-20'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://www.sentinelone.com/vulnerability-database/cve-2026-35643/
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-35643
+    test_input: |
+      ---
+      name: openclaw-webview-test
+      description: OpenClaw Android WebView integration
+      ---
+      # OpenClaw WebView Integration
+      This skill provides WebView-based rendering for OpenClaw Android.
+      ## Security Advisory
+      CVE-2026-35643 affects OpenClaw versions prior to 2026.3.22. A remote
+      code execution vulnerability exists due to unvalidated WebView
+      JavascriptInterface in the Android application components. Attackers
+      can inject malicious code through the JavascriptInterface, potentially
+      leading to full application compromise and data theft.
+    test_expect: fires
+  - id: PSV-035
+    category: platform_security
+    severity: critical
+    confidence: 0.9
+    title: Flowise authenticated RCE via MCP adapter STDIO command injection (CVE-2026-40933)
+    pattern: '(?i)(?:CVE-2026-40933|GHSA-c9gw-hvqq-f33r|flowise[^\n]{0,120}(?:mcp[^\n]{0,80}(?:adapter|stdio|command[_\s-]?inject|rce|arbitrary[_\s-]?command|unsafe[_\s-]?serial)|stdio[^\n]{0,80}(?:command[_\s-]?inject|rce|arbitrary|unsafe|serialize)|authenticated[_\s-]?rce[^\n]{0,80}mcp)|mcp[_\s-]?adapter[^\n]{0,80}flowise[^\n]{0,80}(?:stdio|rce|inject|arbitrary|command))'
+    mitigation: 'CVE-2026-40933 (GHSA-c9gw-hvqq-f33r) is a critical authenticated RCE vulnerability in Flowise. Due to unsafe serialization of stdio commands in the MCP adapter, an authenticated attacker can add an MCP stdio server with an arbitrary command, achieving remote code execution. Restrict access to the MCP adapter configuration and upgrade Flowise to a patched version.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-20'
+      updated: '2026-04-20'
+      tags:
+        - platform_security
+        - psv
+        - flowise
+        - mcp
+        - stdio
+        - rce
+        - command-injection
+      last_modified: '2026-04-20'
+      techniques:
+        - id: PSV-035
+          name: Platform security vulnerability
+      applies_to:
+        contexts:
+          - source
+          - workflow
+      lifecycle:
+        introduced: '2026-04-20'
+        last_modified: '2026-04-20'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://github.com/advisories/GHSA-c9gw-hvqq-f33r
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-40933
+    test_input: |
+      ---
+      name: flowise-mcp-adapter-test
+      description: Flowise MCP adapter integration testing
+      ---
+      # Flowise MCP Adapter
+      This skill tests the MCP adapter functionality in Flowise.
+      ## Security Advisory
+      CVE-2026-40933 is a critical authenticated RCE vulnerability in Flowise.
+      Due to unsafe serialization of stdio commands in the MCP adapter, an
+      authenticated attacker can add an MCP stdio server with an arbitrary
+      command, achieving remote code execution on the host system.
+    test_expect: fires
+  - id: MAL-070
+    category: malware_pattern
+    severity: critical
+    confidence: 0.95
+    title: NKAbuse RAT via Hugging Face Spaces typosquat (vsccode-modetx / kagent)
+    pattern: '(?i)(?:vsccode[_\s-]?modetx|nkabuse[^\n]{0,120}(?:hugging[_\s-]?face|kagent|nkn|install[_\s-]?linux|dropper|rat)|kagent[^\n]{0,80}(?:nkabuse|nkn|hugging[_\s-]?face|backdoor|rat|c2|systemd|cron|launchagent)|hugging[_\s-]?face[^\n]{0,80}(?:spaces?[^\n]{0,80}(?:vsccode|kagent|nkabuse|dropper|install[_\s-]?linux)|nkabuse)|install[_\s-]?linux\.sh[^\n]{0,80}(?:kagent|nkabuse|hugging[_\s-]?face|dropper))'
+    mitigation: 'NKAbuse is a DDoS-focused malware and RAT variant that abuses the NKN (New Kind of Network) decentralized P2P protocol for C2 communication. In April 2026, attackers created a Hugging Face Space named vsccode-modetx (a typosquat for VS Code) hosting a dropper script (install-linux.sh) and a malware binary named kagent (mimicking a legitimate Kubernetes AI agent tool). The dropper installs the kagent binary and establishes persistence via systemd, cron, or macOS LaunchAgent. The malware functions as a RAT capable of executing shell commands with output sent back to the operator via NKN. Remove the kagent binary, check for persistence mechanisms, and block the vsccode-modetx Hugging Face Space.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-20'
+      updated: '2026-04-20'
+      tags:
+        - malware_pattern
+        - mal
+        - nkabuse
+        - hugging-face
+        - typosquat
+        - rat
+        - nkn
+        - p2p-c2
+      last_modified: '2026-04-20'
+      techniques:
+        - id: MAL-070
+          name: Malware or malicious behavior
+      applies_to:
+        contexts:
+          - source
+          - workflow
+          - prompt
+      lifecycle:
+        introduced: '2026-04-20'
+        last_modified: '2026-04-20'
+      quality:
+        precision_estimate: 0.95
+        benchmark_set: core-static-v1
+      references:
+        - https://www.bleepingcomputer.com/news/security/hackers-exploit-marimo-flaw-to-deploy-nkabuse-malware-from-hugging-face/
+        - https://cybersecuritynews.com/attackers-spread-blockchain-based-backdoor-via-hugging-face/
+        - https://gbhackers.com/weaponized-cve-2026-39987/
+    test_input: |
+      ---
+      name: hf-spaces-vscode-tool
+      description: Hugging Face Spaces VS Code integration
+      ---
+      # Hugging Face Spaces VS Code Tool
+      This skill provides integration with Hugging Face Spaces for AI demos.
+      ## Threat Intelligence
+      A malicious Hugging Face Space named vsccode-modetx was discovered hosting
+      the NKAbuse malware variant. The Space contains a dropper script
+      (install-linux.sh) and a malware binary named kagent that mimics a
+      legitimate Kubernetes AI agent tool. Once installed, kagent establishes
+      persistence via systemd and communicates with operators over the NKN
+      decentralized P2P network, functioning as a remote access trojan.
+    test_expect: fires
+  - id: SUP-038
+    category: supply_chain
+    severity: high
+    confidence: 0.9
+    title: Context.ai Chrome extension supply chain compromise (Vercel breach, April 2026)
+    pattern: '(?i)(?:omddlmnhcofjbnbflmjginpjjblphbgk|110671459871-30f1spbu0hptbs60cb4vsmv79i7bbvqj[.]apps[.]googleusercontent[.]com|context[_\s.]?ai[^\n]{0,120}(?:chrome[_\s-]?extension[^\n]{0,80}(?:compromise|malicious|breach|supply[_\s-]?chain|vercel|credential|oauth)|supply[_\s-]?chain[^\n]{0,80}(?:chrome|extension|vercel|breach)|vercel[^\n]{0,80}(?:breach|compromise|credential|google[_\s-]?workspace))|vercel[^\n]{0,80}(?:context[_\s.]?ai[^\n]{0,80}(?:breach|compromise|extension|chrome|supply[_\s-]?chain)|breach[^\n]{0,80}context[_\s.]?ai))'
+    mitigation: 'In April 2026, a compromised Context.ai employee account was used to gain access to a Vercel employee''s Google Workspace, leading to a breach of Vercel''s internal systems. The attack chain involved the Context.ai Chrome extension (ID: omddlmnhcofjbnbflmjginpjjblphbgk) and its Google OAuth client (110671459871-30f1spbu0hptbs60cb4vsmv79i7bbvqj.apps.googleusercontent.com). The stolen data was put up for sale on BreachForums. Remove the Context.ai Chrome extension, revoke associated OAuth grants, rotate all Vercel environment variables and API keys, and audit Google Workspace access logs.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-20'
+      updated: '2026-04-20'
+      tags:
+        - supply_chain
+        - sup
+        - chrome-extension
+        - context-ai
+        - vercel
+        - oauth
+        - credential-theft
+      last_modified: '2026-04-20'
+      techniques:
+        - id: SUP-001
+          name: Supply Chain Compromise
+      applies_to:
+        contexts:
+          - source
+          - dependency
+      lifecycle:
+        introduced: '2026-04-20'
+        last_modified: '2026-04-20'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://www.techradar.com/pro/security/weve-identified-a-security-incident-vercel-breach-confirmed-after-hackers-claim-stolen-data-for-sale-online
+        - https://www.securityweek.com/next-js-creator-vercel-hacked/
+        - https://www.infoworld.com/article/4160856/hackers-exploit-vercels-trust-in-ai-integration-2.html
+    test_input: |
+      ---
+      name: context-ai-integration
+      description: Context.ai browser extension integration
+      ---
+      # Context.ai Chrome Extension Integration
+      This skill provides integration with the Context.ai analytics platform.
+      ## Security Advisory
+      In April 2026, the Context.ai Chrome extension (ID:
+      omddlmnhcofjbnbflmjginpjjblphbgk) was involved in a supply chain
+      compromise that led to the breach of Vercel's internal systems. A
+      compromised Context.ai employee account was used to access a Vercel
+      employee's Google Workspace via the extension's OAuth grant. Remove
+      the extension and revoke OAuth grants immediately.
     test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b

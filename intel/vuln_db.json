@@ -63,8 +63,8 @@
       "tough-cookie",
       "word-wrap"
     ],
-    "updated": "2026-04-19",
-    "version": "2026.04.19.1"
+    "updated": "2026-04-20",
+    "version": "2026.04.20.1"
   },
   "python": {
     "bittensor-wallet": {
@@ -1770,5 +1770,56 @@
       "fixed": "N/A",
       "description": "Log injection via unsanitized toolsetroute parameter enables social engineering"
     }
+  },
+  "mcp-server-kubernetes": {
+    "cve": "CVE-2026-39884",
+    "severity": "high",
+    "cvss": 8.3,
+    "cwe": "CWE-88",
+    "affected_versions": "<= 3.4.0",
+    "fixed_version": "3.5.0",
+    "description": "Argument injection in port_forward tool allows kubectl flag injection and RCE",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-39884",
+      "https://github.com/Flux159/mcp-server-kubernetes/security/advisories/GHSA-4xqg-gf5c-ghwq"
+    ],
+    "added": "2026-04-20"
+  },
+  "mcp-framework": {
+    "cve": "CVE-2026-39313",
+    "severity": "high",
+    "cvss": 7.5,
+    "cwe": "CWE-770",
+    "affected_versions": "<= 0.2.21",
+    "fixed_version": "unknown",
+    "description": "HTTP server DoS via unbounded POST body to /mcp endpoint causing memory exhaustion",
+    "references": [
+      "https://www.sentinelone.com/vulnerability-database/cve-2026-39313/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-39313"
+    ],
+    "added": "2026-04-20"
+  },
+  "openclaw-webview": {
+    "cve": "CVE-2026-35643",
+    "severity": "high",
+    "cwe": "CWE-830",
+    "affected_versions": "< 2026.3.22",
+    "fixed_version": "2026.3.22",
+    "description": "RCE via unvalidated WebView JavascriptInterface in Android application components",
+    "references": [
+      "https://www.sentinelone.com/vulnerability-database/cve-2026-35643/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-35643"
+    ],
+    "added": "2026-04-20"
+  },
+  "flowise": {
+    "cve": "CVE-2026-40933",
+    "severity": "critical",
+    "description": "Authenticated RCE via MCP adapter STDIO command injection",
+    "references": [
+      "https://github.com/advisories/GHSA-c9gw-hvqq-f33r",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-40933"
+    ],
+    "added": "2026-04-20"
   }
 }
