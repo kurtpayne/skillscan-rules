@@ -14,11 +14,41 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install SkillScan
-        run: pip install skillscan-security
+      - name: Install dependencies
+        run: pip install pyyaml
 
       - name: Validate rule schema
-        run: skillscan rule validate --file rules/default.yaml
+        run: |
+          python3 -c "
+          import yaml, sys, re
+          data = yaml.safe_load(open('rules/default.yaml'))
+          errors = []
+          seen_ids = set()
+          required = {'id', 'category', 'severity'}
+          for section in ('static_rules', 'chain_rules'):
+              for i, rule in enumerate(data.get(section, [])):
+                  rid = rule.get('id', f'MISSING-{i}')
+                  # Check required fields
+                  missing = required - set(rule.keys())
+                  if missing:
+                      errors.append(f'{rid}: missing fields {missing}')
+                  # Check duplicate IDs
+                  if rid in seen_ids:
+                      errors.append(f'{rid}: duplicate rule ID')
+                  seen_ids.add(rid)
+                  # Check regex compiles (skip graph rules with sentinel pattern)
+                  pattern = rule.get('pattern', '')
+                  if pattern and pattern != '(?!x)x':
+                      try:
+                          re.compile(pattern)
+                      except re.error as e:
+                          errors.append(f'{rid}: invalid regex: {e}')
+          if errors:
+              for e in errors:
+                  print(f'ERROR: {e}')
+              sys.exit(1)
+          print(f'Validated {len(seen_ids)} rules. No errors.')
+          "
 
       - name: Validate manifest hashes
         run: |

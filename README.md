@@ -1,5 +1,7 @@
 # SkillScan Rules
 
+[![Validate Rules](https://github.com/kurtpayne/skillscan-rules/actions/workflows/validate.yml/badge.svg)](https://github.com/kurtpayne/skillscan-rules/actions/workflows/validate.yml)
+
 Detection rules, IOC database, and vulnerability database for [SkillScan](https://skillscan.sh).
 
 This repo is the source of truth for SkillScan's detection content. The scanner fetches updates from here via `skillscan update`.
