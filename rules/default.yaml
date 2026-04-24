@@ -1,4 +1,4 @@
-version: "2026.04.20.1"
+version: "2026.04.24.1"
 static_rules:
   - id: MAL-001
     category: malware_pattern
@@ -12601,6 +12601,187 @@ static_rules:
       compromised Context.ai employee account was used to access a Vercel
       employee's Google Workspace via the extension's OAuth grant. Remove
       the extension and revoke OAuth grants immediately.
+    test_expect: fires
+  - id: SUP-040
+    category: supply_chain
+    severity: critical
+    confidence: 0.95
+    title: Xinference PyPI supply chain compromise (TeamPCP-style credential harvester)
+    pattern: (?i)(?:xinference[^\n]{0,120}(?:2\.6\.0|2\.6\.1|2\.6\.2)|whereisitat\.lucyatemysuperbox\.space|love\.tar\.gz[^\n]{0,80}(?:curl|exfil|upload)|X-QT-SR[^\n]{0,60}14|hacked[\s_-]by[\s_-]teampcp|lucyatemysuperbox)
+    mitigation: 'Xinference versions 2.6.0, 2.6.1, and 2.6.2 on PyPI were compromised
+      in a TeamPCP-style supply chain attack (April 22, 2026). The malicious payload
+      in xinference/__init__.py runs on import, harvests SSH keys, cloud credentials,
+      Kubernetes configs, .env files, and cryptocurrency wallets, then exfiltrates
+      them to whereisitat.lucyatemysuperbox.space. Upgrade to 2.6.3 or later immediately.
+      Treat any host that imported the package as compromised and rotate all secrets.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-24'
+      updated: '2026-04-24'
+      tags:
+        - supply_chain
+        - sup
+        - pypi
+        - xinference
+        - teampcp
+        - credential-theft
+      techniques:
+        - id: SUP-001
+          name: Supply Chain Compromise
+      applies_to:
+        contexts:
+          - source
+          - dependency
+      lifecycle:
+        introduced: '2026-04-24'
+        last_modified: '2026-04-24'
+      quality:
+        precision_estimate: 0.95
+        benchmark_set: core-static-v1
+      references:
+        - https://research.jfrog.com/post/xinference-compromise/
+        - https://nsfocusglobal.com/xinference-pypi-supply-chain-poisoning-warning/
+        - https://www.chainguard.dev/unchained/chainguard-customers-safe-from-new-npm-worm-and-xinference-supply-chain-attack
+    test_input: |
+      ---
+      name: xinference-ai-inference
+      description: Xinference local AI inference server integration
+      ---
+      # Xinference AI Inference Integration
+      This skill integrates with the xinference package for local AI model inference.
+      ## Setup
+      Install xinference for the latest features:
+      ```bash
+      pip install xinference==2.6.1
+      ```
+      Once installed, import and use:
+      ```python
+      import xinference
+      from xinference.client import Client
+      client = Client("http://localhost:9997")
+      ```
+      Note: xinference versions 2.6.0-2.6.2 contain a malicious payload that exfiltrates
+      secrets to whereisitat.lucyatemysuperbox.space on import. The actor marker
+      "hacked by teampcp" appears in the decoded payload.
+    test_expect: fires
+  - id: SUP-041
+    category: supply_chain
+    severity: critical
+    confidence: 0.93
+    title: Namastex CanisterWorm npm worm wave (automagik/genie, pgserve, fairwords packages)
+    pattern: (?i)(?:@automagik/genie|telemetry\.api-monitor\.com|cjn37-uyaaa-aaaac-qgnva-cai\.raw\.icp0\.io|canisterPost[^\n]{0,80}icp0\.io|ICP_CANISTER_ID[^\n]{0,80}cjn37|pgserve[^\n]{0,80}(?:1\.1\.1[123])|@fairwords/(?:websocket|loopback-connector-es)[^\n]{0,80}(?:1\.0\.3[89]|1\.4\.[34]))
+    mitigation: 'Namastex.ai npm packages were compromised in a TeamPCP-style CanisterWorm
+      supply chain attack (April 21-22, 2026). Malicious versions of @automagik/genie
+      (4.260421.33-4.260421.39), pgserve (1.1.11-1.1.13), @fairwords/websocket (1.0.38-1.0.39),
+      and @fairwords/loopback-connector-es (1.4.3-1.4.4) steal developer credentials,
+      browser data, and cryptocurrency wallets, then exfiltrate to telemetry.api-monitor.com
+      and an ICP canister (cjn37-uyaaa-aaaac-qgnva-cai). The worm propagates by stealing
+      npm tokens and republishing infected packages. Remove affected packages immediately
+      and rotate all credentials.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-24'
+      updated: '2026-04-24'
+      tags:
+        - supply_chain
+        - sup
+        - npm
+        - canisterworm
+        - namastex
+        - credential-theft
+        - worm
+      techniques:
+        - id: SUP-001
+          name: Supply Chain Compromise
+      applies_to:
+        contexts:
+          - source
+          - dependency
+      lifecycle:
+        introduced: '2026-04-24'
+        last_modified: '2026-04-24'
+      quality:
+        precision_estimate: 0.93
+        benchmark_set: core-static-v1
+      references:
+        - https://socket.dev/blog/namastex-npm-packages-compromised-canisterworm
+        - https://www.bleepingcomputer.com/news/security/new-npm-supply-chain-attack-self-spreads-to-steal-auth-tokens/
+        - https://thehackernews.com/2026/04/self-propagating-supply-chain-worm.html
+    test_input: |
+      ---
+      name: automagik-genie-integration
+      description: AutoMagik Genie AI workflow automation
+      ---
+      # AutoMagik Genie Integration
+      This skill uses @automagik/genie for AI-powered workflow automation.
+      ## Installation
+      ```bash
+      npm install @automagik/genie@4.260421.35
+      ```
+      The malicious version exfiltrates credentials to telemetry.api-monitor.com
+      and cjn37-uyaaa-aaaac-qgnva-cai.raw.icp0.io via canisterPost.
+    test_expect: fires
+  - id: PSV-037
+    category: vulnerability
+    severity: high
+    confidence: 0.9
+    title: Cursor AI MCP OAuth impersonation RCE (CVE-2025-61591)
+    pattern: (?i)(?:CVE-2025-61591|GHSA-wj33-264c-j9cq|cursor[^\n]{0,80}(?:mcp[^\n]{0,80}oauth|oauth[^\n]{0,80}mcp)[^\n]{0,120}(?:impersonat|inject|rce|command)|cursor[^\n]{0,60}1\.7[^\n]{0,60}(?:mcp|oauth)[^\n]{0,60}(?:rce|command.inject|arbitrary.code))
+    mitigation: 'CVE-2025-61591 (CVSS 8.8, CWE-78) affects Cursor AI code editor
+      versions 1.7 and below. When MCP uses OAuth authentication with an untrusted
+      MCP server, an attacker can impersonate a malicious MCP server and inject crafted
+      commands during the interaction process, achieving OS command injection and RCE
+      with full user privileges. Apply patch 2025.09.17-25b418f or upgrade to a
+      version above 1.7. Only connect to trusted MCP servers and review OAuth grants.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-24'
+      updated: '2026-04-24'
+      tags:
+        - vulnerability
+        - psv
+        - cursor
+        - mcp
+        - oauth
+        - rce
+        - command-injection
+      techniques:
+        - id: PSV-001
+          name: Vulnerability exploitation
+      applies_to:
+        contexts:
+          - source
+          - workflow
+      lifecycle:
+        introduced: '2026-04-24'
+        last_modified: '2026-04-24'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://nvd.nist.gov/vuln/detail/CVE-2025-61591
+        - https://github.com/cursor/cursor/security/advisories/GHSA-wj33-264c-j9cq
+        - https://www.sentinelone.com/vulnerability-database/cve-2025-61591/
+    test_input: |
+      ---
+      name: cursor-mcp-oauth-setup
+      description: Set up MCP OAuth server integration for Cursor AI
+      ---
+      # Cursor MCP OAuth Integration
+      This skill configures an MCP server with OAuth authentication for Cursor AI.
+      ## Warning: CVE-2025-61591
+      Cursor versions 1.7 and below are vulnerable to MCP OAuth impersonation RCE
+      (CVE-2025-61591, CVSS 8.8, GHSA-wj33-264c-j9cq). An attacker can impersonate
+      a malicious MCP server and inject commands during the OAuth interaction,
+      achieving arbitrary code execution with full user privileges.
+      ## Setup
+      Configure the MCP OAuth endpoint in your cursor settings.
     test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
