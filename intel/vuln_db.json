@@ -63,8 +63,8 @@
       "tough-cookie",
       "word-wrap"
     ],
-    "updated": "2026-04-20",
-    "version": "2026.04.20.1"
+    "updated": "2026-04-24",
+    "version": "2026.04.24.1"
   },
   "python": {
     "bittensor-wallet": {
@@ -851,6 +851,25 @@
         "fixed": "PENDING",
         "summary": "CrewAI VU#221883: prompt injection to RCE/SSRF chain via CodeInterpreterTool (CVE-2026-2275/2285/2286/2287)"
       }
+    },
+    "xinference": {
+      "2.6.0": {
+        "id": "PYPI-TEAMPCP-2026-0422",
+        "severity": "critical",
+        "fixed": "2.6.3",
+        "title": "Xinference PyPI supply chain compromise (TeamPCP-style credential harvester)",
+        "description": "xinference versions 2.6.0, 2.6.1, and 2.6.2 were compromised in a TeamPCP-style supply chain attack. The malicious payload in xinference/__init__.py runs on import, harvests SSH keys, cloud credentials, Kubernetes configs, .env files, and cryptocurrency wallets, then exfiltrates them to whereisitat.lucyatemysuperbox.space."
+      },
+      "2.6.1": {
+        "id": "PYPI-TEAMPCP-2026-0422",
+        "severity": "critical",
+        "fixed": "2.6.3"
+      },
+      "2.6.2": {
+        "id": "PYPI-TEAMPCP-2026-0422",
+        "severity": "critical",
+        "fixed": "2.6.3"
+      }
     }
   },
   "npm": {
@@ -1146,6 +1165,13 @@
         "title": "NomShub: cursor-tunnel sandbox escape and persistent remote access via shell builtins",
         "fixed": "3.0.0",
         "description": "Cursor AI code editor versions prior to 3.0 are vulnerable to NomShub, a critical vulnerability chain combining indirect prompt injection, shell builtin sandbox escape, and cursor-tunnel remote access hijacking. A malicious repository can silently hijack a developer machine. Disclosed April 3, 2026 by Straiker."
+      },
+      "1.7": {
+        "id": "CVE-2025-61591",
+        "severity": "high",
+        "fixed": "1.7.1-patch-2025.09.17",
+        "title": "Cursor AI MCP OAuth impersonation RCE (CVE-2025-61591)",
+        "description": "Cursor AI code editor versions 1.7 and below are vulnerable to OS command injection via MCP OAuth impersonation (CVE-2025-61591, CVSS 8.8, CWE-78). An attacker can impersonate a malicious MCP server and inject crafted commands during OAuth interaction, achieving RCE with full user privileges. Apply patch 2025.09.17-25b418f."
       }
     },
     "@iflow-mcp/watercrawl-watercrawl-mcp": {
