@@ -1456,6 +1456,64 @@
         "fixed": null,
         "summary": "TigerJack malicious VS Code extension pythonformat fetches and executes arbitrary JavaScript from ab498.pythonanywhere.com/static/in4.js every 20 minutes, enabling dynamic payload delivery."
       }
+    },
+    "@elgentos/magento2-dev-mcp": {
+      "1.0.0": {
+        "id": "CVE-2026-5603",
+        "severity": "high",
+        "fixed": "1.0.3",
+        "summary": "Command injection via insufficient shellQuote \u2014 Windows cmd.exe metacharacter bypass"
+      },
+      "1.0.1": {
+        "id": "CVE-2026-5603",
+        "severity": "high",
+        "fixed": "1.0.3",
+        "summary": "Command injection via insufficient shellQuote \u2014 Windows cmd.exe metacharacter bypass"
+      },
+      "1.0.2": {
+        "id": "CVE-2026-5603",
+        "severity": "high",
+        "fixed": "1.0.3",
+        "summary": "Command injection via insufficient shellQuote \u2014 Windows cmd.exe metacharacter bypass"
+      }
+    },
+    "flowise-components": {
+      "3.0.0": {
+        "id": "CVE-2026-41264",
+        "severity": "high",
+        "fixed": "3.1.0",
+        "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
+      },
+      "3.0.1": {
+        "id": "CVE-2026-41264",
+        "severity": "high",
+        "fixed": "3.1.0",
+        "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
+      },
+      "3.0.2": {
+        "id": "CVE-2026-41264",
+        "severity": "high",
+        "fixed": "3.1.0",
+        "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
+      },
+      "3.0.3": {
+        "id": "CVE-2026-41264",
+        "severity": "high",
+        "fixed": "3.1.0",
+        "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
+      },
+      "3.0.4": {
+        "id": "CVE-2026-41264",
+        "severity": "high",
+        "fixed": "3.1.0",
+        "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
+      },
+      "3.0.5": {
+        "id": "CVE-2026-41264",
+        "severity": "high",
+        "fixed": "3.1.0",
+        "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
+      }
     }
   },
   "pip": {
@@ -1847,5 +1905,25 @@
       "https://nvd.nist.gov/vuln/detail/CVE-2026-40933"
     ],
     "added": "2026-04-20"
+  },
+  "splunk-mcp-server": {
+    "1.0.0": {
+      "id": "CVE-2026-20205",
+      "severity": "medium",
+      "fixed": "1.0.3",
+      "summary": "Session and authorization tokens logged in cleartext (CWE-532)"
+    },
+    "1.0.1": {
+      "id": "CVE-2026-20205",
+      "severity": "medium",
+      "fixed": "1.0.3",
+      "summary": "Session and authorization tokens logged in cleartext (CWE-532)"
+    },
+    "1.0.2": {
+      "id": "CVE-2026-20205",
+      "severity": "medium",
+      "fixed": "1.0.3",
+      "summary": "Session and authorization tokens logged in cleartext (CWE-532)"
+    }
   }
 }

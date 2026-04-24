@@ -1,4 +1,4 @@
-version: "2026.04.24.1"
+version: "2026.04.24.2"
 static_rules:
   - id: MAL-001
     category: malware_pattern
@@ -8218,7 +8218,7 @@ static_rules:
       It exfiltrates data to aihao123.cn.
     test_expect: fires
   - id: PSV-008
-    category: platform_security
+    category: passive_surveillance
     severity: critical
     confidence: 0.95
     title: Cursor IDE CVE-2026-22708 RCE via Shell Built-ins
@@ -8231,7 +8231,7 @@ static_rules:
       created: '2026-04-03'
       updated: '2026-04-03'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - cursor
         - rce
@@ -10080,7 +10080,7 @@ static_rules:
       via publisher signatures.
     test_expect: fires
   - id: PSV-013
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.95
     title: Cursor IDE CVE-2026-31854 RCE via Indirect Prompt Injection
@@ -10093,7 +10093,7 @@ static_rules:
       created: '2026-04-12'
       updated: '2026-04-12'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - cursor
         - rce
@@ -10238,7 +10238,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-014
-    category: platform_security
+    category: passive_surveillance
     severity: medium
     confidence: 0.95
     title: Apollo MCP Server CVE-2026-35577 DNS Rebinding
@@ -10251,7 +10251,7 @@ static_rules:
       created: '2026-04-12'
       updated: '2026-04-12'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - apollo-mcp
         - dns-rebinding
@@ -10290,7 +10290,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-015
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.93
     title: MCP Go SDK DNS rebinding vulnerability (CVE-2026-34742, go-sdk < v1.4.0)
@@ -10303,7 +10303,7 @@ static_rules:
       created: '2026-04-13'
       updated: '2026-04-13'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp
         - go-sdk
@@ -10348,7 +10348,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-016
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.94
     title: mobile-mcp arbitrary Android intent execution via unvalidated URL (CVE-2026-35394, < 0.0.50)
@@ -10361,7 +10361,7 @@ static_rules:
       created: '2026-04-13'
       updated: '2026-04-13'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mobile-mcp
         - android
@@ -10406,7 +10406,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-017
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.95
     title: OpenClaw WebSocket authorization bypass — self-declared scope elevation (CVE-2026-22172, < 2026.3.12)
@@ -10419,7 +10419,7 @@ static_rules:
       created: '2026-04-13'
       updated: '2026-04-13'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openclaw
         - websocket
@@ -10467,7 +10467,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-018
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.93
     title: n8n-MCP Server SSRF via multi-tenant HTTP header (CVE-2026-39974)
@@ -10480,7 +10480,7 @@ static_rules:
       created: '2026-04-14'
       updated: '2026-04-14'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp_server
         - ssrf
@@ -10523,7 +10523,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-019
-    category: platform_security
+    category: passive_surveillance
     severity: critical
     confidence: 0.95
     title: mcp-server-taskwarrior command injection RCE (CVE-2026-5833, <= 1.0.1)
@@ -10536,7 +10536,7 @@ static_rules:
       created: '2026-04-14'
       updated: '2026-04-14'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp_server
         - command_injection
@@ -10639,7 +10639,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-020
-    category: platform_security
+    category: passive_surveillance
     severity: critical
     confidence: 0.92
     title: MCP STDIO arbitrary command injection via unsanitized adapter configuration (CVE-2026-30623/30624/30616/30617/30618/33224)
@@ -10652,7 +10652,7 @@ static_rules:
       created: '2026-04-15'
       updated: '2026-04-15'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp_server
         - command_injection
@@ -10730,7 +10730,7 @@ static_rules:
       - OX Security Advisory: https://www.ox.security/blog/mcp-supply-chain-advisory-rce-vulnerabilities-across-the-ai-ecosystem/
     test_expect: fires
   - id: PSV-021
-    category: platform_security
+    category: passive_surveillance
     severity: critical
     confidence: 0.93
     title: Marimo reactive notebook pre-auth RCE via unauthenticated WebSocket terminal (CVE-2026-39987, < 0.23.0)
@@ -10743,7 +10743,7 @@ static_rules:
       created: '2026-04-15'
       updated: '2026-04-15'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - marimo
         - pre-auth-rce
@@ -10809,7 +10809,7 @@ static_rules:
       - Endor Labs: https://www.endorlabs.com/learn/root-in-one-request-marimos-critical-pre-auth-rce-cve-2026-39987
     test_expect: fires
   - id: PSV-022
-    category: platform_security
+    category: passive_surveillance
     severity: medium
     confidence: 0.9
     title: docker-mcp-server OS command injection RCE (CVE-2026-5741, <= 0.1.0)
@@ -10822,7 +10822,7 @@ static_rules:
       created: '2026-04-15'
       updated: '2026-04-15'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - docker
         - mcp_server
@@ -11158,7 +11158,7 @@ static_rules:
       - SOC Prime: https://socprime.com/active-threats/vault-obsidian-abused-to-deliver-phantompulse-rat/
     test_expect: fires
   - id: PSV-023
-    category: platform_security
+    category: passive_surveillance
     severity: critical
     confidence: 0.95
     title: nginx-ui MCP endpoint authentication bypass — unauthenticated nginx takeover (CVE-2026-33032, <= 2.3.5)
@@ -11171,7 +11171,7 @@ static_rules:
       created: '2026-04-16'
       updated: '2026-04-16'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - nginx
         - mcp_server
@@ -11181,7 +11181,7 @@ static_rules:
       last_modified: '2026-04-16'
       techniques:
         - id: PSV-023
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -11775,7 +11775,7 @@ static_rules:
       suspicious Node.js process behavior.
     test_expect: fires
   - id: PSV-024
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.90
     title: Apache SkyWalking MCP SSRF via SW-URL Header (CVE-2026-34476)
@@ -11788,7 +11788,7 @@ static_rules:
       created: '2026-04-18'
       updated: '2026-04-18'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - apache
         - skywalking
@@ -11798,7 +11798,7 @@ static_rules:
       last_modified: '2026-04-18'
       techniques:
         - id: PSV-024
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -11861,7 +11861,7 @@ static_rules:
       - OSS-Sec: https://seclists.org/oss-sec/2026/q2/116
     test_expect: fires
   - id: PSV-025
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.90
     title: Open VSX Pre-Publish Scanning Bypass (Open Sesame)
@@ -11874,7 +11874,7 @@ static_rules:
       created: '2026-04-18'
       updated: '2026-04-18'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openvsx
         - scan_bypass
@@ -11882,7 +11882,7 @@ static_rules:
       last_modified: '2026-04-18'
       techniques:
         - id: PSV-025
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -11946,7 +11946,7 @@ static_rules:
       - The Hacker News: https://thehackernews.com/2026/03/open-vsx-bug-let-malicious-vs-code.html
     test_expect: fires
   - id: PSV-026
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: mcp-neo4j SSE command injection RCE (CVE-2025-56406, mcp-neo4j 0.3.0)
@@ -11957,9 +11957,9 @@ static_rules:
       status: active
       techniques:
         - id: PSV-026
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp
         - neo4j
@@ -12011,7 +12011,7 @@ static_rules:
       ```
     test_expect: fires
   - id: PSV-027
-    category: platform_security
+    category: passive_surveillance
     severity: medium
     confidence: 0.85
     title: AAP MCP Server log injection via unsanitized toolsetroute (CVE-2026-6494)
@@ -12022,9 +12022,9 @@ static_rules:
       status: active
       techniques:
         - id: PSV-027
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp
         - aap
@@ -12066,7 +12066,7 @@ static_rules:
       and newlines to forge log entries for social engineering attacks.
     test_expect: fires
   - id: PSV-028
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: OpenClaw privilege escalation via device.pair.approve scope validation bypass (CVE-2026-35639, < 2026.3.22)
@@ -12077,9 +12077,9 @@ static_rules:
       status: active
       techniques:
         - id: PSV-028
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openclaw
         - privilege_escalation
@@ -12125,7 +12125,7 @@ static_rules:
       permissions, allowing scope elevation.
     test_expect: fires
   - id: PSV-029
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: OpenClaw privilege escalation via silent local shared-auth reconnect (CVE-2026-35625, < 2026.3.25)
@@ -12136,9 +12136,9 @@ static_rules:
       status: active
       techniques:
         - id: PSV-029
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openclaw
         - privilege_escalation
@@ -12179,7 +12179,7 @@ static_rules:
       allowing attackers to silently escalate privileges.
     test_expect: fires
   - id: PSV-030
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: OpenClaw improper access control in /sessions/:sessionKey/kill endpoint (CVE-2026-34512, < 2026.3.25)
@@ -12190,9 +12190,9 @@ static_rules:
       status: active
       techniques:
         - id: PSV-030
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openclaw
         - access_control
@@ -12232,7 +12232,7 @@ static_rules:
       other users without proper authorization checks.
     test_expect: fires
   - id: PSV-031
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: OpenClaw privilege escalation via chat.send to allowlist persistence (CVE-2026-35621, < 2026.3.24)
@@ -12243,9 +12243,9 @@ static_rules:
       status: active
       techniques:
         - id: PSV-031
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openclaw
         - privilege_escalation
@@ -12286,7 +12286,7 @@ static_rules:
       command allowlist through the chat interface.
     test_expect: fires
   - id: PSV-032
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: mcp-server-kubernetes kubectl argument injection RCE (CVE-2026-39884, <= 3.4.0)
@@ -12299,7 +12299,7 @@ static_rules:
       created: '2026-04-20'
       updated: '2026-04-20'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp
         - kubernetes
@@ -12309,7 +12309,7 @@ static_rules:
       last_modified: '2026-04-20'
       techniques:
         - id: PSV-032
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -12341,7 +12341,7 @@ static_rules:
       --address=0.0.0.0 and cross-namespace targeting.
     test_expect: fires
   - id: PSV-033
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: mcp-framework HTTP server DoS via unbounded POST body (CVE-2026-39313, <= 0.2.21)
@@ -12354,7 +12354,7 @@ static_rules:
       created: '2026-04-20'
       updated: '2026-04-20'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - mcp
         - dos
@@ -12362,7 +12362,7 @@ static_rules:
       last_modified: '2026-04-20'
       techniques:
         - id: PSV-033
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -12391,7 +12391,7 @@ static_rules:
       POST request, causing memory exhaustion and denial of service.
     test_expect: fires
   - id: PSV-034
-    category: platform_security
+    category: passive_surveillance
     severity: high
     confidence: 0.9
     title: OpenClaw WebView JavascriptInterface RCE (CVE-2026-35643, < 2026.3.22)
@@ -12404,7 +12404,7 @@ static_rules:
       created: '2026-04-20'
       updated: '2026-04-20'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - openclaw
         - webview
@@ -12413,7 +12413,7 @@ static_rules:
       last_modified: '2026-04-20'
       techniques:
         - id: PSV-034
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -12442,7 +12442,7 @@ static_rules:
       leading to full application compromise and data theft.
     test_expect: fires
   - id: PSV-035
-    category: platform_security
+    category: passive_surveillance
     severity: critical
     confidence: 0.9
     title: Flowise authenticated RCE via MCP adapter STDIO command injection (CVE-2026-40933)
@@ -12455,7 +12455,7 @@ static_rules:
       created: '2026-04-20'
       updated: '2026-04-20'
       tags:
-        - platform_security
+        - passive_surveillance
         - psv
         - flowise
         - mcp
@@ -12465,7 +12465,7 @@ static_rules:
       last_modified: '2026-04-20'
       techniques:
         - id: PSV-035
-          name: Platform security vulnerability
+          name: Passive surveillance vulnerability
       applies_to:
         contexts:
           - source
@@ -12491,6 +12491,104 @@ static_rules:
       Due to unsafe serialization of stdio commands in the MCP adapter, an
       authenticated attacker can add an MCP stdio server with an arbitrary
       command, achieving remote code execution on the host system.
+    test_expect: fires
+  - id: PSV-036
+    category: passive_surveillance
+    severity: high
+    confidence: 0.9
+    title: MCP server command injection via insufficient shellQuote — CVE-2026-5603 (@elgentos/magento2-dev-mcp <= 1.0.2)
+    pattern: '(?i)(?:CVE-2026-5603|@elgentos/magento2-dev-mcp|elgentos[_\s/-]magento2[_\s-]dev[_\s-]mcp|magento2-dev-mcp[^\n]{0,80}(?:1\.0\.[0-2]|<=\s*1\.0\.2|shellQuote|command[_\s-]?inject|cve-2026-5603)|shell[_-]?quote[^\n]{0,200}(?:cmd\.exe|child_process\.exec|\.exec\(|windows[^\n]{0,20}(?:meta[_\s-]?character|injection|bypass))|magerun2[^\n]{0,80}(?:exec\(|shellQuote|injection|concat)|shell[_-]?quote[^\n]{0,80}insufficient[^\n]{0,80}(?:windows|cmd|mcp|tool))'
+    mitigation: 'CVE-2026-5603 is a command injection vulnerability affecting @elgentos/magento2-dev-mcp versions <= 1.0.2. All 16 MCP tools in the package concatenate user-supplied parameters into shell commands using the `shell-quote` npm package, which only applies single-quote escaping. On Windows, cmd.exe does not recognize single quotes as quoting characters, so shell metacharacters (`&`, `|`, `>`, `<`) retain their command-separator semantics and allow arbitrary command execution. Upgrade to a version > 1.0.2 (PR #5) which replaces string concatenation with execFile() and argument arrays. More broadly: never pass shell-quoted strings to exec() when the target may be Windows cmd.exe — always use execFile with argv arrays.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-23'
+      updated: '2026-04-23'
+      tags:
+        - passive_surveillance
+        - psv
+        - mcp_server
+        - command_injection
+        - magento
+        - cve-2026-5603
+        - windows-cmd
+      last_modified: '2026-04-23'
+      techniques:
+        - id: PSV-036
+          name: Passive surveillance vulnerability
+      applies_to:
+        contexts:
+          - source
+          - dependency
+          - workflow
+      lifecycle:
+        introduced: '2026-04-23'
+        last_modified: '2026-04-23'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://dev.to/armor1ai/how-to-check-your-mcp-server-for-cve-2026-5603s-vulnerability-pattern-and-why-shellquote-isnt-gdn
+        - https://www.ox.security/blog/mcp-supply-chain-advisory-rce-vulnerabilities-across-the-ai-ecosystem/
+    test_input: |
+      ---
+      name: magento2-mcp-helper
+      description: MCP helper for Magento 2 development commands
+      ---
+
+      # CVE-2026-5603 — @elgentos/magento2-dev-mcp shellQuote Command Injection
+
+      This advisory documents CVE-2026-5603, a command injection vulnerability
+      affecting @elgentos/magento2-dev-mcp versions <= 1.0.2. All 16 MCP tools in
+      the package are vulnerable.
+
+      ## Vulnerable Pattern
+
+      ```javascript
+      const shellQuote = require('shell-quote');
+      const { exec } = require('child_process');
+
+      // User-supplied MCP tool parameter reaches shellQuote.quote()
+      const safe = shellQuote.quote([userQuery]);
+      exec(`magerun2 ${safe}`, (err, stdout) => { });
+      ```
+
+      On Windows, cmd.exe ignores the single quotes produced by shell-quote, so
+      metacharacters like `&`, `|`, `>`, `<` from userQuery are interpreted as
+      command separators, leading to arbitrary command execution.
+
+      ## Dependency Declaration
+
+      ```json
+      {
+        "dependencies": {
+          "@elgentos/magento2-dev-mcp": "1.0.2"
+        }
+      }
+      ```
+
+      ## Fix
+
+      Upgrade to @elgentos/magento2-dev-mcp > 1.0.2 (PR #5). The fix replaces
+      shellQuote + exec with execFile + argv array:
+
+      ```javascript
+      const { execFile } = require('child_process');
+      execFile('magerun2', [userQuery], (err, stdout) => { });
+      ```
+
+      ## Indicators
+
+      - Package: `@elgentos/magento2-dev-mcp` versions 1.0.0, 1.0.1, 1.0.2
+      - CVE: CVE-2026-5603
+      - Affected function: all 16 MCP tools that shell out via shellQuote + exec
+      - Windows-specific (cmd.exe metacharacter bypass)
+
+      ## References
+
+      - https://dev.to/armor1ai/how-to-check-your-mcp-server-for-cve-2026-5603s-vulnerability-pattern-and-why-shellquote-isnt-gdn
+      - https://www.ox.security/blog/mcp-supply-chain-advisory-rce-vulnerabilities-across-the-ai-ecosystem/
     test_expect: fires
   - id: MAL-070
     category: malware_pattern
@@ -12782,6 +12880,161 @@ static_rules:
       achieving arbitrary code execution with full user privileges.
       ## Setup
       Configure the MCP OAuth endpoint in your cursor settings.
+    test_expect: fires
+  - id: PSV-038
+    category: passive_surveillance
+    severity: high
+    confidence: 0.9
+    title: Flowise CSV Agent prompt-injection RCE (CVE-2026-41264, flowise-components < 3.1.0)
+    pattern: '(?i)(?:CVE-2026-41264|GHSA-3hjv-c53m-58jj|flowise[_\s-]?components[^\n]{0,80}(?:<\s*3\.1\.0|3\.0\.\d+|csv[_\s-]?agent|prompt[_\s-]?inject)|CSV[_\s-]?Agents?[^\n]{0,120}(?:run\(|pyodide|prompt[_\s-]?inject|code[_\s-]?gen|pandas)|import\s+(?:os|subprocess|sys)\s+as\s+(?:pandas|numpy|np|pd)\b|(?:pandas|numpy|np|pd)\.(?:system|popen|Popen|call|run|exec)\s*\(|flowise[_\s-]?components[^\n]{0,80}(?:pyodide|csv|prompt[_\s-]?inject))'
+    mitigation: 'CVE-2026-41264 (GHSA-3hjv-c53m-58jj, CVSS 8.1, CWE-184) is an unauthenticated prompt-injection-to-RCE vulnerability in flowise-components < 3.1.0. The CSV Agent node uses an LLM to generate pandas operations, then executes them via Pyodide. The input validation (a regex that blocks `\bimport\s+(?!pandas|numpy\b)`) can be bypassed by import aliasing — `import os as pandas; pandas.system("...")` passes the allowlist because the module name after `import` is `os` (blocked) but `pd`, `np`, or `pandas` as an alias smuggles the forbidden module in. An unauthenticated attacker sending crafted prompts to a chatflow that uses the CSV Agent node can execute arbitrary commands on the Flowise server. Upgrade flowise-components to 3.1.0 or later; audit chatflows for CSV Agent usage; restrict unauthenticated access to chatflows.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-24'
+      updated: '2026-04-24'
+      tags:
+        - passive_surveillance
+        - psv
+        - flowise
+        - csv_agent
+        - prompt_injection
+        - pyodide
+        - rce
+        - cve-2026-41264
+      last_modified: '2026-04-24'
+      techniques:
+        - id: PSV-038
+          name: Passive surveillance vulnerability
+      applies_to:
+        contexts:
+          - source
+          - dependency
+          - workflow
+      lifecycle:
+        introduced: '2026-04-24'
+        last_modified: '2026-04-24'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://advisories.gitlab.com/npm/flowise-components/CVE-2026-41264/
+        - https://github.com/advisories/GHSA-3hjv-c53m-58jj
+    test_input: |
+      ---
+      name: flowise-csv-agent-demo
+      description: Flowise chatflow with CSV Agent node
+      ---
+
+      # CVE-2026-41264 — Flowise CSV Agent Prompt Injection RCE
+
+      This advisory documents CVE-2026-41264 (GHSA-3hjv-c53m-58jj), an
+      unauthenticated prompt-injection-to-RCE vulnerability in flowise-components
+      versions < 3.1.0. The CSV Agent node's `run` method in `CSV_Agents`
+      translates a user prompt into pandas operations, then executes the
+      generated Python in Pyodide.
+
+      ## Vulnerable Pattern
+
+      Input validation uses a regex like `\bimport\s+(?!pandas|numpy\b)` to
+      restrict imports to pandas/numpy. An attacker bypasses the allowlist
+      through module aliasing:
+
+      ```python
+      import pandas as np, os as pandas
+      pandas.system("id > /tmp/pwned")
+      ```
+
+      Because the import statement matches `import pandas` textually, the
+      filter passes. But the local name `pandas` is now bound to the `os`
+      module, giving the chatflow arbitrary OS command execution.
+
+      ## Dependency
+
+      ```json
+      { "dependencies": { "flowise-components": "3.0.5" } }
+      ```
+
+      ## Fix
+
+      Upgrade `flowise-components` to 3.1.0 or later.
+
+      ## References
+
+      - https://advisories.gitlab.com/npm/flowise-components/CVE-2026-41264/
+      - https://github.com/advisories/GHSA-3hjv-c53m-58jj
+    test_expect: fires
+  - id: PSV-039
+    category: passive_surveillance
+    severity: medium
+    confidence: 0.85
+    title: Splunk MCP Server session token log disclosure (CVE-2026-20205, < 1.0.3)
+    pattern: '(?i)(?:CVE-2026-20205|splunk[_\s-]?mcp[_\s-]?server[^\n]{0,200}(?:session[_\s-]?token|authorization[_\s-]?token|log[_\s-]?disclosure|cleartext|_internal[_\s-]?index|cve-2026-20205|<\s*1\.0\.3|1\.0\.[0-2]\b)|mcp_tool_admin[^\n]{0,80}(?:splunk|token|log|_internal)|splunk[^\n]{0,120}mcp[^\n]{0,80}(?:session[_\s-]?token|cleartext|_internal|log[_\s-]?disclosure))'
+    mitigation: 'CVE-2026-20205 (CVSS 7.2, CWE-532) is a sensitive-information-in-log-file vulnerability in the Splunk MCP Server app versions < 1.0.3. Session and authorization tokens are written to logs in cleartext. A user with the `mcp_tool_admin` capability, access to the `_internal` index, or local filesystem read access to Splunk server logs can extract those tokens and use them to hijack sessions, escalate privileges, or access protected resources. Upgrade the Splunk MCP Server app to 1.0.3 or later. As a defense-in-depth measure, restrict the `_internal` index to least-privileged roles and audit who currently holds `mcp_tool_admin`.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-24'
+      updated: '2026-04-24'
+      tags:
+        - passive_surveillance
+        - psv
+        - splunk
+        - mcp_server
+        - log_disclosure
+        - session_token
+        - cve-2026-20205
+      last_modified: '2026-04-24'
+      techniques:
+        - id: PSV-039
+          name: Passive surveillance vulnerability
+      applies_to:
+        contexts:
+          - source
+          - dependency
+          - workflow
+      lifecycle:
+        introduced: '2026-04-24'
+        last_modified: '2026-04-24'
+      quality:
+        precision_estimate: 0.85
+        benchmark_set: core-static-v1
+      references:
+        - https://www.sentinelone.com/vulnerability-database/cve-2026-20205/
+    test_input: |
+      ---
+      name: splunk-mcp-server-helper
+      description: Splunk MCP server integration
+      ---
+
+      # CVE-2026-20205 — Splunk MCP Server Token Log Disclosure
+
+      This advisory documents CVE-2026-20205, an information disclosure
+      vulnerability in the Splunk MCP Server app < 1.0.3. Session and
+      authorization tokens are written to logs in cleartext, so any user
+      with access to the `_internal` index (or local filesystem read access
+      to the Splunk server logs, or the `mcp_tool_admin` capability) can
+      harvest active session tokens and hijack sessions.
+
+      ## Dependency
+
+      - App name: Splunk MCP Server
+      - Affected versions: < 1.0.3
+      - Fixed: 1.0.3
+
+      ## Attack requirements
+
+      - Privileged Splunk role with access to the `_internal` index, OR
+      - Local filesystem access to Splunk server logs, OR
+      - `mcp_tool_admin` capability
+
+      ## Remediation
+
+      Upgrade the Splunk MCP Server app to 1.0.3 or later. Restrict the
+      `_internal` index and the `mcp_tool_admin` capability to least-
+      privileged roles as defense in depth.
     test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
