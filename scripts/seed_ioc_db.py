@@ -45,7 +45,12 @@ IOC_DB_PATH = REPO_ROOT / "intel/ioc_db.json"
 MANAGED_SOURCES_PATH = REPO_ROOT / "intel/managed_sources.json"
 
 # Only these feeds are baked into the bundled DB.
-BUNDLED_FEEDS = {"urlhaus_hosts", "feodotracker_ips", "spamhaus_drop", "hagezi_doh_domains"}
+BUNDLED_FEEDS = {
+    "urlhaus_hosts",
+    "feodotracker_ips",
+    "spamhaus_drop",
+    "hagezi_doh_domains",
+}
 
 REQUEST_TIMEOUT = 30
 
@@ -85,7 +90,11 @@ def fetch(url: str) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": "skillscan-seed/1.0"})
     with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
         payload = resp.read()
-    return payload.decode("utf-8", errors="ignore") if isinstance(payload, bytes) else str(payload)
+    return (
+        payload.decode("utf-8", errors="ignore")
+        if isinstance(payload, bytes)
+        else str(payload)
+    )
 
 
 def parse_feed(raw: str, fmt: str) -> dict[str, list[str]]:
@@ -141,8 +150,12 @@ def parse_feed(raw: str, fmt: str) -> dict[str, list[str]]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Seed bundled ioc_db.json from high-precision feeds.")
-    parser.add_argument("--dry-run", action="store_true", help="Print stats without writing.")
+    parser = argparse.ArgumentParser(
+        description="Seed bundled ioc_db.json from high-precision feeds."
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print stats without writing."
+    )
     args = parser.parse_args()
 
     sources = json.loads(MANAGED_SOURCES_PATH.read_text(encoding="utf-8"))
@@ -176,10 +189,29 @@ def main() -> None:
             print(f"  ERROR: {exc}")
         time.sleep(0.5)
 
-    final_domains = sorted(set(CURATED_DOMAINS) | feed_domains)
-    final_ips = sorted(set(CURATED_IPS) | feed_ips)
-    final_cidrs = sorted(feed_cidrs)
-    final_urls = sorted(set(CURATED_URLS) | feed_urls)
+    # Preserve manually-curated entries from the existing JSON. Pattern-update
+    # PRs append IOCs (campaign domains, fresh C2s) directly to ioc_db.json;
+    # without this merge those additions get wiped on every refresh run.
+    existing_domains: set[str] = set()
+    existing_ips: set[str] = set()
+    existing_cidrs: set[str] = set()
+    existing_urls: set[str] = set()
+    if IOC_DB_PATH.exists():
+        try:
+            existing = json.loads(IOC_DB_PATH.read_text(encoding="utf-8"))
+            existing_domains = set(existing.get("domains") or [])
+            existing_ips = set(existing.get("ips") or [])
+            existing_cidrs = set(existing.get("cidrs") or [])
+            existing_urls = set(existing.get("urls") or [])
+        except (OSError, json.JSONDecodeError) as exc:
+            print(
+                f"  WARNING: could not read existing ioc_db.json ({exc}); starting fresh."
+            )
+
+    final_domains = sorted(set(CURATED_DOMAINS) | feed_domains | existing_domains)
+    final_ips = sorted(set(CURATED_IPS) | feed_ips | existing_ips)
+    final_cidrs = sorted(feed_cidrs | existing_cidrs)
+    final_urls = sorted(set(CURATED_URLS) | feed_urls | existing_urls)
 
     total = len(final_domains) + len(final_ips) + len(final_cidrs) + len(final_urls)
     print(

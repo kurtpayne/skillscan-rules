@@ -189,11 +189,16 @@ def extract_fixed_version(vuln: dict, ecosystem: str, package: str) -> str | Non
 
 def query_osv(ecosystem: str, package: str) -> list[dict]:
     """Query OSV.dev for all vulnerabilities affecting a package."""
-    payload = json.dumps({"package": {"name": package, "ecosystem": ecosystem}}).encode()
+    payload = json.dumps(
+        {"package": {"name": package, "ecosystem": ecosystem}}
+    ).encode()
     req = urllib.request.Request(
         OSV_QUERY_URL,
         data=payload,
-        headers={"Content-Type": "application/json", "User-Agent": "skillscan-seed/1.0"},
+        headers={
+            "Content-Type": "application/json",
+            "User-Agent": "skillscan-seed/1.0",
+        },
         method="POST",
     )
     try:
@@ -205,7 +210,9 @@ def query_osv(ecosystem: str, package: str) -> list[dict]:
         return []
 
 
-def process_package(ecosystem: str, package: str, osv_ecosystem: str) -> dict[str, dict]:
+def process_package(
+    ecosystem: str, package: str, osv_ecosystem: str
+) -> dict[str, dict]:
     """Return a version map {version: {id, severity, fixed}} for a package.
 
     Strategy: for each CVE, keep only the *latest* (lexicographically last)
@@ -239,7 +246,9 @@ def process_package(ecosystem: str, package: str, osv_ecosystem: str) -> dict[st
 
         if latest_version is not None:
             existing = version_map.get(latest_version)
-            existing_sev = SEVERITY_ORDER.get(existing["severity"], 0) if existing else -1
+            existing_sev = (
+                SEVERITY_ORDER.get(existing["severity"], 0) if existing else -1
+            )
             if existing is None or SEVERITY_ORDER.get(severity, 0) > existing_sev:
                 entry: dict = {"id": vuln_id, "severity": severity}
                 if fixed:
@@ -251,13 +260,19 @@ def process_package(ecosystem: str, package: str, osv_ecosystem: str) -> dict[st
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Seed vuln_db.json from OSV.dev.")
-    parser.add_argument("--dry-run", action="store_true", help="Print stats without writing.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print stats without writing."
+    )
     args = parser.parse_args()
 
     # Hand-curated entries — always preserved verbatim, not subject to capping.
     CURATED_PYTHON: dict[str, dict] = {
         "bittensor-wallet": {
-            "4.0.2": {"id": "PYPI-BACKDOOR-2026-0317", "severity": "critical", "fixed": "4.0.1"},
+            "4.0.2": {
+                "id": "PYPI-BACKDOOR-2026-0317",
+                "severity": "critical",
+                "fixed": "4.0.1",
+            },
         },
         "pyyaml": {
             "5.3": {"id": "CVE-2020-14343", "severity": "high", "fixed": "5.4"},
@@ -279,7 +294,11 @@ def main() -> None:
             "6.2.2": {"id": "CVE-2024-37890", "severity": "high", "fixed": "6.2.3"},
         },
         "multer": {
-            "1.4.4": {"id": "CVE-2022-24434", "severity": "critical", "fixed": "1.4.5-lts.1"},
+            "1.4.4": {
+                "id": "CVE-2022-24434",
+                "severity": "critical",
+                "fixed": "1.4.5-lts.1",
+            },
         },
         "socket.io": {
             "2.5.0": {"id": "CVE-2022-2421", "severity": "high", "fixed": "4.6.2"},
@@ -321,7 +340,9 @@ def main() -> None:
     # This keeps the bundled DB small while covering the most important vulns.
     MAX_ENTRIES_PER_PACKAGE = 10
 
-    def cap_version_map(version_map: dict[str, dict], curated: dict[str, dict]) -> dict[str, dict]:
+    def cap_version_map(
+        version_map: dict[str, dict], curated: dict[str, dict]
+    ) -> dict[str, dict]:
         """Keep curated entries + top N by severity from feed."""
         feed_only = {v: e for v, e in version_map.items() if v not in curated}
         sorted_feed = sorted(
@@ -367,23 +388,61 @@ def main() -> None:
     total_npm_versions = sum(len(v) for v in result_npm.values())
 
     print("\nFinal vuln DB:")
-    print(f"  Python: {len(result_python)} packages, {total_python_versions} vulnerable versions")
-    print(f"  npm: {len(result_npm)} packages, {total_npm_versions} vulnerable versions")
+    print(
+        f"  Python: {len(result_python)} packages, {total_python_versions} vulnerable versions"
+    )
+    print(
+        f"  npm: {len(result_npm)} packages, {total_npm_versions} vulnerable versions"
+    )
 
     if args.dry_run:
         print("\n[dry-run] Not writing vuln_db.json.")
         return
 
-    output = {
-        "_meta": {
-            "generated": datetime.now(UTC).strftime("%Y-%m-%d"),
-            "source": "OSV.dev (https://osv.dev)",
-            "python_packages_checked": PYTHON_PACKAGES,
-            "npm_packages_checked": NPM_PACKAGES,
-        },
-        "python": result_python,
-        "npm": result_npm,
+    # Merge with existing vuln_db.json so manually-curated entries persist:
+    #   - Top-level product keys (e.g. `cursor`, `windsurf`, `openclaw`) are
+    #     not managed by this script at all — preserve them verbatim.
+    #   - Within `python` / `npm`, merge per-package version maps. OSV-fetched
+    #     entries take precedence on version-key conflicts; manually-added
+    #     entries (BACKDOOR markers, packages not in OSV) are preserved.
+    output: dict = {}
+    if VULN_DB_PATH.exists():
+        try:
+            existing = json.loads(VULN_DB_PATH.read_text(encoding="utf-8"))
+            for key, value in existing.items():
+                if key in ("_meta", "python", "npm"):
+                    continue
+                output[key] = value
+
+            existing_python = existing.get("python") or {}
+            for pkg, vmap in existing_python.items():
+                if not isinstance(vmap, dict):
+                    continue
+                merged = dict(vmap)
+                merged.update(result_python.get(pkg, {}))
+                result_python[pkg] = merged
+
+            existing_npm = existing.get("npm") or {}
+            for pkg, vmap in existing_npm.items():
+                if not isinstance(vmap, dict):
+                    continue
+                merged = dict(vmap)
+                merged.update(result_npm.get(pkg, {}))
+                result_npm[pkg] = merged
+        except (OSError, json.JSONDecodeError) as exc:
+            print(
+                f"  WARNING: could not read existing vuln_db.json ({exc}); writing fresh."
+            )
+            output = {}
+
+    output["_meta"] = {
+        "generated": datetime.now(UTC).strftime("%Y-%m-%d"),
+        "source": "OSV.dev (https://osv.dev)",
+        "python_packages_checked": PYTHON_PACKAGES,
+        "npm_packages_checked": NPM_PACKAGES,
     }
+    output["python"] = result_python
+    output["npm"] = result_npm
 
     VULN_DB_PATH.write_text(json.dumps(output, indent=2), encoding="utf-8")
     size_kb = VULN_DB_PATH.stat().st_size / 1024
