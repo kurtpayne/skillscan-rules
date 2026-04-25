@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.04.25.4
+
+Pattern update 2026-04-25 (4th of the day). Three new rules across supply chain, passive surveillance, and prompt injection — all anchored to disclosed CVEs / GHSAs / first-party threat reports from the past two weeks. Plus IOC enrichment for two recent campaigns (GPT-Proxy + Sandworm_Mode) and vuln-DB entries for the affected packages.
+
+- **SUP-045** (critical, new): **GPT-Proxy backdoor — `kube-health-tools` (npm) / `kube-node-health` (PyPI) Chinese LLM relay (April 22, 2026)** — Aikido Security disclosed twin packages on npm and PyPI that install a two-stage Zig-compiled binary masquerading as `node-health-check --mode=daemon`. The dropper fetches stage 2 from `github.com/gibunxi4201/kube-node-diag/releases/download/v2.0/`, writes to `/tmp/.kh`, and proxies attacker OpenAI-compatible API calls (`/v1/chat/completions`, `/v1/completions`, `/v1/models`) through the victim host as a Chinese LLM relay. C2: `sync.geeker.indevs.in`. No CVE assigned.
+- **PSV-043** (high, new): **Azure Data Explorer MCP Server KQL injection — CVE-2026-33980, GHSA-vphc-468g-8rfp, <= 0.1.1** — KQL injection in Microsoft's `azure-data-explorer-mcp-server` <= 0.1.1 (CVSS 8.3 HIGH). The MCP tool handlers `get_table_schema`, `sample_table_data`, and `get_table_details` interpolate the user-supplied `table_name` parameter into KQL queries via Python f-strings, bypassing parameterization. Fixed past commit `0abe0ee55279e111281076393e5e966335fffd30`.
+- **PINJ-024** (critical, new): **Windsurf MCP STDIO command injection — CVE-2026-30615, Windsurf 1.9544.26** — OX Security disclosed April 15, 2026 that attacker-controlled HTML rendered by Windsurf 1.9544.26 (CVSS 8.0 HIGH) can carry prompt-injection instructions that automatically register a malicious MCP STDIO server, achieving zero-click RCE. Root cause is the MCP STDIO transport executing arbitrary commands as subprocesses regardless of whether they implement the protocol.
+- **IOC additions:** GPT-Proxy C2 domains `sync.geeker.indevs.in`, `geeker.indevs.in`. Sandworm_Mode npm worm (Socket, Feb 20, 2026) C2 + DNS-tunneling domains `pkg-metrics.official334.workers.dev`, `freefan.net`, `fanfree.net`.
+- **Vuln DB additions:** `azure-data-explorer-mcp-server` 0.1.0–0.1.1 (CVE-2026-33980), `windsurf` 1.9544.26 (CVE-2026-30615), `kube-health-tools` (npm, all versions, NPM-BACKDOOR-2026-0422), `kube-node-health` (PyPI, all versions, PYPI-BACKDOOR-2026-0422), Sandworm_Mode npm typosquats `claud-code` / `cloude-code` / `suport-color` / `rimarf` / `yarsg` (NPM-SANDWORM-MODE-2026-0220).
+
+Total: 231 static rules + 14 chain rules.
+
+Sources:
+- GPT-Proxy backdoor (kube-health-tools / kube-node-health): https://www.aikido.dev/blog/gpt-proxy-backdoor-npm-pypi-chinese-llm-relay
+- CVE-2026-33980 (Azure Data Explorer MCP): https://nvd.nist.gov/vuln/detail/CVE-2026-33980
+- CVE-2026-33980 (GHSA): https://github.com/Azure/azure-data-explorer-mcp-server/security/advisories/GHSA-vphc-468g-8rfp
+- CVE-2026-33980 (SentinelOne): https://www.sentinelone.com/vulnerability-database/cve-2026-33980/
+- CVE-2026-30615 (Windsurf MCP STDIO): https://nvd.nist.gov/vuln/detail/CVE-2026-30615
+- CVE-2026-30615 (OX Security advisory): https://www.ox.security/blog/mcp-supply-chain-advisory-rce-vulnerabilities-across-the-ai-ecosystem/
+- Sandworm_Mode npm worm (Socket): https://socket.dev/blog/sandworm-mode-npm-worm-ai-toolchain-poisoning
+
 ## 2026.04.25.2
 
 Pattern update 2026-04-25. One new PSV rule (MCP Ruby SDK session fixation) and three new vuln DB entries.

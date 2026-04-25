@@ -64,7 +64,7 @@
       "word-wrap"
     ],
     "updated": "2026-04-25",
-    "version": "2026.04.25.3"
+    "version": "2026.04.25.4"
   },
   "python": {
     "bittensor-wallet": {
@@ -870,6 +870,13 @@
         "severity": "critical",
         "fixed": "2.6.3"
       }
+    },
+    "kube-node-health": {
+      "all": {
+        "id": "PYPI-BACKDOOR-2026-0422",
+        "severity": "critical",
+        "fixed": null
+      }
     }
   },
   "npm": {
@@ -1514,6 +1521,48 @@
         "fixed": "3.1.0",
         "summary": "CSV Agent prompt-injection RCE via Pyodide import-alias allowlist bypass (GHSA-3hjv-c53m-58jj)"
       }
+    },
+    "kube-health-tools": {
+      "all": {
+        "id": "NPM-BACKDOOR-2026-0422",
+        "severity": "critical",
+        "fixed": null
+      }
+    },
+    "claud-code": {
+      "all": {
+        "id": "NPM-SANDWORM-MODE-2026-0220",
+        "severity": "critical",
+        "fixed": null
+      }
+    },
+    "cloude-code": {
+      "all": {
+        "id": "NPM-SANDWORM-MODE-2026-0220",
+        "severity": "critical",
+        "fixed": null
+      }
+    },
+    "suport-color": {
+      "all": {
+        "id": "NPM-SANDWORM-MODE-2026-0220",
+        "severity": "critical",
+        "fixed": null
+      }
+    },
+    "rimarf": {
+      "all": {
+        "id": "NPM-SANDWORM-MODE-2026-0220",
+        "severity": "critical",
+        "fixed": null
+      }
+    },
+    "yarsg": {
+      "all": {
+        "id": "NPM-SANDWORM-MODE-2026-0220",
+        "severity": "critical",
+        "fixed": null
+      }
     }
   },
   "pip": {
@@ -2034,6 +2083,22 @@
       "severity": "critical",
       "fixed": "v2.1.20",
       "notes": "Malicious Docker image pushed 2026-04-22 14:17-15:41 UTC. Downloads mcpAddon.js credential stealer. Exfiltrates to audit.checkmarx.cx (91.195.240.123/94.154.172.43)."
+    }
+  },
+  "azure-data-explorer-mcp-server": {
+    "0.1.0": {
+      "id": "CVE-2026-33980",
+      "severity": "high"
+    },
+    "0.1.1": {
+      "id": "CVE-2026-33980",
+      "severity": "high"
+    }
+  },
+  "windsurf": {
+    "1.9544.26": {
+      "id": "CVE-2026-30615",
+      "severity": "high"
     }
   }
 }
