@@ -64,7 +64,7 @@
       "word-wrap"
     ],
     "updated": "2026-04-25",
-    "version": "2026.04.25.1"
+    "version": "2026.04.25.3"
   },
   "python": {
     "bittensor-wallet": {
@@ -1607,6 +1607,14 @@
         "severity": "critical",
         "fixed": "0.23.0"
       }
+    },
+    "elementary-data": {
+      "0.23.3": {
+        "id": "PYPI-ELEMENTARY-DATA-2026-04",
+        "severity": "critical",
+        "fixed": "0.23.2",
+        "notes": "Compromised via GitHub Actions script injection 2026-04-24. Ships elementary.pth three-stage credential harvester. Exfiltrates to skyhanni.cloud."
+      }
     }
   },
   "cursor": {
@@ -1749,6 +1757,12 @@
       "severity": "high",
       "fixed": "2026.3.24",
       "description": "Privilege escalation via chat.send to allowlist persistence"
+    },
+    "< 2026.4.2": {
+      "id": "CVE-2026-41295",
+      "severity": "high",
+      "fixed": "2026.4.2",
+      "notes": "Untrusted workspace channel shadow RCE. CWE-829, CVSS 7.8. Attacker clones workspace with malicious plugin claiming bundled channel id to achieve in-process code execution during channel setup."
     }
   },
   "n8n-mcp": {
@@ -2012,6 +2026,14 @@
       "cwe": "CWE-77",
       "fixed": "patched via commit c321d8af",
       "summary": "OS command injection in registerTools (new_heim_application/deploy_heim_application) via unsanitized input; local access required"
+    }
+  },
+  "checkmarx-kics": {
+    "v2.1.21": {
+      "id": "DOCKER-CHECKMARX-KICS-2026-04",
+      "severity": "critical",
+      "fixed": "v2.1.20",
+      "notes": "Malicious Docker image pushed 2026-04-22 14:17-15:41 UTC. Downloads mcpAddon.js credential stealer. Exfiltrates to audit.checkmarx.cx (91.195.240.123/94.154.172.43)."
     }
   }
 }
