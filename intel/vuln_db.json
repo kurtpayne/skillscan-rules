@@ -1906,6 +1906,27 @@
     ],
     "added": "2026-04-20"
   },
+  "@bitwarden/cli": {
+    "2026.4.0": {
+      "id": "SUP-042",
+      "severity": "critical",
+      "fixed": "2026.5.0",
+      "summary": "Compromised release (TeamPCP Shai-Hulud worm). Preinstall hook bw_setup.js bootstraps Bun and runs bw1.js, a credential harvester exfiltrating to audit.checkmarx.cx/v1/telemetry. Self-propagating npm worm. Active 2026-04-22 17:57-19:30 UTC.",
+      "campaign": "Shai-Hulud",
+      "c2": "audit.checkmarx.cx"
+    }
+  },
+  "@azure-devops/mcp": {
+    "2.5.0": {
+      "id": "CVE-2026-32211",
+      "severity": "critical",
+      "cvss": 9.1,
+      "cwe": "CWE-306",
+      "fixed": null,
+      "summary": "Missing authentication for critical function. Unauthenticated network attacker can access Azure DevOps work items, repos, pipelines, and pull requests. No patch as of 2026-04-25.",
+      "disclosed": "2026-04-03"
+    }
+  },
   "splunk-mcp-server": {
     "1.0.0": {
       "id": "CVE-2026-20205",

@@ -1,4 +1,4 @@
-version: "2026.04.24.2"
+version: "2026.04.25.1"
 static_rules:
   - id: MAL-001
     category: malware_pattern
@@ -13035,6 +13035,148 @@ static_rules:
       Upgrade the Splunk MCP Server app to 1.0.3 or later. Restrict the
       `_internal` index and the `mcp_tool_admin` capability to least-
       privileged roles as defense in depth.
+    test_expect: fires
+  - id: PSV-040
+    category: passive_surveillance
+    severity: critical
+    confidence: 0.9
+    title: Azure DevOps MCP Server missing authentication (CVE-2026-32211, @azure-devops/mcp, CWE-306, CVSS 9.1)
+    pattern: '(?i)(?:CVE-2026-32211|@azure-devops/mcp[^\n]{0,120}(?:missing[_\s-]?auth|no[_\s-]?auth|unauthenticated|information[_\s-]?disclosure|cve-2026-32211|work[_\s-]?items?|pipelines?|pull[_\s-]?requests?)|azure[_\s-]?devops[_\s-]?mcp[^\n]{0,120}(?:missing[_\s-]?auth|no[_\s-]?auth|unauthenticated|information[_\s-]?disclosure|cve-2026-32211)|@azure-devops/mcp[^\n]{0,40}(?:2\.[0-4]\.\d+|2\.5\.0))'
+    mitigation: 'CVE-2026-32211 (CVSS 9.1, CWE-306) is a critical missing-authentication-for-critical-function vulnerability in the Azure DevOps MCP Server (@azure-devops/mcp). Disclosed by Microsoft on April 3, 2026, the server lacks proper authentication mechanisms, allowing an unauthenticated network attacker to access sensitive Azure DevOps data — work items, repositories, pipelines, and pull requests — without valid credentials. No patch is available as of April 25, 2026. Mitigate by implementing network-level access controls (firewall rules, reverse-proxy authentication), restricting the MCP server to loopback or trusted internal networks only, and monitoring for unauthorized access attempts until an official patch is released.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-25'
+      updated: '2026-04-25'
+      tags:
+        - passive_surveillance
+        - psv
+        - azure
+        - azure-devops
+        - mcp_server
+        - missing_authentication
+        - information_disclosure
+        - cve-2026-32211
+      last_modified: '2026-04-25'
+      techniques:
+        - id: PSV-040
+          name: Passive surveillance vulnerability
+      applies_to:
+        contexts:
+          - source
+          - dependency
+          - workflow
+      lifecycle:
+        introduced: '2026-04-25'
+        last_modified: '2026-04-25'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://windowsnews.ai/article/cve-2026-32211-critical-azure-mcp-server-authentication-flaw-exposes-sensitive-data-cvss-91.409622
+        - https://radar.offseq.com/threat/cve-2026-32211-cwe-306-missing-authentication-for--955487bc
+        - https://www.npmjs.com/package/@azure-devops/mcp
+    test_input: |
+      ---
+      name: azure-devops-mcp-integration
+      description: Connect to Azure DevOps via MCP server
+      ---
+
+      # CVE-2026-32211 — Azure DevOps MCP Server Missing Authentication
+
+      This advisory documents CVE-2026-32211, a critical missing-authentication
+      vulnerability in @azure-devops/mcp. The Azure DevOps MCP Server exposes
+      tools for interacting with Azure DevOps — work items, repos, pipelines,
+      pull requests — but lacks authentication, allowing any unauthenticated
+      attacker with network access to retrieve sensitive organizational data.
+
+      ## Affected Package
+
+      - Package: `@azure-devops/mcp`
+      - CVE: CVE-2026-32211
+      - CVSS: 9.1 (Critical)
+      - CWE: CWE-306 (Missing Authentication for Critical Function)
+      - Disclosed: 2026-04-03
+
+      ## Mitigation
+
+      No patch available as of April 25, 2026. Restrict network access to the
+      MCP server instance until an official fix ships.
+    test_expect: fires
+  - id: SUP-042
+    category: supply_chain
+    severity: critical
+    confidence: 0.95
+    title: 'Shai-Hulud: @bitwarden/cli@2026.4.0 supply chain compromise (TeamPCP, April 2026)'
+    pattern: '(?i)(?:Shai[_\s-]?Hulud[^\n]{0,80}(?:bitwarden|worm|supply[_\s-]?chain|credential|bw_setup|bw1\.js)|@bitwarden/cli[^\n]{0,80}(?:2026\.4\.0|bw_setup|bw1\.js|audit\.checkmarx\.cx|shai[_\s-]?hulud)|bw_setup\.js|audit\.checkmarx\.cx|bw1\.js[^\n]{0,80}(?:bitwarden|credential|ssh|worm))'
+    mitigation: '@bitwarden/cli version 2026.4.0 was compromised in a supply chain attack (TeamPCP, "Shai-Hulud: The Third Coming") active April 22, 2026, between 17:57 and 19:30 UTC. The malicious release introduces bw_setup.js via a preinstall hook. Once executed it bootstraps the Bun runtime and launches bw1.js, a credential harvester that steals SSH keys, cloud credentials, AI coding tool tokens (.claude, .cursor, Windsurf), MCP configuration files, and cryptocurrency wallets. Stolen data is AES-256-GCM encrypted and exfiltrated to audit.checkmarx.cx/v1/telemetry (a typosquat of the real Checkmarx domain). The worm then reads npm/PyPI publish tokens and re-injects itself into all packages the victim can publish. Remove @bitwarden/cli@2026.4.0 immediately, upgrade to a clean version, rotate all credentials (SSH keys, cloud secrets, npm/PyPI tokens, AI tool API keys), and audit packages you maintain for unexpected version bumps.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-25'
+      updated: '2026-04-25'
+      tags:
+        - supply_chain
+        - sup
+        - npm
+        - bitwarden
+        - teampcp
+        - shai-hulud
+        - credential-theft
+        - worm
+      last_modified: '2026-04-25'
+      techniques:
+        - id: SUP-042
+          name: Supply Chain Compromise via Package Manager
+      applies_to:
+        contexts:
+          - source
+          - dependency
+      lifecycle:
+        introduced: '2026-04-25'
+        last_modified: '2026-04-25'
+      quality:
+        precision_estimate: 0.95
+        benchmark_set: core-static-v1
+      references:
+        - https://www.aikido.dev/blog/shai-hulud-npm-bitwarden-cli-compromise
+        - https://www.ox.security/blog/shai-hulud-bitwarden-cli-supply-chain-attack/
+        - https://thehackernews.com/2026/04/bitwarden-cli-compromised-in-ongoing.html
+        - https://research.jfrog.com/post/bitwarden-cli-hijack/
+        - https://socket.dev/blog/bitwarden-cli-compromised
+    test_input: |
+      ---
+      name: bitwarden-cli-helper
+      description: Password manager CLI integration using Bitwarden
+      ---
+
+      # Shai-Hulud: @bitwarden/cli@2026.4.0 Supply Chain Compromise
+
+      This advisory documents the TeamPCP supply chain attack against
+      @bitwarden/cli version 2026.4.0 (April 22, 2026). The malicious
+      release adds a preinstall hook to bw_setup.js that bootstraps Bun
+      and runs bw1.js, a credential harvester and self-propagating npm worm.
+
+      ## Indicators of Compromise
+
+      - Package: `@bitwarden/cli@2026.4.0`
+      - Loader: `bw_setup.js` (preinstall hook)
+      - Payload: `bw1.js`
+      - C2: `audit.checkmarx.cx/v1/telemetry`
+      - Campaign: Shai-Hulud (TeamPCP)
+
+      ## Impact
+
+      Installs a credential harvester targeting SSH keys, cloud secrets, AI
+      coding tool configs (.claude, .cursor, .windsurf), and crypto wallets.
+      Propagates by injecting itself into all npm packages the victim can publish.
+
+      ## Remediation
+
+      Remove @bitwarden/cli@2026.4.0 immediately. Rotate all credentials.
+      Audit your published packages for unexpected version bumps from 2026-04-22.
     test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
