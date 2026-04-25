@@ -1,5 +1,20 @@
 # SkillScan Rules Changelog
 
+## 2026.04.25.2
+
+Pattern update 2026-04-25. One new PSV rule (MCP Ruby SDK session fixation) and three new vuln DB entries.
+
+- **PSV-041** (high, new): **MCP Ruby SDK SSE session hijacking via session fixation** — CVE-2026-33946 (CVSS 7.5, CWE-384 Session Fixation / CWE-639 Authorization Bypass via User-Controlled Key) in the `mcp` Ruby gem (modelcontextprotocol/ruby-sdk) < 0.9.2. The Streamable HTTP transport (`streamable_http_transport.rb`) does not invalidate or regenerate session IDs when SSE connections are established, allowing an attacker who obtains a valid session ID to replay it and fully hijack the victim's SSE stream, intercepting all real-time MCP tool results. Upgrade to `mcp >= 0.9.2`.
+- **Vuln DB additions:** `mcp-ruby-sdk` 0.9.0–0.9.1 (CVE-2026-33946, Ruby gem `mcp`), `codebase-mcp` rolling (CVE-2026-5023, no patch), `@nor2/heim-mcp` 0.1.0–0.1.3 (CVE-2026-5602).
+
+Total: 225 static rules + 14 chain rules.
+
+Sources:
+- CVE-2026-33946 (MCP Ruby SDK): https://rubysec.com/advisories/CVE-2026-33946/
+- CVE-2026-33946 (GitLab advisory): https://advisories.gitlab.com/pkg/gem/mcp/CVE-2026-33946/
+- CVE-2026-5023 (codebase-mcp): https://radar.offseq.com/threat/cve-2026-5023-os-command-injection-in-dedeveloper2-cc03c992
+- CVE-2026-5602 (@nor2/heim-mcp): https://vuldb.com/vuln/355394
+
 ## 2026.04.25.1
 
 Pattern update 2026-04-25. Two new rules: one supply chain (TeamPCP Bitwarden CLI worm) and one passive surveillance CVE (Azure DevOps MCP missing auth).

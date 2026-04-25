@@ -1,4 +1,4 @@
-version: "2026.04.25.1"
+version: "2026.04.25.2"
 static_rules:
   - id: MAL-001
     category: malware_pattern
@@ -13177,6 +13177,78 @@ static_rules:
 
       Remove @bitwarden/cli@2026.4.0 immediately. Rotate all credentials.
       Audit your published packages for unexpected version bumps from 2026-04-22.
+    test_expect: fires
+  - id: PSV-041
+    category: passive_surveillance
+    severity: high
+    confidence: 0.9
+    title: MCP Ruby SDK SSE session hijacking via session fixation (CVE-2026-33946, mcp
+      gem < 0.9.2, CWE-384)
+    pattern: '(?i)(?:CVE-2026-33946|mcp\s+\(\s*0\.(?:[0-8]\.\d+|9\.[01]\d*)\s*\)|gem[^\n]{0,15}mcp[^\n]{0,80}(?:[~=<>^]*\s*0\.(?:[0-8]\.\d+|9\.[01][\d.]*)|cve-2026-33946)|streamable[_\s-]?http[_\s-]?transport[^\n]{0,120}(?:session[_\s-]?(?:fix|hijack|replay)|sse[_\s-]?(?:hijack|session)))'
+    mitigation: 'CVE-2026-33946 (CVSS 7.5, CWE-384 Session Fixation / CWE-639 Authorization
+      Bypass via User-Controlled Key) affects the MCP Ruby SDK (modelcontextprotocol/ruby-sdk,
+      gem name: mcp) prior to version 0.9.2. The Streamable HTTP transport implementation
+      in streamable_http_transport.rb does not invalidate or regenerate session identifiers
+      when SSE connections are established, allowing an attacker who has obtained a valid
+      session ID to replay it and fully hijack the victim''s SSE stream, intercepting all
+      real-time MCP tool results. Upgrade the mcp gem to >= 0.9.2, which patches the session
+      binding in the Streamable HTTP transport.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-25'
+      updated: '2026-04-25'
+      tags:
+        - passive_surveillance
+        - psv
+        - ruby
+        - mcp_server
+        - session_fixation
+        - sse_hijacking
+        - information_disclosure
+        - cve-2026-33946
+      last_modified: '2026-04-25'
+      techniques:
+        - id: PSV-041
+          name: Passive surveillance vulnerability
+      applies_to:
+        contexts:
+          - source
+          - dependency
+      lifecycle:
+        introduced: '2026-04-25'
+        last_modified: '2026-04-25'
+      quality:
+        precision_estimate: 0.9
+        benchmark_set: core-static-v1
+      references:
+        - https://rubysec.com/advisories/CVE-2026-33946/
+        - https://advisories.gitlab.com/pkg/gem/mcp/CVE-2026-33946/
+        - https://cve.threatint.eu/CVE/CVE-2026-33946
+    test_input: |
+      ---
+      name: mcp-ruby-sse-server
+      description: Configures an MCP server with Streamable HTTP transport using the Ruby SDK
+      ---
+
+      # CVE-2026-33946 — MCP Ruby SDK SSE Session Hijacking
+
+      The mcp Ruby gem (modelcontextprotocol/ruby-sdk) before 0.9.2 has a session
+      fixation vulnerability in the Streamable HTTP transport (streamable_http_transport.rb).
+      An attacker who obtains a valid session ID can replay it to hijack the SSE stream
+      and intercept all real-time MCP tool results.
+
+      ## Affected Version
+
+      - Package: mcp (Ruby gem)
+      - CVE: CVE-2026-33946 (CWE-384, CVSS 7.5)
+      - Affected: mcp < 0.9.2
+      - Fixed: mcp 0.9.2
+
+      ## Remediation
+
+      Upgrade to mcp >= 0.9.2.
     test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
