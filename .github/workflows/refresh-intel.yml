@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   refresh:
@@ -121,3 +122,44 @@ jobs:
             git push origin HEAD:main
             echo "Intel DBs refreshed and pushed."
           fi
+
+      # Open a GitHub issue when the scheduled job fails. Manual workflow_dispatch
+      # runs are skipped (the operator already sees the failure interactively).
+      # Each failed run gets its own issue (titled with run ID) so dedup is natural
+      # and history is preserved.
+      - name: Alert on failure
+        if: failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          # Capture last ~80 lines from each step's run for context
+          LOG_TAIL=$(gh run view "$RUN_ID" --log-failed 2>/dev/null | tail -80 | sed 's/^/    /' || echo "    (could not fetch failed log — see run page)")
+
+          BODY=$(cat <<EOF
+          \`refresh-intel.yml\` failed at $(date -u +"%Y-%m-%d %H:%M UTC").
+
+          - **Run:** $RUN_URL
+          - **Trigger:** scheduled cron
+          - **Repo:** \`kurtpayne/skillscan-rules\`
+
+          ## Failure log tail
+
+          \`\`\`
+          $LOG_TAIL
+          \`\`\`
+
+          This issue was opened automatically by the workflow's failure handler. Close after the next successful run or after a fix lands.
+          EOF
+          )
+
+          gh issue create \
+            -R "${{ github.repository }}" \
+            --title "🚨 [auto] refresh-intel.yml run #$RUN_ID failed" \
+            --body "$BODY" \
+            --label "automation,cron-failure" 2>&1 || \
+          gh issue create \
+            -R "${{ github.repository }}" \
+            --title "🚨 [auto] refresh-intel.yml run #$RUN_ID failed" \
+            --body "$BODY"

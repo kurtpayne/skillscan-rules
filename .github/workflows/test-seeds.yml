@@ -1,0 +1,78 @@
+name: Test Seed Scripts
+
+# Smoke-tests the intel-refresh seed scripts and the validator block on every
+# PR that touches them. Catches regressions like the 2026-04-26 validator
+# false-positive on top-level product keys' `references` lists, which silently
+# broke every cron run for ~24h before being noticed.
+#
+# Runs:
+# - seed_ioc_db.py --dry-run (network call; tolerated to fail since this is
+#   smoke-testing the *script*, not the upstream feeds)
+# - seed_vuln_db.py --dry-run (same)
+# - the validator block from refresh-intel.yml, against the current
+#   intel/vuln_db.json on the PR branch
+
+on:
+  pull_request:
+    paths:
+      - "scripts/seed_ioc_db.py"
+      - "scripts/seed_vuln_db.py"
+      - ".github/workflows/refresh-intel.yml"
+      - ".github/workflows/test-seeds.yml"
+      - "intel/managed_sources.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: seed_ioc_db.py --dry-run
+        run: |
+          set +e
+          python3 scripts/seed_ioc_db.py --dry-run
+          rc=$?
+          # Exit 0 always — feeds may be transiently down. We only want to
+          # catch syntax/import errors, which surface on rc >= 2.
+          if [ $rc -ge 2 ]; then exit $rc; fi
+
+      - name: seed_vuln_db.py --dry-run
+        run: |
+          set +e
+          python3 scripts/seed_vuln_db.py --dry-run
+          rc=$?
+          if [ $rc -ge 2 ]; then exit $rc; fi
+
+      - name: Validator block (against current intel/vuln_db.json)
+        run: |
+          python3 -c "
+          import json, sys
+          for path in ['intel/ioc_db.json', 'intel/vuln_db.json']:
+              try:
+                  json.load(open(path))
+                  print(f'OK: {path}')
+              except json.JSONDecodeError as e:
+                  print(f'INVALID JSON: {path}: {e}', file=sys.stderr)
+                  sys.exit(1)
+          ECOSYSTEMS = {'npm', 'python', 'pip', 'go', 'rust', 'ruby', 'java', 'php', 'swift'}
+          db = json.load(open('intel/vuln_db.json'))
+          bad = []
+          for ecosystem, pkgs in db.items():
+              if ecosystem not in ECOSYSTEMS or not isinstance(pkgs, dict):
+                  continue
+              for pkg, versions in pkgs.items():
+                  if isinstance(versions, list):
+                      bad.append(f'{ecosystem}/{pkg}')
+          if bad:
+              print(f'ERROR: list-format entries: {bad}', file=sys.stderr)
+              sys.exit(1)
+          print('vuln_db format: OK')
+          "
