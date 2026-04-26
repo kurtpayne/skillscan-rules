@@ -63,8 +63,8 @@
       "tough-cookie",
       "word-wrap"
     ],
-    "updated": "2026-04-25",
-    "version": "2026.04.25.4"
+    "updated": "2026-04-26",
+    "version": "2026.04.26.1"
   },
   "python": {
     "bittensor-wallet": {
@@ -877,6 +877,38 @@
         "severity": "critical",
         "fixed": null
       }
+    },
+    "logutilkit": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-PYPI-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) PyPI backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip."
+      }
+    },
+    "apachelicense": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-PYPI-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) PyPI backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip."
+      }
+    },
+    "fluxhttp": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-PYPI-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) PyPI backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip."
+      }
+    },
+    "license-utils-kit": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-PYPI-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) PyPI backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip."
+      }
     }
   },
   "npm": {
@@ -1562,6 +1594,74 @@
         "id": "NPM-SANDWORM-MODE-2026-0220",
         "severity": "critical",
         "fixed": null
+      }
+    },
+    "@mcpjam/inspector": {
+      "1.4.0": {
+        "id": "CVE-2026-23744",
+        "severity": "critical",
+        "fixed": "1.4.3",
+        "summary": "RCE via unauthenticated /api/mcp/connect endpoint (GHSA-232v-j27c-5pp6, CVSS 9.8, CWE-306). Binds to 0.0.0.0 by default."
+      },
+      "1.4.1": {
+        "id": "CVE-2026-23744",
+        "severity": "critical",
+        "fixed": "1.4.3",
+        "summary": "RCE via unauthenticated /api/mcp/connect endpoint (GHSA-232v-j27c-5pp6, CVSS 9.8, CWE-306). Binds to 0.0.0.0 by default."
+      },
+      "1.4.2": {
+        "id": "CVE-2026-23744",
+        "severity": "critical",
+        "fixed": "1.4.3",
+        "summary": "RCE via unauthenticated /api/mcp/connect endpoint (GHSA-232v-j27c-5pp6, CVSS 9.8, CWE-306). Binds to 0.0.0.0 by default."
+      }
+    },
+    "dev-log-core": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-NPM-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
+      }
+    },
+    "logger-base": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-NPM-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
+      }
+    },
+    "logkitx": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-NPM-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
+      }
+    },
+    "pino-debugger": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-NPM-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
+      }
+    },
+    "debug-fmt": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-NPM-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
+      }
+    },
+    "debug-glitz": {
+      "all": {
+        "id": "CONTAGIOUS-INTERVIEW-NPM-2026-0408",
+        "severity": "critical",
+        "fixed": null,
+        "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
       }
     }
   },

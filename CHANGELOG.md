@@ -1,5 +1,25 @@
 # SkillScan Rules Changelog
 
+## 2026.04.26.1
+
+Pattern update 2026-04-26. Two new rules: one passive surveillance CVE (MCPJam Inspector unauthenticated RCE) and one supply chain campaign (Contagious Interview cross-ecosystem April 2026 wave). Plus IOC enrichment with three Contagious Interview C2 domains, one IP, and one C2 URL. Vuln DB additions for MCPJam Inspector and eleven Contagious Interview npm/PyPI packages.
+
+- **PSV-044** (critical, new): **MCPJam Inspector RCE via unauthenticated /api/mcp/connect (CVE-2026-23744, GHSA-232v-j27c-5pp6, @mcpjam/inspector <= 1.4.2)** — Critical RCE (CVSS 9.8, CWE-306) in MCPJam Inspector versions <= 1.4.2. The `/api/mcp/connect` HTTP endpoint accepts `command` and `args` parameters and executes them directly without authentication or validation. Because the tool binds to `0.0.0.0` by default, any network-reachable attacker can achieve arbitrary command execution with a single crafted HTTP POST — no privileges or user interaction required. Fixed in version 1.4.3.
+- **SUP-046** (critical, new): **Contagious Interview cross-ecosystem supply chain — April 2026 wave (DPRK/UNC1069, npm/PyPI/Go/Rust)** — The North Korean threat cluster UNC1069 (Contagious Interview / Sapphire Sleet / Stardust Chollima) has published 1,700+ malicious packages across five package ecosystems since January 2025. The April 2026 wave includes npm packages `dev-log-core`, `logger-base`, `logkitx`, `pino-debugger`, `debug-fmt`, `debug-glitz` and PyPI packages `logutilkit`, `apachelicense`, `fluxhttp`, `license-utils-kit`. All packages POST to `https://apachelicense.vercel.app/getAddress?platform=<platform>`, download `ecw_update.zip`, and extract to the hardcoded temp dir `410BB449A-72C6-4500-9765-ACD04JBV827V32V`, then execute a platform-specific cross-platform RAT/infostealer. Staging: `logkit.onrender.com`, `logkit-tau.vercel.app`.
+- **IOC additions:** Contagious Interview C2 domains `apachelicense.vercel.app`, `logkit.onrender.com`, `logkit-tau.vercel.app`; IP `66.45.225.94`; URL `https://apachelicense.vercel.app/getAddress`.
+- **Vuln DB additions:** `@mcpjam/inspector` 1.4.0–1.4.2 (CVE-2026-23744); npm backdoors `dev-log-core`, `logger-base`, `logkitx`, `pino-debugger`, `debug-fmt`, `debug-glitz` (CONTAGIOUS-INTERVIEW-NPM-2026-0408, all versions); PyPI backdoors `logutilkit`, `apachelicense`, `fluxhttp`, `license-utils-kit` (CONTAGIOUS-INTERVIEW-PYPI-2026-0408, all versions).
+
+Note: CHANGELOG entry for rulepack `2026.04.25.3` is missing — the version was bumped in default.yaml but no corresponding `## 2026.04.25.3` section was written. Flagged for separate cleanup PR.
+
+Total: 233 static rules + 14 chain rules.
+
+Sources:
+- CVE-2026-23744 (MCPJam Inspector): https://github.com/advisories/GHSA-232v-j27c-5pp6
+- CVE-2026-23744 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-23744
+- CVE-2026-23744 (PoC): https://github.com/boroeurnprach/CVE-2026-23744-PoC
+- Contagious Interview cross-ecosystem (Socket): https://socket.dev/blog/contagious-interview-campaign-spreads-across-5-ecosystems
+- Contagious Interview 1,700 packages (THN): https://thehackernews.com/2026/04/n-korean-hackers-spread-1700-malicious.html
+
 ## 2026.04.25.4
 
 Pattern update 2026-04-25 (4th of the day). Three new rules across supply chain, passive surveillance, and prompt injection — all anchored to disclosed CVEs / GHSAs / first-party threat reports from the past two weeks. Plus IOC enrichment for two recent campaigns (GPT-Proxy + Sandworm_Mode) and vuln-DB entries for the affected packages.
