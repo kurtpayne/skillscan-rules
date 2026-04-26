@@ -64,7 +64,9 @@
       "word-wrap"
     ],
     "updated": "2026-04-26",
-    "version": "2026.04.26.1"
+    "version": "2026.04.26.1",
+    "last_updated": "2026-04-26",
+    "total_entries": 2
   },
   "python": {
     "bittensor-wallet": {
@@ -2199,6 +2201,26 @@
     "1.9544.26": {
       "id": "CVE-2026-30615",
       "severity": "high"
+    }
+  },
+  "tradingclaw": {
+    "pro": {
+      "id": "MAL-071",
+      "severity": "critical",
+      "fixed": null,
+      "summary": "Fake TradingView AI agent site (tradingclaw.pro) distributing Needle Stealer via DLL-hijacking loader (iviewers.dll). Process hollowing into RegAsm.exe. Modular Go infostealer with browser credential theft, clipboard hijacking, crypto wallet spoofing, and malicious browser extension (full browser takeover). Discovered by Malwarebytes, April 2026.",
+      "campaign": "TradingClaw",
+      "c2": "tradingclaw.pro"
+    }
+  },
+  "arkypc": {
+    "com": {
+      "id": "MAL-072",
+      "severity": "critical",
+      "fixed": null,
+      "summary": "ClickFix-style fake Claude Code troubleshooting page at arkypc.com used to social-engineer Cursor AI agent into downloading and executing AMOS Stealer (Atomic macOS Stealer). Two-stage obfuscated AppleScript: stage 1 VM evasion, stage 2 full credential harvest + exfiltration to lakhov.com/contact. Persistent implant installed post-infection. Detected by Field Effect MDR, April 23 2026.",
+      "campaign": "AMOS-Cursor-ClickFix",
+      "c2": "lakhov.com"
     }
   }
 }
