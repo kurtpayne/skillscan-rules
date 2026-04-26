@@ -1,0 +1,115 @@
+name: Refresh Intel DBs
+
+# Refreshes intel/ioc_db.json and intel/vuln_db.json from upstream feeds.
+# This is the canonical refresh job — skillscan-security pulls these files
+# downstream via its own sync-bundled-rules workflow.
+#
+# Runs twice daily so the canonical DB stays within ~12 hours of the live feeds.
+# Pushes direct to main (this repo's main is unprotected); validate.yml runs
+# on the resulting commit and verifies manifest hashes match.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # 06:00 UTC — morning refresh
+    - cron: "0 18 * * *"  # 18:00 UTC — evening refresh
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run — print stats but do not write or commit"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    name: Refresh IOC + vuln DBs
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Refresh ioc_db.json
+        run: |
+          DRY_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_FLAG="--dry-run"
+          fi
+          python3 scripts/seed_ioc_db.py $DRY_FLAG
+
+      - name: Refresh vuln_db.json
+        run: |
+          DRY_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_FLAG="--dry-run"
+          fi
+          python3 scripts/seed_vuln_db.py $DRY_FLAG
+
+      - name: Validate JSON integrity
+        if: inputs.dry_run != true
+        run: |
+          python3 -c "
+          import json, sys
+          for path in ['intel/ioc_db.json', 'intel/vuln_db.json']:
+              try:
+                  json.load(open(path))
+                  print(f'OK: {path}')
+              except json.JSONDecodeError as e:
+                  print(f'INVALID JSON: {path}: {e}', file=sys.stderr)
+                  sys.exit(1)
+          # vuln_db must use nested dict format (not OSV list format).
+          db = json.load(open('intel/vuln_db.json'))
+          bad = []
+          for ecosystem, pkgs in db.items():
+              if ecosystem == '_meta' or not isinstance(pkgs, dict):
+                  continue
+              for pkg, versions in pkgs.items():
+                  if isinstance(versions, list):
+                      bad.append(f'{ecosystem}/{pkg}')
+          if bad:
+              print(f'ERROR: list-format entries: {bad}', file=sys.stderr)
+              sys.exit(1)
+          print('vuln_db format: OK')
+          "
+
+      - name: Regenerate manifest.json hashes
+        if: inputs.dry_run != true
+        run: |
+          python3 -c "
+          import hashlib, json
+          from datetime import date
+          manifest = json.load(open('manifest.json'))
+          for path in ('intel/ioc_db.json', 'intel/vuln_db.json'):
+              digest = hashlib.sha256(open(path, 'rb').read()).hexdigest()
+              manifest['files'][path]['sha256'] = digest
+          manifest['updated'] = date.today().isoformat()
+          with open('manifest.json', 'w') as f:
+              json.dump(manifest, f, indent=2)
+              f.write('\n')
+          print('manifest.json refreshed')
+          "
+
+      - name: Commit and push if changed
+        if: inputs.dry_run != true
+        run: |
+          git config user.name  "skillscan-bot"
+          git config user.email "bot@skillscan.sh"
+          git add intel/ioc_db.json intel/vuln_db.json manifest.json
+          if git diff --cached --quiet; then
+            echo "No changes to intel DBs — feeds unchanged since last run."
+          else
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+            git commit -m "chore: refresh intel DBs ${TIMESTAMP}"
+            git push origin HEAD:main
+            echo "Intel DBs refreshed and pushed."
+          fi
