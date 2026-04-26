@@ -1,4 +1,4 @@
-version: "2026.04.25.4"
+version: "2026.04.26.1"
 static_rules:
   - id: MAL-001
     category: malware_pattern
@@ -13568,6 +13568,120 @@ static_rules:
       When the IDE processes attacker-controlled HTML, prompt injection
       modifies the MCP configuration and registers a malicious MCP STDIO
       server, achieving zero-click command execution.
+    test_expect: fires
+  - id: PSV-044
+    category: passive_surveillance
+    severity: critical
+    confidence: 0.92
+    title: 'MCPJam Inspector RCE via unauthenticated /api/mcp/connect endpoint (CVE-2026-23744, GHSA-232v-j27c-5pp6, @mcpjam/inspector <= 1.4.2)'
+    pattern: '(?i)(?:CVE-2026-23744|GHSA-232v-j27c-5pp6|@mcpjam/inspector[^\n]{0,80}(?:1\.4\.[012]|1\.[0-3]\.\d+|0\.\d+\.\d+)|(?:npm\s+install|yarn\s+add|pnpm\s+add)[^\n]{0,40}@mcpjam/inspector[^\n]{0,40}(?:1\.4\.[012]|1\.[0-3]\.\d+)|/api/mcp/connect[^\n]{0,120}(?:command|args)[^\n]{0,80}(?:exec|spawn|arbitrary|rce|malicious))'
+    mitigation: 'CVE-2026-23744 (CVSS 9.8 CRITICAL, CWE-306, GHSA-232v-j27c-5pp6) is a remote code execution vulnerability in @mcpjam/inspector versions <= 1.4.2. The /api/mcp/connect HTTP endpoint extracts command and args parameters from incoming requests and executes them directly without any authentication or validation. Because MCPJam Inspector binds to 0.0.0.0 by default (not 127.0.0.1), any network-reachable attacker can trigger arbitrary command execution with a single crafted HTTP POST. Upgrade to @mcpjam/inspector >= 1.4.3, which patches the endpoint to bind to localhost and require authentication.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-26'
+      updated: '2026-04-26'
+      tags:
+        - passive_surveillance
+        - psv
+        - mcpjam
+        - rce
+        - missing-authentication
+        - mcp-inspector
+        - cve-2026-23744
+        - ghsa-232v-j27c-5pp6
+      last_modified: '2026-04-26'
+      techniques:
+        - id: PSV-044
+          name: Passive surveillance vulnerability
+      applies_to:
+        contexts:
+          - source
+          - dependency
+      lifecycle:
+        introduced: '2026-04-26'
+        last_modified: '2026-04-26'
+      quality:
+        precision_estimate: 0.92
+        benchmark_set: core-static-v1
+      references:
+        - https://github.com/advisories/GHSA-232v-j27c-5pp6
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-23744
+        - https://www.cve.news/cve-2026-23744/
+        - https://github.com/boroeurnprach/CVE-2026-23744-PoC
+    test_input: |
+      ---
+      name: mcpjam-inspector-debug
+      description: MCP server debugger using MCPJam Inspector
+      ---
+      # MCPJam Inspector Setup
+
+      CVE-2026-23744: RCE in @mcpjam/inspector <= 1.4.2 via unauthenticated /api/mcp/connect.
+      GHSA-232v-j27c-5pp6 (CVSS 9.8, CWE-306): missing authentication on install endpoint.
+
+      ## Installation (vulnerable version)
+
+      npm install -g @mcpjam/inspector@1.4.2
+
+      Binds to 0.0.0.0 by default — /api/mcp/connect accepts command/args without auth.
+      Upgrade to @mcpjam/inspector@1.4.3 which restricts to localhost.
+    test_expect: fires
+  - id: SUP-046
+    category: supply_chain
+    severity: critical
+    confidence: 0.95
+    title: 'Contagious Interview cross-ecosystem supply chain — April 2026 wave (DPRK/UNC1069, apachelicense.vercel.app C2, npm/PyPI/Go/Rust)'
+    pattern: '(?i)(?:410BB449A-72C6-4500-9765-ACD04JBV827V32V|apachelicense\.vercel\.app|logkit\.onrender\.com|logkit-tau\.vercel\.app|ecw_update\.zip)'
+    mitigation: 'North Korean threat cluster UNC1069 (Contagious Interview / Sapphire Sleet / Stardust Chollima) published 1,700+ malicious packages across npm, PyPI, Go Modules, crates.io, and Packagist by April 2026. Affected npm packages include dev-log-core, logger-base, logkitx, pino-debugger, debug-fmt, and debug-glitz; PyPI packages include logutilkit, apachelicense, fluxhttp, and license-utils-kit. All packages send an HTTP POST to https://apachelicense.vercel.app/getAddress?platform=<platform> to retrieve a download URL, fetch ecw_update.zip, and extract it to a hardcoded temp directory (410BB449A-72C6-4500-9765-ACD04JBV827V32V). The payload is a cross-platform RAT/infostealer. Staging infrastructure: logkit.onrender.com, logkit-tau.vercel.app. Remove all listed packages, rotate credentials, and report to your security team.'
+    metadata:
+      version: 1.0.0
+      status: active
+      author: skillscan
+      created: '2026-04-26'
+      updated: '2026-04-26'
+      tags:
+        - supply_chain
+        - sup
+        - dprk
+        - unc1069
+        - contagious-interview
+        - sapphire-sleet
+        - npm
+        - pypi
+        - rat
+        - infostealer
+      last_modified: '2026-04-26'
+      techniques:
+        - id: SUP-046
+          name: Supply Chain Compromise via Package Manager
+      applies_to:
+        contexts:
+          - source
+          - workflow
+          - dependency
+      lifecycle:
+        introduced: '2026-04-26'
+        last_modified: '2026-04-26'
+      quality:
+        precision_estimate: 0.95
+        benchmark_set: core-static-v1
+      references:
+        - https://socket.dev/blog/contagious-interview-campaign-spreads-across-5-ecosystems
+        - https://thehackernews.com/2026/04/n-korean-hackers-spread-1700-malicious.html
+        - https://www.stepsecurity.io/blog/pgserve-compromised-on-npm-malicious-versions-harvest-credentials
+    test_input: |
+      ---
+      name: dev-log-core-integration
+      description: Developer logging framework integration using dev-log-core
+      ---
+      # Dev Log Core Integration
+
+      Install the dev-log-core npm package for structured logging.
+
+      The package fetches platform config from apachelicense.vercel.app/getAddress?platform=linux,
+      downloads ecw_update.zip, and extracts to /tmp/410BB449A-72C6-4500-9765-ACD04JBV827V32V.
+      Staging: logkit.onrender.com, logkit-tau.vercel.app (UNC1069/Contagious Interview).
     test_expect: fires
 
 capability_patterns:
