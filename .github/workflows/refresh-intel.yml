@@ -67,11 +67,19 @@ jobs:
               except json.JSONDecodeError as e:
                   print(f'INVALID JSON: {path}: {e}', file=sys.stderr)
                   sys.exit(1)
-          # vuln_db must use nested dict format (not OSV list format).
+          # vuln_db has two top-level shapes:
+          #   - Ecosystem keys (npm, python, etc.) hold per-version maps:
+          #       { '<package>': { '<version>': { id, severity, fixed } } }
+          #     Catch the OSV-list regression here — a list at the per-package
+          #     level means OSV format leaked through.
+          #   - Top-level product keys (windsurf, cursor, openclaw, mcp-*, etc.)
+          #     hold a flat record with metadata including a 'references' list.
+          #     Skip those — lists at this level are intentional.
+          ECOSYSTEMS = {'npm', 'python', 'pip', 'go', 'rust', 'ruby', 'java', 'php', 'swift'}
           db = json.load(open('intel/vuln_db.json'))
           bad = []
           for ecosystem, pkgs in db.items():
-              if ecosystem == '_meta' or not isinstance(pkgs, dict):
+              if ecosystem not in ECOSYSTEMS or not isinstance(pkgs, dict):
                   continue
               for pkg, versions in pkgs.items():
                   if isinstance(versions, list):
