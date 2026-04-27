@@ -1,5 +1,13 @@
 # SkillScan Rules Changelog
 
+## 2026.04.26.3
+
+Hotfix: add missing `metadata:` blocks to MAL-071, MAL-072, SE-006 (added in PR #11 earlier today). Without metadata, every rule fails the `test_rule_metadata_guard.py` check that runs in `skillscan-security` CI on every bundled-snapshot sync — the previous commit broke the sync flow. The rules-side `validate.yml` did not catch this because metadata isn't in its required-fields set; consider adding a `metadata` requirement in a follow-up.
+
+Also moved tag-like strings (`tradingclaw`, `needle-stealer`, `amos-stealer`, `cursor-ai-agent`, `clickfix`, `athr`, `vishing`, `toad`) from each rule's top-level `references:` list into `metadata.tags` where they belong; only HTTP URLs remain in `metadata.references`. Pattern, mitigation, and test_input/test_expect are unchanged for all three rules.
+
+No new detection content. No vuln DB or IOC changes.
+
 ## 2026.04.26.1
 
 Pattern update 2026-04-26. Two new rules: one passive surveillance CVE (MCPJam Inspector unauthenticated RCE) and one supply chain campaign (Contagious Interview cross-ecosystem April 2026 wave). Plus IOC enrichment with three Contagious Interview C2 domains, one IP, and one C2 URL. Vuln DB additions for MCPJam Inspector and eleven Contagious Interview npm/PyPI packages.
