@@ -2245,5 +2245,31 @@
       "fixed": "0.8.2-rc2",
       "summary": "CVE-2026-22252 (CWE-285): LibreChat MCP STDIO interface allows authenticated users to execute arbitrary shell commands as root container user. Single API request, no extra privileges required."
     }
+  },
+  "maxkb": {
+    "<=2.7.1": {
+      "id": "CVE-2026-39417",
+      "severity": "critical",
+      "fixed": "2.7.2",
+      "summary": "MaxKB AI assistant RCE via incomplete fix for CVE-2025-53928 (function library)"
+    },
+    "<=2.7.1-sandbox-escape-ldpreload": {
+      "id": "CVE-2026-39420",
+      "severity": "critical",
+      "fixed": "2.7.2",
+      "summary": "MaxKB sandbox escape via LD_PRELOAD manipulation allowing arbitrary code execution"
+    },
+    "<=2.7.1-sandbox-escape-python": {
+      "id": "CVE-2026-39421",
+      "severity": "critical",
+      "fixed": "2.7.2",
+      "summary": "MaxKB sandbox escape via Python code execution allowing arbitrary system commands"
+    },
+    "<=2.7.1-csv-inject": {
+      "id": "CVE-2026-39424",
+      "severity": "high",
+      "fixed": "2.7.2",
+      "summary": "MaxKB CSV formula injection in chat export (CWE-1236)"
+    }
   }
 }
