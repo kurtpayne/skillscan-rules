@@ -2229,5 +2229,21 @@
         "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
       }
     }
+  },
+  "markdown-preview-enhanced": {
+    "all": {
+      "id": "CVE-2025-65716",
+      "severity": "high",
+      "fixed": null,
+      "summary": "CVE-2025-65716 (CVSS 8.8): RCE via crafted .md file in VS Code extension shd101wyy.markdown-preview-enhanced (all versions <= 0.8.18). JavaScript executes in preview pane, enabling file exfiltration. No patch available."
+    }
+  },
+  "librechat": {
+    "<0.8.2-rc2": {
+      "id": "CVE-2026-22252",
+      "severity": "critical",
+      "fixed": "0.8.2-rc2",
+      "summary": "CVE-2026-22252 (CWE-285): LibreChat MCP STDIO interface allows authenticated users to execute arbitrary shell commands as root container user. Single API request, no extra privileges required."
+    }
   }
 }

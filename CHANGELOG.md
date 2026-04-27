@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.04.27.1
+
+Pattern update 2026-04-27. Three new rules (MAL-073, PSV-045, PSV-046) covering a VS Code cryptojacking campaign, an unpatched VS Code extension RCE, and a LibreChat MCP STDIO privilege escalation. IOC enrichment with one new C2 domain; vuln DB additions for two products.
+
+- **MAL-073** (high, new): **Mark H VS Code extension cryptojacking campaign (asdf11.xyz C2, XMRig miner, April 2026)** — In April 2026 a threat actor using the Marketplace publisher name "Mark H" published nine trojanized extensions (MarkH.discord-rich-presence-vs, MarkH.golang-compiler-vscode, MarkH.html-obfuscator-vscode, MarkH.python-obfuscator-vscode, MarkH.rust-compiler-vs, MarkH.claude-ai, MarkH.chatgpt-agent-vscode) that accumulated over 1 million combined installs in three days. All extensions contact C2 domain asdf11[.]xyz, drop an XMRig cryptocurrency miner, and persist via a Windows scheduled task named "OnedriveStartup". Microsoft removed the extensions from the Marketplace.
+- **PSV-045** (high, new): **Markdown Preview Enhanced RCE via crafted markdown file (CVE-2025-65716, shd101wyy.markdown-preview-enhanced, CVSS 8.8)** — OX Security disclosed in February 2026 that a crafted .md file triggers JavaScript execution inside Markdown Preview Enhanced's VS Code preview pane (shd101wyy.markdown-preview-enhanced, 4M+ installs, all versions ≤ 0.8.18). The script can enumerate open local ports and exfiltrate workspace file contents to an attacker server. No official patch is available. Mitigate by disabling script execution in the extension's settings.
+- **PSV-046** (critical, new): **LibreChat MCP STDIO unauthorized root command execution (CVE-2026-22252, < 0.8.2-rc2, CWE-285)** — The MCP STDIO interface in LibreChat < 0.8.2-rc2 fails to enforce authorization checks on the command execution path, allowing any authenticated user to execute arbitrary shell commands as the root user inside the container via a single API request. Fixed in 0.8.2-rc2. Upgrade immediately; also run the container as a non-root user as defense-in-depth.
+- **IOC additions:** C2 domain `asdf11.xyz` (Mark H VS Code cryptojacking campaign).
+- **Vuln DB additions:** `markdown-preview-enhanced` all versions (CVE-2025-65716); `librechat` < 0.8.2-rc2 (CVE-2026-22252).
+
+Total: 239 static rules + 14 chain rules.
+
+Sources:
+- Mark H VS Code cryptojacking: https://thehackernews.com/2026/04/malicious-vs-code-extensions-fuel-large-scale-cryptojacking.html
+- Mark H cryptojacking (UnderCode): https://undercodenews.com/malicious-vs-code-extensions-fuel-large-scale-cryptojacking-operation/
+- CVE-2025-65716 (Markdown Preview Enhanced): https://thehackernews.com/2026/02/critical-flaws-found-in-four-vs-code.html
+- CVE-2025-65716 (OX Security): https://www.ox.security/blog/cve-2025-65716-markdown-preview-enhanced-vscode-vulnerability/
+- CVE-2026-22252 (LibreChat MCP STDIO RCE): https://thehackernews.com/2026/04/anthropic-mcp-design-vulnerability.html
+
 ## 2026.04.26.3
 
 Hotfix: add missing `metadata:` blocks to MAL-071, MAL-072, SE-006 (added in PR #11 earlier today). Without metadata, every rule fails the `test_rule_metadata_guard.py` check that runs in `skillscan-security` CI on every bundled-snapshot sync — the previous commit broke the sync flow. The rules-side `validate.yml` did not catch this because metadata isn't in its required-fields set; consider adding a `metadata` requirement in a follow-up.

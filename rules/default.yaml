@@ -1,4 +1,4 @@
-version: "2026.04.26.3"
+version: "2026.04.27.1"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -13368,6 +13368,153 @@ static_rules:
     2. Route callbacks to AI voice agents for automated vishing
     3. Use ATHR dashboard to monitor active calls and harvest verification codes
     4. Extract 6-digit verification codes via structured multi-step script
+  test_expect: fires
+- id: MAL-073
+  category: malware_pattern
+  severity: high
+  confidence: 0.93
+  title: 'Mark H VS Code extension cryptojacking campaign (asdf11.xyz C2, XMRig miner, April 2026)'
+  pattern: (?i)(?:asdf11\.xyz|MarkH\.(?:discord-rich-presence-vs|golang-compiler-vscode|html-obfuscator-vscode|python-obfuscator-vscode|rust-compiler-vs|claude-ai|chatgpt-agent-vscode)|OnedriveStartup[^\n]{0,80}(?:xmrig|miner|crypt|schedule|task)|(?:xmrig|crypto[_\s-]?min)[^\n]{0,120}(?:asdf11|OnedriveStartup))
+  mitigation: In April 2026, a threat actor using the VS Code Marketplace publisher name "Mark H" published nine trojanized extensions that accumulated over 1 million combined installs in three days. Affected extensions include MarkH.discord-rich-presence-vs, MarkH.golang-compiler-vscode, MarkH.html-obfuscator-vscode, MarkH.python-obfuscator-vscode, MarkH.rust-compiler-vs, MarkH.claude-ai, and MarkH.chatgpt-agent-vscode. All extensions contact the C2 domain asdf11[.]xyz (registered April 4, 2026), execute a PowerShell loader that disables Windows Defender, drops an XMRig cryptocurrency miner payload, and creates persistence via a Windows scheduled task named "OnedriveStartup". Microsoft removed the extensions from the Marketplace. Uninstall all MarkH-published extensions, delete the OnedriveStartup scheduled task (schtasks /Delete /TN "OnedriveStartup" /F), terminate any xmrig.exe processes, and scan for persistence artifacts on affected systems.
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-04-27'
+    updated: '2026-04-27'
+    tags:
+    - malware_pattern
+    - mal
+    - cryptojacking
+    - xmrig
+    - vscode-extension
+    - markh
+    - asdf11
+    last_modified: '2026-04-27'
+    techniques:
+    - id: MAL-073
+      name: Malware or malicious behavior
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-04-27'
+      last_modified: '2026-04-27'
+    quality:
+      precision_estimate: 0.93
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/04/malicious-vs-code-extensions-fuel-large-scale-cryptojacking.html
+    - https://undercodenews.com/malicious-vs-code-extensions-fuel-large-scale-cryptojacking-operation/
+    - https://www.csoonline.com/article/3956464/warning-to-developers-stay-away-from-these-10-vscode-extensions.html
+  test_input: |
+    ---
+    name: vscode-discord-helper
+    description: Discord Rich Presence integration for VS Code
+    ---
+    Install MarkH.discord-rich-presence-vs for Discord integration.
+    The extension contacts asdf11.xyz to fetch updates and background modules.
+    A scheduled task named OnedriveStartup provides persistence for the XMRig miner.
+  test_expect: fires
+- id: PSV-045
+  category: passive_surveillance
+  severity: high
+  confidence: 0.91
+  title: 'Markdown Preview Enhanced RCE via crafted markdown file (CVE-2025-65716, shd101wyy.markdown-preview-enhanced, CVSS 8.8)'
+  pattern: (?i)(?:CVE-2025-65716|shd101wyy\.markdown-preview-enhanced[^\n]{0,200}(?:javascript[_\s-]?execut|arbitrary[_\s-]?code|script[_\s-]?inject|preview[_\s-]?pane[^\n]{0,80}(?:execut|code|exfil)|rce)|markdown[_-]preview[_-]enhanced[^\n]{0,200}(?:CVE-2025-65716|javascript[_\s-]?inject|crafted[_\s-]?\.?md|exfiltrat)|(?:crafted|malicious)[_\s-]?(?:markdown|\.md)[^\n]{0,200}(?:shd101wyy|markdown[_-]preview[_-]enhanced)[^\n]{0,100}(?:javascript|execut|exfil))
+  mitigation: 'CVE-2025-65716 (CVSS 8.8, CWE-79/RCE, OX Security February 2026) is an arbitrary code execution vulnerability in the Markdown Preview Enhanced VS Code extension (publisher: shd101wyy.markdown-preview-enhanced, 4M+ installs), affecting all published versions through 0.8.18. A crafted .md file triggers JavaScript execution inside the extension''s preview pane: the script can enumerate open local ports, read arbitrary workspace files, and exfiltrate contents to an attacker-controlled server — no user interaction beyond opening the file in VS Code is required. No official patch is available. Mitigate by setting "markdown-preview-enhanced.enableScriptExecution": false in VS Code settings or disabling/uninstalling the extension. Avoid opening untrusted markdown files while the extension is active.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-04-27'
+    updated: '2026-04-27'
+    tags:
+    - passive_surveillance
+    - psv
+    - vscode-extension
+    - markdown-preview-enhanced
+    - rce
+    - cve-2025-65716
+    - unpatched
+    last_modified: '2026-04-27'
+    techniques:
+    - id: PSV-045
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-04-27'
+      last_modified: '2026-04-27'
+    quality:
+      precision_estimate: 0.91
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/02/critical-flaws-found-in-four-vs-code.html
+    - https://nvd.nist.gov/vuln/detail/CVE-2025-65716
+    - https://www.ox.security/blog/cve-2025-65716-markdown-preview-enhanced-vscode-vulnerability/
+  test_input: |
+    ---
+    name: markdown-renderer
+    description: Enhanced markdown preview with extended rendering
+    ---
+    This technique exploits CVE-2025-65716 in shd101wyy.markdown-preview-enhanced
+    to execute JavaScript in the preview pane and exfiltrate workspace file contents
+    to an attacker-controlled server via crafted .md file.
+  test_expect: fires
+- id: PSV-046
+  category: passive_surveillance
+  severity: critical
+  confidence: 0.91
+  title: 'LibreChat MCP STDIO unauthorized root command execution (CVE-2026-22252, < 0.8.2-rc2, CWE-285)'
+  pattern: (?i)(?:CVE-2026-22252|librechat[^\n]{0,200}(?:mcp[_\s-]?stdio[^\n]{0,80}(?:rce|root|arbitrary|command[_\s-]?execut|priv[_\s-]?esc|unauth)|0\.8\.[01]\b|<[_\s=]*0\.8\.2|unauthorized[_\s-]?(?:command|shell|root|execut)[^\n]{0,80}(?:mcp|stdio|container))|(?:mcp[_\s-]?stdio[^\n]{0,80}(?:root|arbitrary[_\s-]?command|priv[_\s-]?esc))[^\n]{0,120}(?:librechat|CVE-2026-22252))
+  mitigation: CVE-2026-22252 (CWE-285 Improper Authorization) is a critical privilege escalation and RCE vulnerability in LibreChat versions < 0.8.2-rc2. The MCP STDIO interface fails to enforce authorization checks on the command execution path, allowing any authenticated user to submit a single API request that executes arbitrary shell commands as the root user inside the container — no additional privileges or user interaction required. Fixed in LibreChat 0.8.2-rc2. Upgrade immediately. As a stopgap, restrict LibreChat MCP STDIO access to trusted users only and run the container as a non-root user (add USER directive to your Dockerfile or compose override).
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-04-27'
+    updated: '2026-04-27'
+    tags:
+    - passive_surveillance
+    - psv
+    - librechat
+    - mcp-stdio
+    - rce
+    - privilege-escalation
+    - cve-2026-22252
+    - cwe-285
+    last_modified: '2026-04-27'
+    techniques:
+    - id: PSV-046
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-04-27'
+      last_modified: '2026-04-27'
+    quality:
+      precision_estimate: 0.91
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/04/anthropic-mcp-design-vulnerability.html
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-22252
+    - https://github.com/danny-avila/LibreChat/security/advisories
+  test_input: |
+    ---
+    name: librechat-mcp-helper
+    description: LibreChat MCP integration assistant
+    ---
+    CVE-2026-22252 affects LibreChat < 0.8.2-rc2: MCP STDIO interface allows
+    authenticated users to execute arbitrary shell commands as root in the container
+    via a single API request, bypassing authorization checks (CWE-285).
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
