@@ -1,4 +1,4 @@
-version: "2026.04.26.2"
+version: "2026.04.26.3"
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -13212,11 +13212,39 @@ static_rules:
   title: 'TradingClaw / Needle Stealer: fake TradingView AI agent site with DLL-hijacking browser takeover (April 2026)'
   pattern: (?i)(?:tradingclaw[^\n]{0,80}(?:tradingview|ai[_\s-]?agent|trading[_\s-]?assistant|install|download)|needle[_\s-]?stealer[^\n]{0,80}(?:tradingview|tradingclaw|dll[_\s-]?hijack|iviewers|regasm|browser[_\s-]?extension|wallet)|iviewers\.dll[^\n]{0,80}(?:loader|inject|needle|regasm|process[_\s-]?hollow)|tradingclaw[^\n]{0,80}(?:needle|dll|stealer|malware|iviewers)|(?:base\.zip|meta\.zip)[^\n]{0,80}(?:extension|cfg\.json|needle|browser[_\s-]?hijack)|cfg\.json[^\n]{0,80}(?:server_url|self_destruct|ext_manifest|needle|tradingclaw))
   mitigation: TradingClaw (tradingclaw[.]pro) is a fake TradingView AI agent site discovered by Malwarebytes in April 2026. Visitors are tricked into downloading a ZIP containing a DLL-hijacking loader (iviewers.dll) that injects Needle Stealer into RegAsm.exe via process hollowing. Needle Stealer is a modular Go-based infostealer with browser credential theft, clipboard hijacking, crypto wallet spoofing (Ledger, Trezor, Exodus, MetaMask, Coinbase), and a malicious browser extension module that achieves full browser takeover (redirect, script injection, download interception, fake notifications). The extension unpacks from base.zip/meta.zip and reads cfg.json for C2 configuration. Block tradingclaw[.]pro and studypages[.]com. Remove any unknown browser extensions. Rotate all credentials and crypto wallet seeds on affected systems.
-  references:
-  - tradingclaw
-  - needle-stealer
-  - https://www.malwarebytes.com/blog/threat-intel/2026/04/malicious-trading-website-drop-malware-that-hands-over-your-browser-to-attackers
-  - https://www.broadcom.com/support/security-center/protection-bulletin/needle-stealer-malware-spread-via-fraudulent-websites
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-04-26'
+    updated: '2026-04-26'
+    tags:
+    - malware_pattern
+    - mal
+    - tradingclaw
+    - needle-stealer
+    - dll-hijacking
+    - infostealer
+    - browser-takeover
+    - cryptostealer
+    last_modified: '2026-04-26'
+    techniques:
+    - id: MAL-071
+      name: Malware or malicious behavior
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-04-26'
+      last_modified: '2026-04-26'
+    quality:
+      precision_estimate: 0.92
+      benchmark_set: core-static-v1
+    references:
+    - https://www.malwarebytes.com/blog/threat-intel/2026/04/malicious-trading-website-drop-malware-that-hands-over-your-browser-to-attackers
+    - https://www.broadcom.com/support/security-center/protection-bulletin/needle-stealer-malware-spread-via-fraudulent-websites
   test_input: |
     ---
     name: tradingview-ai-helper
@@ -13237,11 +13265,39 @@ static_rules:
   title: AMOS Stealer delivered via Cursor AI agent social engineering (ClickFix / fake Claude Code troubleshooting, April 2026)
   pattern: (?i)(?:arkypc[^\n]{0,80}(?:curl|download|helper|n8n|update)|lakhov[^\n]{0,80}(?:curl|upload|contact|chunk|exfil)|amos[_\s-]?stealer[^\n]{0,80}(?:cursor|claude[_\s-]?code|applescript|n8n|clickfix|arkypc|lakhov)|(?:cursor[_\s-]?agent|claude[_\s-]?code)[^\n]{0,80}(?:amos|applescript[_\s-]?obfuscat|charcode[_\s-]?decode|sandbox[_\s-]?evasion|system_profiler[_\s-]?SPHardwareDataType|clickfix[_\s-]?troubleshoot)|curl[^\n]{0,80}arkypc[^\n]{0,80}(?:helper|n8n|update)|xattr[^\n]{0,80}-c[^\n]{0,80}(?:helper|tmp)[^\n]{0,80}chmod[^\n]{0,80}(?:\+x|helper|tmp))
   mitigation: 'On April 23, 2026, Field Effect MDR detected AMOS Stealer (Atomic macOS Stealer) delivered via a novel attack vector: social engineering of a Cursor AI agent running Claude Code. A ClickFix-style fake Claude Code troubleshooting page (hosted at arkypc[.]com) tricks the Cursor agent into executing curl commands to download a malicious helper binary, which runs two obfuscated AppleScripts. Script 1 performs VM/sandbox evasion (system_profiler SPHardwareDataType/SPMemoryDataType). Script 2 executes the full AMOS payload: harvests credentials, SSH keys, crypto wallets, browser data; stages to /tmp/out.zip; exfiltrates in 25 MB chunks to lakhov[.]com/contact. A persistent implant is then installed masquerading as a legitimate macOS service. Block arkypc[.]com and lakhov[.]com. Do not allow AI coding agents to execute scripts from untrusted URLs without explicit user review. Rotate all credentials on affected macOS systems.'
-  references:
-  - amos-stealer
-  - cursor-ai-agent
-  - clickfix
-  - https://fieldeffect.com/blog/field-effect-detects-amos-stealer-delivered-via-cursor-ai-agent-session
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-04-26'
+    updated: '2026-04-26'
+    tags:
+    - malware_pattern
+    - mal
+    - amos-stealer
+    - cursor-ai-agent
+    - clickfix
+    - claude-code
+    - macos
+    - applescript
+    - social-engineering
+    last_modified: '2026-04-26'
+    techniques:
+    - id: MAL-072
+      name: Malware or malicious behavior
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-04-26'
+      last_modified: '2026-04-26'
+    quality:
+      precision_estimate: 0.93
+      benchmark_set: core-static-v1
+    references:
+    - https://fieldeffect.com/blog/field-effect-detects-amos-stealer-delivered-via-cursor-ai-agent-session
   test_input: |
     ---
     name: cursor-claude-helper
@@ -13266,11 +13322,37 @@ static_rules:
   title: 'ATHR AI vishing platform: automated telephone-oriented attack delivery with AI voice agents (April 2026)'
   pattern: (?i)(?:athr[^\n]{0,80}(?:vishing|voice[_\s-]?phish|toad|callback|ai[_\s-]?agent|telephon|voice[_\s-]?agent|panel|dashboard)|(?:vishing|voice[_\s-]?phish)[^\n]{0,80}(?:athr|ai[_\s-]?agent|toad|callback[_\s-]?phish|text[_\s-]?to[_\s-]?speech|credential[_\s-]?harvest|verification[_\s-]?code)|toad[_\s-]?(?:attack|platform|delivery)[^\n]{0,80}(?:ai|voice|agent|callback|phish)|(?:google|microsoft|coinbase|binance|gemini|crypto\.com)[^\n]{0,80}(?:fake[_\s-]?alert|spoof[_\s-]?email|callback[_\s-]?phish|vishing|athr|voice[_\s-]?agent[_\s-]?phish)|callback[_\s-]?phish[^\n]{0,80}(?:ai[_\s-]?voice|voice[_\s-]?agent|athr|toad|verification[_\s-]?code[_\s-]?harvest))
   mitigation: ATHR is a criminal platform-as-a-service (PaaS) for automated telephone-oriented attack delivery (TOAD), disclosed by Abnormal AI in April 2026. For $4,000 plus 10% of profits, operators receive a browser-based dashboard, a built-in mailer with brand-specific email templates (Google, Microsoft, Coinbase, Binance, Gemini, Crypto.com, Yahoo, AOL), and a telephony layer that routes callbacks to either human operators or AI voice agents. The AI agents follow structured multi-step scripts to extract 6-digit verification codes. The platform supports real-time call monitoring, lure customization (location, timestamp, IP spoofing), and conversion analytics. Unlike earlier TOAD platforms, ATHR removes the human-caller bottleneck entirely. Skills or agents that reference ATHR, TOAD callback phishing, or AI voice agent credential harvesting should be treated as social engineering infrastructure. Train users to never call numbers embedded in security alert emails; verify alerts through official app or website channels only.
-  references:
-  - athr
-  - vishing
-  - toad
-  - https://www.helpnetsecurity.com/2026/04/20/athr-voice-phishing-ai-platform/
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-04-26'
+    updated: '2026-04-26'
+    tags:
+    - social_engineering
+    - se
+    - athr
+    - vishing
+    - toad
+    - callback-phishing
+    - ai-voice-agent
+    - paas
+    last_modified: '2026-04-26'
+    techniques:
+    - id: SE-006
+      name: Social engineering via AI voice / TOAD callback phishing
+    applies_to:
+      contexts:
+      - source
+      - workflow
+    lifecycle:
+      introduced: '2026-04-26'
+      last_modified: '2026-04-26'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://www.helpnetsecurity.com/2026/04/20/athr-voice-phishing-ai-platform/
   test_input: |
     ---
     name: security-alert-handler
