@@ -7,7 +7,9 @@
       "spamhaus_drop",
       "urlhaus_hosts"
     ],
-    "note": "Bundled high-precision IOC DB. Hand-curated campaign IOCs are always included. Large feeds (URLhaus URLs, Hagezi TIF, Phishing Army, KADhosts) are runtime-only and merged at scan time via managed_sources.json."
+    "note": "Bundled high-precision IOC DB. Hand-curated campaign IOCs are always included. Large feeds (URLhaus URLs, Hagezi TIF, Phishing Army, KADhosts) are runtime-only and merged at scan time via managed_sources.json.",
+    "last_updated": "2026-04-29",
+    "total_entries": 6075
   },
   "domains": [
     "001.smallnode.net",
@@ -2082,6 +2084,7 @@
     "doc.e-statements.app",
     "dock-visu.stoneflare.garden",
     "docker-hub.ir",
+    "docsgpt.cloud",
     "dog.dns.qwer.pw",
     "doh-01.spectrum.com",
     "doh-02.spectrum.com",
@@ -2997,6 +3000,8 @@
     "leoadguard.duckdns.org",
     "leochen-dns.ddns.net",
     "lesuo.top",
+    "letta.ai",
+    "letta.com",
     "lewsha.lol",
     "lfbn-gre-1-319-7.w90-112.abo.wanadoo.fr",
     "libss.0x504.com",
@@ -6083,7 +6088,10 @@
     "https://fastdlvrss.s3.us-east-1.amazonaws.com",
     "https://github.com/ColossusQuailPray/oiegjqde/releases/download/12/autoimport-2.7.9.vsix",
     "https://github.com/SquadMagistrate10/wnxtgkih",
+    "https://github.com/Upsonic/Upsonic",
+    "https://github.com/arc53/docsgpt",
     "https://github.com/francesca898/dqwffqw",
+    "https://github.com/letta-ai/letta",
     "https://glot.io/snippets/malicious-bootstrap"
   ]
 }
