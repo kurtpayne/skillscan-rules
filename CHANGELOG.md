@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.04.29.1
+
+Pattern update 2026-04-29. Three new PSV rules covering two unpatched VS Code extension vulnerabilities and a critical Azure DevOps MCP Server missing-authentication flaw. Vuln DB additions for two new products.
+
+- **PSV-051** (high, new): **Code Runner VS Code extension RCE via malicious executorMap settings (CVE-2025-65715, formulahendry.code-runner, CVSS 7.8)** — OX Security disclosed in February 2026 that the Code Runner extension (formulahendry.code-runner, 37M+ installs) passes code-runner.executorMap settings directly to Node.js child_process.spawn() with shell:true without sanitization. An attacker can craft a workspace with a malicious executorMap entry (e.g., a reverse shell via /dev/tcp) that executes on every Run Code invocation. Affects all versions through v0.12.2. No official patch available. Mitigate by auditing settings.json for unexpected executorMap entries or removing the extension.
+- **PSV-052** (critical, new): **Live Server VS Code extension local file exfiltration via CORS bypass (CVE-2025-65717, ritwickdey.liveserver, CVSS 9.1)** — OX Security disclosed that the Live Server extension (ritwickdey.liveserver, 72M+ installs) serves workspace files over localhost:5500 without any CORS restrictions. When a developer visits a malicious webpage while Live Server is running, embedded JavaScript can recursively crawl http://localhost:5500 and exfiltrate all served files to an attacker-controlled server. Affects v5.7.9 and all earlier versions. No official patch available. Mitigate by stopping Live Server when browsing untrusted sites.
+- **PSV-053** (critical, new): **Azure DevOps MCP Server missing authentication information disclosure (CVE-2026-32211, @azure-devops/mcp, CVSS 9.1)** — Microsoft disclosed on 2026-04-03 that the Azure DevOps MCP Server (@azure-devops/mcp npm package) exposes MCP tools for Azure DevOps work items, repositories, pipelines, and pull requests without enforcing authentication (CWE-306). Any unauthenticated network attacker can access sensitive project data. No official patch available as of 2026-04-29. Mitigate by placing the server behind an authenticated reverse proxy and rotating exposed credentials.
+- **Vuln DB additions:** `code-runner` all versions (CVE-2025-65715); `liveserver` all versions (CVE-2025-65717).
+
+Total: 245 static rules + 17 chain rules.
+
+Sources:
+- CVE-2025-65715 (Code Runner RCE): https://thehackernews.com/2026/02/critical-flaws-found-in-four-vs-code.html
+- CVE-2025-65715 (OX Security): https://www.ox.security/blog/cve-2025-65715-code-runner-vscode-rce/
+- CVE-2025-65717 (Live Server): https://thehackernews.com/2026/02/critical-flaws-found-in-four-vs-code.html
+- CVE-2025-65717 (OX Security): https://www.ox.security/blog/cve-2025-65717-live-server-vscode-vulnerability/
+- CVE-2026-32211 (Azure DevOps MCP): https://cvefeed.io/vuln/detail/CVE-2026-32211
+- CVE-2026-32211 (WindowsForum): https://windowsforum.com/threads/cve-2026-32211-azure-mcp-server-auth-flaw-leaks-info-cvss-9-1.409622/
+
 ## 2026.04.27.1
 
 Pattern update 2026-04-27. Three new rules (MAL-073, PSV-045, PSV-046) covering a VS Code cryptojacking campaign, an unpatched VS Code extension RCE, and a LibreChat MCP STDIO privilege escalation. IOC enrichment with one new C2 domain; vuln DB additions for two products.
