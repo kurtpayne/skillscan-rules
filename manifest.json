@@ -1,12 +1,12 @@
 {
-  "version": "2026.04.29.1",
+  "version": "2026.04.29.2",
   "released_at": "2026-04-26T17:15:00.973005+00:00",
   "files": {
     "rules/ast_flows.yaml": {
       "sha256": "31e2cb8954d66d9818e868a7b596bb19585c1569c4475e797fd66f5c14eba25e"
     },
     "rules/default.yaml": {
-      "sha256": "04f69eac5fb4b7b9fbb15c103faadd7fba340b82ccdbdb8fbd4f2f45fd653ecc"
+      "sha256": "fa9019251902a6aad1e3ae42a75551fdc76807b4667384be29c73d3270936355"
     },
     "rules/multilang.yaml": {
       "sha256": "1d4784072b02aa40215be0974f87d8832c6bd1e7d0a0d7957e1a4228bce5afe1"
