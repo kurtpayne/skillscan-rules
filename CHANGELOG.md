@@ -1,5 +1,11 @@
 # SkillScan Rules Changelog
 
+## 2026.04.29.2
+
+Fix: move PSV-048, PSV-049, PSV-050 from `chain_rules` to `static_rules`. These rules were added in PR #18 with `pattern`/`mitigation`/`test_input` fields (static-rule schema) but incorrectly placed under `chain_rules`, which requires `all_of`. The pydantic model in `skillscan-security` raises `Field required: all_of` on load, causing the bundled snapshot to fail the cross-tool recall CI check. This matches the fix applied to MAL-074/PSV-047/PINJ-025 in commit 483d627.
+
+Total: 248 static rules + 14 chain rules.
+
 ## 2026.04.29.1
 
 Pattern update 2026-04-29. Three new PSV rules covering two unpatched VS Code extension vulnerabilities and a critical Azure DevOps MCP Server missing-authentication flaw. Vuln DB additions for two new products.
