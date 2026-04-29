@@ -2291,5 +2291,63 @@
       "fixed": null,
       "summary": "CVE-2025-65717 (CVSS 9.1): local file exfiltration via CORS bypass in VS Code Live Server extension (ritwickdey.liveserver, 72M+ installs, v5.7.9 and below). Extension serves workspace files on localhost:5500 without CORS restrictions, allowing any visited webpage to crawl and exfiltrate files. No patch available."
     }
+  },
+  "docsgpt": {
+    "all": {
+      "id": "CVE-2026-26015",
+      "severity": "critical",
+      "cvss": 9.8,
+      "cwe": "CWE-78",
+      "fixed": null,
+      "summary": "CVE-2026-26015 (CVSS 9.8): DocsGPT hidden STDIO MCP command injection \u2014 attacker changes transport_type to stdio and injects arbitrary OS commands via JSON payload"
+    }
+  },
+  "langchain": {
+    "all": {
+      "id": "CVE-2025-68664",
+      "severity": "critical",
+      "cvss": 9.3,
+      "cwe": "CWE-502",
+      "fixed": "1.2.22",
+      "summary": "CVE-2025-68664 (CVSS 9.3): LangChain unsafe deserialization leaks API keys and environment secrets"
+    },
+    "path_traversal": {
+      "id": "CVE-2026-34070",
+      "severity": "high",
+      "cvss": 7.5,
+      "cwe": "CWE-22",
+      "fixed": "1.2.22",
+      "summary": "CVE-2026-34070 (CVSS 7.5): LangChain path traversal enables arbitrary file access without validation"
+    }
+  },
+  "langgraph-checkpoint-sqlite": {
+    "3.0.0": {
+      "id": "CVE-2025-67644",
+      "severity": "high",
+      "cvss": 7.3,
+      "cwe": "CWE-89",
+      "fixed": "3.0.1",
+      "summary": "CVE-2025-67644 (CVSS 7.3): SQL injection in langgraph-checkpoint-sqlite < 3.0.1 exposes conversation histories"
+    }
+  },
+  "react": {
+    "19.0.0": {
+      "id": "CVE-2025-55182",
+      "severity": "critical",
+      "cvss": 10.0,
+      "cwe": "CWE-1321",
+      "fixed": "19.2.1",
+      "summary": "CVE-2025-55182 (CVSS 10.0): React2Shell \u2014 React Server Components Flight protocol pre-auth RCE via prototype pollution"
+    }
+  },
+  "upsonic": {
+    "0.71.6": {
+      "id": "CVE-2026-30625",
+      "severity": "critical",
+      "cvss": 9.8,
+      "cwe": "CWE-78",
+      "fixed": null,
+      "summary": "CVE-2026-30625 (CVSS 9.8): Upsonic MCP STDIO allowlist bypass via npx -c command injection"
+    }
   }
 }
