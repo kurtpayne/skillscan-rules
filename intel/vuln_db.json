@@ -2348,6 +2348,57 @@
         "fixed": null,
         "summary": "Contagious Interview (DPRK/UNC1069) npm backdoor. Fetches payload from apachelicense.vercel.app/getAddress and extracts ecw_update.zip to hardcoded temp dir 410BB449A-72C6-4500-9765-ACD04JBV827V32V."
       }
+    },
+    "@openwebconcept/design-tokens": {
+      "1.0.1": {
+        "id": "CANISTERSPRAWL-OPENWEBCONCEPT-2026-04",
+        "severity": "critical",
+        "fixed": null,
+        "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). Exfiltrates credentials to telemetry.api-monitor.com and ICP canister cjn37-uyaaa-aaaac-qgnva-cai.raw.icp0.io via postinstall hook. Versions 1.0.1-1.0.3 are malicious."
+      },
+      "1.0.2": {
+        "id": "CANISTERSPRAWL-OPENWEBCONCEPT-2026-04",
+        "severity": "critical",
+        "fixed": null,
+        "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
+      },
+      "1.0.3": {
+        "id": "CANISTERSPRAWL-OPENWEBCONCEPT-2026-04",
+        "severity": "critical",
+        "fixed": null,
+        "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
+      }
+    },
+    "@openwebconcept/theme-owc": {
+      "1.0.1": {
+        "id": "CANISTERSPRAWL-OPENWEBCONCEPT-2026-04",
+        "severity": "critical",
+        "fixed": null,
+        "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). Exfiltrates credentials to telemetry.api-monitor.com and ICP canister cjn37-uyaaa-aaaac-qgnva-cai.raw.icp0.io via postinstall hook. Versions 1.0.1-1.0.3 are malicious."
+      },
+      "1.0.2": {
+        "id": "CANISTERSPRAWL-OPENWEBCONCEPT-2026-04",
+        "severity": "critical",
+        "fixed": null,
+        "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
+      },
+      "1.0.3": {
+        "id": "CANISTERSPRAWL-OPENWEBCONCEPT-2026-04",
+        "severity": "critical",
+        "fixed": null,
+        "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
+      }
+    }
+  },
+  "github-enterprise-server": {
+    "<3.19.4": {
+      "id": "CVE-2026-3854",
+      "ghsa": "GHSA-64fw-jx9p-5j24",
+      "severity": "high",
+      "cvss": 8.7,
+      "cwe": "CWE-77",
+      "fixed": "3.14.25 / 3.15.20 / 3.16.16 / 3.17.13 / 3.18.8 / 3.19.4 / 3.20.0",
+      "summary": "CVE-2026-3854 (GHSA-64fw-jx9p-5j24, CVSS 8.7, CWE-77): GitHub Enterprise Server RCE via X-Stat push option injection. During git push, user-supplied push option values are embedded in the semicolon-delimited X-Stat internal service header without sanitization. Authenticated attacker with push access can inject rails_env, custom_hooks_dir, and repo_pre_receive_hooks fields to achieve RCE as the git service user in a single git push command. All GHES branches are affected up to their respective patch releases (3.14.25 / 3.15.20 / 3.16.16 / 3.17.13 / 3.18.8 / 3.19.4 / 3.20.0). GitHub.com was patched same-day March 4, 2026. Disclosed publicly April 28, 2026; 88% of self-hosted instances remain unpatched."
     }
   }
 }

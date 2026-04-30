@@ -1,5 +1,22 @@
 # SkillScan Rules Changelog
 
+## 2026.04.30.1
+
+Pattern update 2026-04-30. One new PSV rule covering the GitHub Enterprise Server git push RCE disclosed April 28, 2026. Vuln DB additions for three npm CanisterSprawl packages and one GHES product entry.
+
+- **PSV-057** (high, new): **GitHub Enterprise Server RCE via X-Stat push option injection (CVE-2026-3854, GHSA-64fw-jx9p-5j24, GHES < 3.14.25/3.15.20/3.16.16/3.17.13/3.18.8/3.19.4)** — Wiz Research disclosed on April 28, 2026 that GHES embeds user-supplied `git push --push-option` values in the internal semicolon-delimited X-Stat service header without stripping semicolons (CVSS 8.7, CWE-77). An authenticated attacker with push access can inject three header fields in a single `git push`: `rails_env` (bypass the production sandbox), `custom_hooks_dir` (redirect hook execution to an attacker-controlled directory), and `repo_pre_receive_hooks` (path traversal to execute arbitrary code as the git service user). GitHub.com was patched same-day on March 4, 2026 with no confirmed exploitation. 88% of self-hosted GHES instances remained unpatched at time of disclosure. Upgrade to 3.14.25, 3.15.20, 3.16.16, 3.17.13, 3.18.8, 3.19.4, or 3.20.0 immediately.
+- **Vuln DB additions:** `@openwebconcept/design-tokens` 1.0.1–1.0.3 and `@openwebconcept/theme-owc` 1.0.1–1.0.3 (CanisterSprawl worm, same C2 as existing Namastex/SUP-047 rule: telemetry.api-monitor.com + ICP canister cjn37); `github-enterprise-server` <3.19.4 (CVE-2026-3854).
+
+Total: 253 static rules + 14 chain rules = 267.
+
+Sources:
+- CVE-2026-3854 (Wiz Research): https://www.wiz.io/blog/github-rce-vulnerability-cve-2026-3854
+- CVE-2026-3854 (GitHub Blog): https://github.blog/security/securing-the-git-push-pipeline-responding-to-a-critical-remote-code-execution-vulnerability/
+- CVE-2026-3854 (Help Net Security): https://www.helpnetsecurity.com/2026/04/29/cve-2026-3854-github-rce-vulnerability/
+- CVE-2026-3854 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-3854
+- GHSA-64fw-jx9p-5j24: https://github.com/advisories/GHSA-64fw-jx9p-5j24
+- @openwebconcept CanisterSprawl (Socket): https://socket.dev/blog/namastex-npm-packages-compromised-canisterworm
+
 ## 2026.04.29.2
 
 Fix: move PSV-048, PSV-049, PSV-050 from `chain_rules` to `static_rules`. These rules were added in PR #18 with `pattern`/`mitigation`/`test_input` fields (static-rule schema) but incorrectly placed under `chain_rules`, which requires `all_of`. The pydantic model in `skillscan-security` raises `Field required: all_of` on load, causing the bundled snapshot to fail the cross-tool recall CI check. This matches the fix applied to MAL-074/PSV-047/PINJ-025 in commit 483d627.
