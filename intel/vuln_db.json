@@ -675,6 +675,43 @@
       "summary": "CVE-2026-30625 (CVSS 9.8): Upsonic MCP STDIO allowlist bypass via npx -c command injection"
     }
   },
+  "github-enterprise-server": {
+    "<3.19.4": {
+      "id": "CVE-2026-3854",
+      "ghsa": "GHSA-64fw-jx9p-5j24",
+      "severity": "high",
+      "cvss": 8.7,
+      "cwe": "CWE-77",
+      "fixed": "3.14.25 / 3.15.20 / 3.16.16 / 3.17.13 / 3.18.8 / 3.19.4 / 3.20.0",
+      "summary": "CVE-2026-3854 (GHSA-64fw-jx9p-5j24, CVSS 8.7, CWE-77): GitHub Enterprise Server RCE via X-Stat push option injection. During git push, user-supplied push option values are embedded in the semicolon-delimited X-Stat internal service header without sanitization. Authenticated attacker with push access can inject rails_env, custom_hooks_dir, and repo_pre_receive_hooks fields to achieve RCE as the git service user in a single git push command. All GHES branches are affected up to their respective patch releases (3.14.25 / 3.15.20 / 3.16.16 / 3.17.13 / 3.18.8 / 3.19.4 / 3.20.0). GitHub.com was patched same-day March 4, 2026. Disclosed publicly April 28, 2026; 88% of self-hosted instances remain unpatched."
+    }
+  },
+  "@modelcontextprotocol/inspector": {
+    "0.13.0": {
+      "id": "CVE-2025-49596",
+      "severity": "critical",
+      "fixed": "0.14.1",
+      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
+    },
+    "0.12.0": {
+      "id": "CVE-2025-49596",
+      "severity": "critical",
+      "fixed": "0.14.1",
+      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
+    },
+    "0.11.0": {
+      "id": "CVE-2025-49596",
+      "severity": "critical",
+      "fixed": "0.14.1",
+      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
+    },
+    "0.10.0": {
+      "id": "CVE-2025-49596",
+      "severity": "critical",
+      "fixed": "0.14.1",
+      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
+    }
+  },
   "_meta": {
     "generated": "2026-04-30",
     "source": "OSV.dev (https://osv.dev)",
@@ -2388,43 +2425,6 @@
         "fixed": null,
         "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
       }
-    }
-  },
-  "github-enterprise-server": {
-    "<3.19.4": {
-      "id": "CVE-2026-3854",
-      "ghsa": "GHSA-64fw-jx9p-5j24",
-      "severity": "high",
-      "cvss": 8.7,
-      "cwe": "CWE-77",
-      "fixed": "3.14.25 / 3.15.20 / 3.16.16 / 3.17.13 / 3.18.8 / 3.19.4 / 3.20.0",
-      "summary": "CVE-2026-3854 (GHSA-64fw-jx9p-5j24, CVSS 8.7, CWE-77): GitHub Enterprise Server RCE via X-Stat push option injection. During git push, user-supplied push option values are embedded in the semicolon-delimited X-Stat internal service header without sanitization. Authenticated attacker with push access can inject rails_env, custom_hooks_dir, and repo_pre_receive_hooks fields to achieve RCE as the git service user in a single git push command. All GHES branches are affected up to their respective patch releases (3.14.25 / 3.15.20 / 3.16.16 / 3.17.13 / 3.18.8 / 3.19.4 / 3.20.0). GitHub.com was patched same-day March 4, 2026. Disclosed publicly April 28, 2026; 88% of self-hosted instances remain unpatched."
-    }
-  },
-  "@modelcontextprotocol/inspector": {
-    "0.13.0": {
-      "id": "CVE-2025-49596",
-      "severity": "critical",
-      "fixed": "0.14.1",
-      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
-    },
-    "0.12.0": {
-      "id": "CVE-2025-49596",
-      "severity": "critical",
-      "fixed": "0.14.1",
-      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
-    },
-    "0.11.0": {
-      "id": "CVE-2025-49596",
-      "severity": "critical",
-      "fixed": "0.14.1",
-      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
-    },
-    "0.10.0": {
-      "id": "CVE-2025-49596",
-      "severity": "critical",
-      "fixed": "0.14.1",
-      "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
     }
   }
 }
