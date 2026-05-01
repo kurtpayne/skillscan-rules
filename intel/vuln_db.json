@@ -712,6 +712,20 @@
       "summary": "MCP Inspector proxy server lacks authentication between client and proxy, enabling unauthenticated RCE via cross-origin browser requests (GHSA-7f8r-222p-6f5g)"
     }
   },
+  "lightning": {
+    "2.6.2": {
+      "id": "PYPI-BACKDOOR-2026-0430",
+      "severity": "critical",
+      "fixed": "2.6.4",
+      "summary": "PyTorch Lightning 2.6.2 malicious wheel (Mini Shai-Hulud / TeamPCP): hidden _runtime dir, obfuscated JS credential stealer, C2 zero.masscan.cloud:443/v1/telemetry"
+    },
+    "2.6.3": {
+      "id": "PYPI-BACKDOOR-2026-0430",
+      "severity": "critical",
+      "fixed": "2.6.4",
+      "summary": "PyTorch Lightning 2.6.3 malicious wheel (Mini Shai-Hulud / TeamPCP): hidden _runtime dir, obfuscated JS credential stealer, C2 zero.masscan.cloud:443/v1/telemetry"
+    }
+  },
   "_meta": {
     "generated": "2026-05-01",
     "source": "OSV.dev (https://osv.dev)",

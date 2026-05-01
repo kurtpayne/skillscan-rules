@@ -1,5 +1,22 @@
 # SkillScan Rules Changelog
 
+## 2026.05.01.1
+
+Pattern update 2026-05-01. One new SUP rule covering the PyTorch Lightning Mini Shai-Hulud supply chain compromise (April 30, 2026). IOC DB addition for C2 domain zero.masscan.cloud. Vuln DB addition for lightning 2.6.2 and 2.6.3.
+
+- **SUP-048** (critical, new): **PyTorch Lightning Mini Shai-Hulud supply chain compromise (lightning 2.6.2–2.6.3, C2: zero.masscan.cloud)** — Two malicious versions of the PyTorch Lightning framework (PyPI package "lightning") — 2.6.2 and 2.6.3 — were published on 2026-04-30 and detected 18 minutes after publication by Socket. The malicious wheel bundles a hidden `_runtime` directory containing a downloader and heavily obfuscated JavaScript payload that executes automatically on module import (no user interaction required beyond installation). The payload harvests Anthropic API keys, GitHub tokens, AWS/GCP credentials, SSH keys, and environment variables, exfiltrating them encrypted to C2 domain `zero.masscan.cloud:443/v1/telemetry`. If the primary channel fails, it falls back to creating a public GitHub repository with description "A Mini Shai-Hulud has Appeared" as an out-of-band exfiltration beacon. Worm-like propagation capabilities also target GitHub and npm ecosystems using stolen tokens. Attributed to the Mini Shai-Hulud / TeamPCP threat actor. PyTorch Lightning receives millions of monthly downloads, making this a high-impact incident for AI/ML development environments. Uninstall lightning 2.6.2 and 2.6.3, upgrade to 2.6.4 or later, rotate all API keys and cloud credentials, and audit git logs for unexpected "XprobeBot" commits and GitHub repository creation.
+- **IOC additions:** C2 domain `zero.masscan.cloud` (Mini Shai-Hulud lightning supply chain, TeamPCP).
+- **Vuln DB additions:** `lightning` 2.6.2 and 2.6.3 (PYPI-BACKDOOR-2026-0430, critical, fixed: 2.6.4).
+
+Total: 254 static rules + 18 chain rules = 272.
+
+Sources:
+- Socket advisory: https://socket.dev/blog/lightning-pypi-package-compromised
+- The Hacker News: https://thehackernews.com/2026/04/pytorch-lightning-compromised-in-pypi.html
+- Aikido Security: https://www.aikido.dev/blog/pytorch-lightning-pypi-compromise-mini-shai-hulud
+- Semgrep: https://semgrep.dev/blog/2026/malicious-dependency-in-pytorch-lightning-used-for-ai-training/
+- OX Security (8.3M downloads compromised): https://www.ox.security/blog/lightning-python-package-shai-hulud-supply-chain-attack/
+
 ## 2026.04.30.1
 
 Pattern update 2026-04-30. One new PSV rule covering the GitHub Enterprise Server git push RCE disclosed April 28, 2026. Vuln DB additions for three npm CanisterSprawl packages and one GHES product entry.
