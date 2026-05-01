@@ -2440,5 +2440,64 @@
         "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
       }
     }
+  },
+  "litellm-proxy": {
+    "cve": "CVE-2026-42208",
+    "ghsa": "GHSA-r75f-5x8p-qvmc",
+    "severity": "critical",
+    "cvss": 9.3,
+    "description": "Pre-authentication SQL injection via Bearer token concatenation in LiteLLM proxy versions >= 1.81.16 and < 1.83.7. Actively exploited to extract LLM provider API keys and cloud credentials.",
+    "affected_versions": ">=1.81.16,<1.83.7",
+    "fixed_version": "1.83.7",
+    "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-42208",
+      "https://github.com/advisories/GHSA-r75f-5x8p-qvmc",
+      "https://github.com/BerriAI/litellm/releases/tag/v1.83.7-stable"
+    ],
+    "added": "2026-05-01"
+  },
+  "cap-js-sqlite": {
+    "cve": "N/A",
+    "severity": "critical",
+    "description": "Mini Shai-Hulud supply chain compromise: preinstall hook downloads Bun runtime and executes obfuscated credential stealer (execution.js)",
+    "affected_versions": "==2.2.2",
+    "references": [
+      "https://www.aikido.dev/blog/mini-shai-hulud-has-appeared",
+      "https://socket.dev/blog/sap-cap-npm-packages-supply-chain-attack"
+    ],
+    "added": "2026-05-01"
+  },
+  "cap-js-postgres": {
+    "cve": "N/A",
+    "severity": "critical",
+    "description": "Mini Shai-Hulud supply chain compromise: preinstall hook downloads Bun runtime and executes obfuscated credential stealer (execution.js)",
+    "affected_versions": "==2.2.2",
+    "references": [
+      "https://www.aikido.dev/blog/mini-shai-hulud-has-appeared",
+      "https://socket.dev/blog/sap-cap-npm-packages-supply-chain-attack"
+    ],
+    "added": "2026-05-01"
+  },
+  "cap-js-db-service": {
+    "cve": "N/A",
+    "severity": "critical",
+    "description": "Mini Shai-Hulud supply chain compromise: preinstall hook downloads Bun runtime and executes obfuscated credential stealer (execution.js)",
+    "affected_versions": "==2.10.1",
+    "references": [
+      "https://www.aikido.dev/blog/mini-shai-hulud-has-appeared",
+      "https://socket.dev/blog/sap-cap-npm-packages-supply-chain-attack"
+    ],
+    "added": "2026-05-01"
+  },
+  "mbt": {
+    "cve": "N/A",
+    "severity": "critical",
+    "description": "Mini Shai-Hulud supply chain compromise (SAP cloud-mta-build-tool): preinstall hook downloads Bun runtime and executes obfuscated credential stealer",
+    "affected_versions": "==1.2.48",
+    "references": [
+      "https://www.aikido.dev/blog/mini-shai-hulud-has-appeared",
+      "https://socket.dev/blog/sap-cap-npm-packages-supply-chain-attack"
+    ],
+    "added": "2026-05-01"
   }
 }
