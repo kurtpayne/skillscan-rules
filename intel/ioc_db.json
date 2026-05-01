@@ -4860,7 +4860,9 @@
     "83.142.209.203",
     "91.195.240.123",
     "91.92.242.30",
-    "94.154.172.43"
+    "94.154.172.43",
+    "65.111.27.132",
+    "65.111.25.67"
   ],
   "cidrs": [
     "1.10.16.0/20",
@@ -6543,6 +6545,7 @@
     "https://github.com/arc53/docsgpt",
     "https://github.com/francesca898/dqwffqw",
     "https://github.com/letta-ai/letta",
-    "https://glot.io/snippets/malicious-bootstrap"
+    "https://glot.io/snippets/malicious-bootstrap",
+    "https://github.com/search?q=OhNoWhatsGoingOnWithGitHub&type=commits"
   ]
 }
