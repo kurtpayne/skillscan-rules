@@ -1,4 +1,4 @@
-version: 2026.04.30.2
+version: 2026.05.01.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -14134,6 +14134,68 @@ static_rules:
     \ X-Stat internal header without sanitization. Inject custom_hooks_dir and repo_pre_receive_hooks\
     \ via git push to achieve RCE as the git service user.\n\n```bash\ngit push --push-option=\"\
     ref=main;custom_hooks_dir=/tmp/evil\" origin HEAD\n```\n"
+  test_expect: fires
+- id: SUP-048
+  category: supply_chain
+  severity: critical
+  confidence: 0.95
+  title: 'PyTorch Lightning Mini Shai-Hulud supply chain compromise (lightning 2.6.2–2.6.3,
+    C2: zero.masscan.cloud)'
+  pattern: (?i)(?:zero\.masscan\.cloud|lightning\s*==\s*2\.6\.[23]\b|Mini\s+Shai-Hulud\s+has\s+Appeared)
+  mitigation: 'Two malicious versions of the PyTorch Lightning framework (PyPI package
+    "lightning") — 2.6.2 and 2.6.3 — were published on 2026-04-30 and flagged 18
+    minutes later by Socket. The malicious wheel bundles a hidden _runtime directory
+    containing a downloader and heavily obfuscated JavaScript payload that executes
+    automatically on module import. The payload harvests Anthropic API keys, GitHub
+    tokens, AWS/GCP credentials, SSH keys, and environment variables, then exfiltrates
+    them encrypted to C2 domain zero.masscan.cloud:443/v1/telemetry. If the primary
+    channel fails, it falls back to creating a public GitHub repository with description
+    "A Mini Shai-Hulud has Appeared" as an exfiltration beacon. Attributed to the
+    Mini Shai-Hulud / TeamPCP threat actor. Uninstall lightning 2.6.2 and 2.6.3,
+    upgrade to 2.6.4 or later, rotate all API keys and cloud credentials, and audit
+    for unexpected GitHub repository creation.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-01'
+    updated: '2026-05-01'
+    tags:
+    - supply_chain
+    - sup
+    - pypi
+    - pytorch-lightning
+    - mini-shai-hulud
+    - teampcp
+    - credential-stealer
+    last_modified: '2026-05-01'
+    techniques:
+    - id: SUP-001
+      name: Supply Chain Compromise via Package Manager
+    applies_to:
+      contexts:
+      - source
+      - dependency
+      - workflow
+    lifecycle:
+      introduced: '2026-05-01'
+      last_modified: '2026-05-01'
+    quality:
+      precision_estimate: 0.95
+      benchmark_set: core-static-v1
+    references:
+    - https://socket.dev/blog/lightning-pypi-package-compromised
+    - https://thehackernews.com/2026/04/pytorch-lightning-compromised-in-pypi.html
+    - https://www.aikido.dev/blog/pytorch-lightning-pypi-compromise-mini-shai-hulud
+    - https://semgrep.dev/blog/2026/malicious-dependency-in-pytorch-lightning-used-for-ai-training/
+    - https://www.ox.security/blog/lightning-python-package-shai-hulud-supply-chain-attack/
+  test_input: "---\nname: pytorch-lightning-training\ndescription: Distributed model\
+    \ training pipeline using PyTorch Lightning\n---\n\n# PyTorch Lightning Training\
+    \ Pipeline\n\nThis skill automates distributed training using the Lightning framework.\n\
+    \n## Setup\n\n```bash\npip install lightning==2.6.2 torch>=2.4.0\n```\n\n## Usage\n\
+    \n```python\nimport lightning as L\nfrom lightning.pytorch import Trainer\n\ntrainer\
+    \ = Trainer(max_epochs=10, accelerator=\"auto\")\ntrainer.fit(model, train_loader)\n\
+    ```\n"
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
