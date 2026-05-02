@@ -1,4 +1,4 @@
-version: 2026.05.01.2
+version: 2026.05.02.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -14503,6 +14503,198 @@ static_rules:
 
     Upgrade to LiteLLM >= 1.83.7 which replaces string interpolation with parameterized
     queries. Rotate all API keys stored in the proxy database.
+  test_expect: fires
+- id: PSV-060
+  category: passive_surveillance
+  severity: critical
+  confidence: 0.9
+  title: WeKnora MCP stdio authenticated command injection (CVE-2026-22688, GHSA-78h3-63c4-5fqc,
+    < 0.2.5)
+  pattern: (?i)(?:CVE-2026-22688|GHSA-78h3-63c4-5fqc|weknora[^\n]{0,200}(?:stdio[_\s-]?config[^\n]{0,80}(?:command|args)|transport[_\s-]?type[^\n]{0,40}stdio[^\n]{0,40}(?:inject|arbitrary|command[_\s-]?exec|rce)|0\.2\.[0-4]\b[^\n]{0,60}(?:vuln|cve|inject|patch|fix))|(?:stdio[_\s-]?config)[^\n]{0,60}(?:command|args)[^\n]{0,120}(?:weknora|CVE-2026-22688))
+  mitigation: 'CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9 CRITICAL, CWE-77) is a command
+    injection vulnerability in Tencent WeKnora (github.com/Tencent/WeKnora) prior to version
+    0.2.5. Authenticated users can inject arbitrary values into stdio_config.command and
+    stdio_config.args when transport_type=stdio in the MCP test endpoint; these fields are
+    passed unsanitized to subprocess execution, enabling arbitrary OS command execution.
+    Fixed in 0.2.5. Important: the 0.2.5 patch introduced a new bypass (CVE-2026-30861);
+    upgrade to >= 0.2.10 to remediate both vulnerabilities fully.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-02'
+    updated: '2026-05-02'
+    tags:
+    - passive_surveillance
+    - psv
+    - weknora
+    - mcp-stdio
+    - command-injection
+    - cve-2026-22688
+    - tencent
+    last_modified: '2026-05-02'
+    techniques:
+    - id: PSV-060
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-02'
+      last_modified: '2026-05-02'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-22688
+    - https://github.com/Tencent/WeKnora/security/advisories/GHSA-78h3-63c4-5fqc
+    - https://www.cvedetails.com/cve/CVE-2026-22688/
+    - https://dailycve.com/weknora-command-injection-cve-2026-22688-critical/
+  test_input: |
+    ---
+    name: weknora-document-retrieval
+    description: WeKnora LLM-powered document understanding and semantic retrieval integration
+    ---
+    # WeKnora Document Retrieval Skill
+
+    This skill integrates WeKnora (github.com/Tencent/WeKnora) for semantic document retrieval.
+
+    ## Security Advisory
+
+    CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated command injection via
+    MCP stdio configuration in WeKnora versions prior to 0.2.5. When transport_type=stdio is used,
+    stdio_config.command and stdio_config.args are passed directly to subprocess without validation,
+    allowing arbitrary OS command execution. Upgrade to WeKnora >= 0.2.10 (0.2.5 patch was
+    incomplete; see CVE-2026-30861).
+  test_expect: fires
+- id: PSV-061
+  category: passive_surveillance
+  severity: critical
+  confidence: 0.9
+  title: WeKnora MCP stdio unauthenticated npx -p bypass RCE (CVE-2026-30861, GHSA-r55h-3rwj-hcmg,
+    0.2.5 <= x < 0.2.10)
+  pattern: (?i)(?:CVE-2026-30861|GHSA-r55h-3rwj-hcmg|weknora[^\n]{0,200}(?:npx[^\n]{0,40}-p[^\n]{0,40}(?:node|bypass|inject|exec|rce)|0\.2\.[5-9]\b[^\n]{0,60}(?:vuln|cve|inject|patch|fix|rce)|blacklist[_\s-]?bypass[^\n]{0,40}(?:npx|-p|node)|unauth[^\n]{0,80}(?:rce|command|exec|inject))|npx[^\n]{0,20}-p[^\n]{0,40}node[^\n]{0,120}weknora)
+  mitigation: 'CVE-2026-30861 (GHSA-r55h-3rwj-hcmg, CVSS 10.0 CRITICAL, CWE-78) is an
+    unauthenticated RCE vulnerability in Tencent WeKnora (github.com/Tencent/WeKnora) versions
+    >= 0.2.5 and < 0.2.10. The 0.2.5 patch for CVE-2026-22688 implemented a command allowlist
+    (npx, uvx) with argument blacklists, but failed to block the -p flag. Attackers can use
+    npx node -p "<JS payload>" to evaluate arbitrary JavaScript, enabling full OS command
+    execution. Because WeKnora permits unrestricted user registration, this is exploitable
+    without prior credentials. Upgrade to WeKnora >= 0.2.10 which explicitly blocks -p in
+    allowlist validation.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-02'
+    updated: '2026-05-02'
+    tags:
+    - passive_surveillance
+    - psv
+    - weknora
+    - mcp-stdio
+    - command-injection
+    - unauthenticated
+    - cve-2026-30861
+    - tencent
+    last_modified: '2026-05-02'
+    techniques:
+    - id: PSV-061
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-02'
+      last_modified: '2026-05-02'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-30861
+    - https://github.com/advisories/GHSA-r55h-3rwj-hcmg
+    - https://www.thehackerwire.com/weknora-rce-cve-2026-30861-unauthenticated-command-injection/
+    - https://cvereports.com/reports/CVE-2026-30861
+  test_input: |
+    ---
+    name: weknora-mcp-server-integration
+    description: Integrate WeKnora 0.2.7 as an MCP document intelligence server
+    ---
+    # WeKnora MCP Server Integration
+
+    Configures WeKnora 0.2.7 as an MCP backend for document retrieval pipelines.
+
+    ## Security Advisory
+
+    CVE-2026-30861 (GHSA-r55h-3rwj-hcmg, CVSS 10.0, CWE-78): Unauthenticated RCE in WeKnora
+    0.2.5 through 0.2.9. The MCP stdio allowlist restricts commands to npx and uvx but does not
+    block the -p flag. Exploit: npx node -p "require('child_process').execSync('id').toString()"
+    achieves unauthenticated code execution. Any public WeKnora instance on 0.2.5-0.2.9 is
+    fully compromised without credentials. Upgrade to >= 0.2.10 immediately.
+  test_expect: fires
+- id: PSV-062
+  category: passive_surveillance
+  severity: high
+  confidence: 0.85
+  title: command-executor-mcp-server OS command injection via allowlist bypass (CVE-2026-7593,
+    <= 0.1.0)
+  pattern: (?i)(?:CVE-2026-7593|command[_\s-]?executor[_\s-]?mcp[_\s-]?server[^\n]{0,200}(?:0\.1\.0|os[_\s-]?command[_\s-]?inject|execute[_\s-]?command[^\n]{0,60}(?:inject|bypass|arbit|exec|rce)|allowlist[_\s-]?bypass|cve-2026-7593)|sunwood[_\s-]?ai[_\s-]?labs[^\n]{0,80}(?:command[_\s-]?executor[_\s-]?mcp|cve-2026-7593))
+  mitigation: 'CVE-2026-7593 (CVSS 7.3 HIGH) is an OS command injection vulnerability in
+    Sunwood-ai-labs/command-executor-mcp-server versions <= 0.1.0. The execute_command function
+    in src/index.ts validates input against a command allowlist (git, ls, mkdir, cd, npm, npx,
+    python) but the allowlist can be bypassed to execute arbitrary OS commands. Disclosed
+    publicly May 1, 2026; no patch was available at time of disclosure. Avoid deploying this
+    MCP server on internet-accessible hosts until a patched release is issued.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-02'
+    updated: '2026-05-02'
+    tags:
+    - passive_surveillance
+    - psv
+    - command-executor-mcp-server
+    - mcp
+    - command-injection
+    - cve-2026-7593
+    - sunwood-ai-labs
+    last_modified: '2026-05-02'
+    techniques:
+    - id: PSV-062
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-02'
+      last_modified: '2026-05-02'
+    quality:
+      precision_estimate: 0.85
+      benchmark_set: core-static-v1
+    references:
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-7593
+    - https://github.com/Sunwood-ai-labs/command-executor-mcp-server
+    - https://www.thehackerwire.com/vulnerability/CVE-2026-7593/
+    - https://radar.offseq.com/threat/cve-2026-7593-os-command-injection-in-sunwood-ai-l-deeb59c6
+  test_input: |
+    ---
+    name: command-executor-mcp-setup
+    description: Sunwood-ai-labs command-executor-mcp-server for pre-approved command execution
+    ---
+    # Command Executor MCP Server
+
+    Integrates Sunwood-ai-labs/command-executor-mcp-server v0.1.0 for controlled command execution.
+
+    ## Vulnerability Notice
+
+    CVE-2026-7593 (CVSS 7.3 HIGH): OS command injection in the execute_command tool of
+    Sunwood-ai-labs/command-executor-mcp-server <= 0.1.0. The allowlist validation in
+    src/index.ts can be bypassed to execute arbitrary OS commands. No patch available as of
+    May 2026. Do not expose this MCP server to untrusted network access.
   test_expect: fires
 
 capability_patterns:
