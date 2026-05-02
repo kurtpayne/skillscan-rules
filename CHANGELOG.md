@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.05.02.1
+
+Pattern update 2026-05-02. Three new PSV rules covering two critical WeKnora MCP stdio command injection vulnerabilities (CVE-2026-22688 and CVE-2026-30861) and one high-severity OS command injection in Sunwood-ai-labs/command-executor-mcp-server (CVE-2026-7593). Vuln DB additions for WeKnora and command-executor-mcp-server.
+
+- **PSV-060** (critical, new): **WeKnora MCP stdio authenticated command injection (CVE-2026-22688, GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77, < 0.2.5)** — Tencent WeKnora (github.com/Tencent/WeKnora), an LLM-powered document understanding framework, is vulnerable to command injection via the MCP stdio test endpoint in versions prior to 0.2.5. When `transport_type=stdio` is set, the `stdio_config.command` and `stdio_config.args` fields are passed directly to subprocess execution without sanitization. An authenticated attacker with low privileges can exploit this remotely to execute arbitrary OS commands. Patched in 0.2.5, but that patch was incomplete (see CVE-2026-30861 / PSV-061); upgrade to >= 0.2.10.
+- **PSV-061** (critical, new): **WeKnora MCP stdio unauthenticated npx -p bypass RCE (CVE-2026-30861, GHSA-r55h-3rwj-hcmg, CVSS 10.0, CWE-78, 0.2.5 ≤ x < 0.2.10)** — The 0.2.5 patch for CVE-2026-22688 implemented an MCP stdio command allowlist (only `npx` and `uvx` permitted) with argument blacklists, but failed to block the `-p` flag. Attackers can execute `npx node -p "<arbitrary JS>"` to evaluate arbitrary JavaScript payloads, achieving full OS command execution. Because WeKnora permits unrestricted user registration, this vulnerability is exploitable without prior credentials, making it a zero-credential RCE on any public WeKnora instance on 0.2.5–0.2.9. Fixed in 0.2.10. Published March 7, 2026 by GHSA.
+- **PSV-062** (high, new): **command-executor-mcp-server OS command injection via allowlist bypass (CVE-2026-7593, CVSS 7.3, <= 0.1.0)** — Sunwood-ai-labs/command-executor-mcp-server (a TypeScript MCP server for executing pre-approved commands) is vulnerable to OS command injection in the `execute_command` function in `src/index.ts`. The allowlist validation (permitting git, ls, mkdir, cd, npm, npx, python) can be bypassed to execute arbitrary OS commands. Disclosed publicly May 1, 2026; no patch was available at time of disclosure. Remote exploitation is possible.
+- **Vuln DB additions:** `weknora` product entry: 0.0.1/0.2.0/0.2.4 → CVE-2026-22688 (critical, fixed: 0.2.5), 0.2.5/0.2.9 → CVE-2026-30861 (critical, fixed: 0.2.10). `command-executor-mcp-server` product entry: 0.1.0 → CVE-2026-7593 (high, no fix).
+
+Total: 262 static rules + 14 chain rules = 276.
+
+Note: CHANGELOG entry for rulepack version 2026.05.01.2 is missing (rules SUP-049 and PSV-059 were merged without a changelog entry). Separate cleanup PR needed.
+
+Sources:
+- CVE-2026-22688 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-22688
+- CVE-2026-22688 (GHSA): https://github.com/Tencent/WeKnora/security/advisories/GHSA-78h3-63c4-5fqc
+- CVE-2026-30861 (GHSA): https://github.com/advisories/GHSA-r55h-3rwj-hcmg
+- CVE-2026-30861 (TheHackerWire): https://www.thehackerwire.com/weknora-rce-cve-2026-30861-unauthenticated-command-injection/
+- CVE-2026-7593 (TheHackerWire): https://www.thehackerwire.com/vulnerability/CVE-2026-7593/
+- CVE-2026-7593 (OffSeq): https://radar.offseq.com/threat/cve-2026-7593-os-command-injection-in-sunwood-ai-l-deeb59c6
+
 ## 2026.05.01.1
 
 Fix (same-day): move MAL-075, PSV-058, ABU-009 from `chain_rules` to `static_rules`. These rules were added in recent PRs with `pattern`/`mitigation`/`test_input` fields (static-rule schema) but incorrectly placed under `chain_rules`, which requires `all_of`. The pydantic model raises `Field required: all_of` on load, breaking the bundled snapshot CI. Matches the fix pattern from 2026.04.29.2. Also corrects the chain/total count in the 2026.05.01.1 entry header from "18/272" to "14/271" (the correct post-move totals).
