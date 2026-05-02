@@ -785,6 +785,46 @@
     ],
     "added": "2026-05-01"
   },
+  "weknora": {
+    "0.0.1": {
+      "id": "CVE-2026-22688",
+      "severity": "critical",
+      "fixed": "0.2.5",
+      "summary": "CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated command injection via stdio_config.command/args in MCP stdio endpoint. Affects all versions < 0.2.5. Note: 0.2.5 patch is incomplete (CVE-2026-30861); upgrade to >= 0.2.10."
+    },
+    "0.2.0": {
+      "id": "CVE-2026-22688",
+      "severity": "critical",
+      "fixed": "0.2.5",
+      "summary": "CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated MCP stdio command injection. See 0.0.1 entry."
+    },
+    "0.2.4": {
+      "id": "CVE-2026-22688",
+      "severity": "critical",
+      "fixed": "0.2.5",
+      "summary": "CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated MCP stdio command injection. See 0.0.1 entry."
+    },
+    "0.2.5": {
+      "id": "CVE-2026-30861",
+      "severity": "critical",
+      "fixed": "0.2.10",
+      "summary": "CVE-2026-30861 (GHSA-r55h-3rwj-hcmg, CVSS 10.0, CWE-78): Unauthenticated RCE via npx -p flag bypass of MCP stdio command allowlist. Versions 0.2.5-0.2.9 affected (incomplete fix from CVE-2026-22688 patch). Upgrade to >= 0.2.10."
+    },
+    "0.2.9": {
+      "id": "CVE-2026-30861",
+      "severity": "critical",
+      "fixed": "0.2.10",
+      "summary": "CVE-2026-30861 (GHSA-r55h-3rwj-hcmg, CVSS 10.0, CWE-78): Unauthenticated RCE via npx -p bypass. See 0.2.5 entry."
+    }
+  },
+  "command-executor-mcp-server": {
+    "0.1.0": {
+      "id": "CVE-2026-7593",
+      "severity": "high",
+      "fixed": null,
+      "summary": "CVE-2026-7593 (CVSS 7.3 HIGH): OS command injection in execute_command function of Sunwood-ai-labs/command-executor-mcp-server <= 0.1.0. Allowlist validation in src/index.ts can be bypassed to execute arbitrary OS commands. Disclosed May 1, 2026; no patch available."
+    }
+  },
   "_meta": {
     "generated": "2026-05-02",
     "source": "OSV.dev (https://osv.dev)",
@@ -2498,46 +2538,6 @@
         "fixed": null,
         "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
       }
-    }
-  },
-  "weknora": {
-    "0.0.1": {
-      "id": "CVE-2026-22688",
-      "severity": "critical",
-      "fixed": "0.2.5",
-      "summary": "CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated command injection via stdio_config.command/args in MCP stdio endpoint. Affects all versions < 0.2.5. Note: 0.2.5 patch is incomplete (CVE-2026-30861); upgrade to >= 0.2.10."
-    },
-    "0.2.0": {
-      "id": "CVE-2026-22688",
-      "severity": "critical",
-      "fixed": "0.2.5",
-      "summary": "CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated MCP stdio command injection. See 0.0.1 entry."
-    },
-    "0.2.4": {
-      "id": "CVE-2026-22688",
-      "severity": "critical",
-      "fixed": "0.2.5",
-      "summary": "CVE-2026-22688 (GHSA-78h3-63c4-5fqc, CVSS 9.9, CWE-77): Authenticated MCP stdio command injection. See 0.0.1 entry."
-    },
-    "0.2.5": {
-      "id": "CVE-2026-30861",
-      "severity": "critical",
-      "fixed": "0.2.10",
-      "summary": "CVE-2026-30861 (GHSA-r55h-3rwj-hcmg, CVSS 10.0, CWE-78): Unauthenticated RCE via npx -p flag bypass of MCP stdio command allowlist. Versions 0.2.5-0.2.9 affected (incomplete fix from CVE-2026-22688 patch). Upgrade to >= 0.2.10."
-    },
-    "0.2.9": {
-      "id": "CVE-2026-30861",
-      "severity": "critical",
-      "fixed": "0.2.10",
-      "summary": "CVE-2026-30861 (GHSA-r55h-3rwj-hcmg, CVSS 10.0, CWE-78): Unauthenticated RCE via npx -p bypass. See 0.2.5 entry."
-    }
-  },
-  "command-executor-mcp-server": {
-    "0.1.0": {
-      "id": "CVE-2026-7593",
-      "severity": "high",
-      "fixed": null,
-      "summary": "CVE-2026-7593 (CVSS 7.3 HIGH): OS command injection in execute_command function of Sunwood-ai-labs/command-executor-mcp-server <= 0.1.0. Allowlist validation in src/index.ts can be bypassed to execute arbitrary OS commands. Disclosed May 1, 2026; no patch available."
     }
   }
 }
