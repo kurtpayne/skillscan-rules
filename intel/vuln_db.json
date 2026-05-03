@@ -2538,6 +2538,19 @@
         "fixed": null,
         "notes": "CanisterSprawl worm (TeamPCP-style, April 2026). See 1.0.1 entry."
       }
+    },
+    "@modelcontextprotocol/sdk": {
+      "1.10.0": {
+        "id": "CVE-2026-25536",
+        "ghsa": "GHSA-345p-7cg4-v4c7",
+        "severity": "high",
+        "cvss": 7.1,
+        "cwe": "CWE-362",
+        "ecosystem": "npm",
+        "affected_versions": ">=1.10.0, <=1.25.3",
+        "fixed": "1.26.0",
+        "summary": "CVE-2026-25536 (GHSA-345p-7cg4-v4c7, CVSS 7.1 HIGH, CWE-362): Cross-client data leak via shared McpServer/StreamableHTTPServerTransport instance reuse. In stateless StreamableHTTP deployments, JSON-RPC message ID collisions route responses to wrong clients, leaking tool results, authentication context, and resource data across session boundaries. Upgrade to 1.26.0 and create fresh McpServer and transport instances per request or session."
+      }
     }
   }
 }
