@@ -11,7 +11,9 @@ Candidates researched and already covered or lacking hard anchors: PyTorch Light
 
 Note: CHANGELOG entry for rulepack version 2026.05.02.2 is missing (rules were merged without a changelog entry). Separate cleanup PR needed.
 
-Total: 266 static rules + 17 chain rules = 283.
+Fix (same commit): removed SUP-039, MAL-076, MAL-077 from `chain_rules` — these were added in the 2026.05.02.2 update with static-rule schema (pattern/mitigation/test_input) but erroneously left in `chain_rules` as duplicates, breaking the validate.yml `duplicate rule ID` check. They remain in `static_rules` where they were correctly added.
+
+Total: 266 static rules + 14 chain rules = 280.
 
 Sources:
 - CVE-2026-25536 (GitHub Advisory): https://github.com/modelcontextprotocol/typescript-sdk/security/advisories/GHSA-345p-7cg4-v4c7
