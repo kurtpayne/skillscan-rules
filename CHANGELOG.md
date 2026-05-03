@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.05.03.1
+
+Pattern update 2026-05-03. One new PSV rule covering the MCP TypeScript SDK cross-client data leak (CVE-2026-25536). Vuln DB addition for @modelcontextprotocol/sdk affected version range.
+
+- **PSV-063** (high, new): **MCP TypeScript SDK cross-client data leak via shared transport instance reuse (CVE-2026-25536, GHSA-345p-7cg4-v4c7, CVSS 7.1, CWE-362, @modelcontextprotocol/sdk 1.10.0–1.25.3)** — When a single `McpServer` or `StreamableHTTPServerTransport` instance is reused across multiple concurrent client connections, JSON-RPC message ID collisions cause responses to route to the wrong client, leaking tool execution results, resource data, authentication context, and prompt responses across session boundaries. In multi-tenant or stateless deployments, an attacker sending overlapping requests can receive another client's data without additional privileges (network, low-privilege required). Patched in v1.26.0 which adds runtime guards converting silent misrouting into immediate errors. Upgrade `@modelcontextprotocol/sdk` to ≥ 1.26.0 and ensure fresh `McpServer` and transport instances per request (stateless) or session (stateful). Also affects `mcp-handler` (Vercel) < 1.1.0 via peer dependency (GHSA-w2fm-25vw-vh7f).
+- **Vuln DB additions:** `npm/@modelcontextprotocol/sdk` version range ≥1.10.0, ≤1.25.3 → CVE-2026-25536 (high, CVSS 7.1, fixed: 1.26.0).
+
+Candidates researched and already covered or lacking hard anchors: PyTorch Lightning Mini Shai-Hulud (SUP-048 + MAL entry, 2026.05.01.1), SAP CAP npm Mini Shai-Hulud (existing rule), CanisterSprawl worm OpenWebConcept npm (existing vuln DB entries).
+
+Note: CHANGELOG entry for rulepack version 2026.05.02.2 is missing (rules were merged without a changelog entry). Separate cleanup PR needed.
+
+Total: 266 static rules + 17 chain rules = 283.
+
+Sources:
+- CVE-2026-25536 (GitHub Advisory): https://github.com/modelcontextprotocol/typescript-sdk/security/advisories/GHSA-345p-7cg4-v4c7
+- CVE-2026-25536 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-25536
+- mcp-handler advisory (GHSA-w2fm-25vw-vh7f): https://github.com/advisories/GHSA-W2FM-25VW-VH7F
+
 ## 2026.05.02.1
 
 Pattern update 2026-05-02. Three new PSV rules covering two critical WeKnora MCP stdio command injection vulnerabilities (CVE-2026-22688 and CVE-2026-30861) and one high-severity OS command injection in Sunwood-ai-labs/command-executor-mcp-server (CVE-2026-7593). Vuln DB additions for WeKnora and command-executor-mcp-server.
