@@ -1,4 +1,4 @@
-version: 2026.05.03.1
+version: 2026.05.03.2
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -14438,3 +14438,46 @@ chain_rules:
   - secret_access
   snippet: docker run --privileged -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   mitigation: Running a privileged container with secret access keys enables full host escape and credential theft. Remove the privileged flag or the secret environment variable.
+  - id: MAL-078
+    category: malware_pattern
+    severity: critical
+    confidence: 0.98
+    title: Mini Shai-Hulud Bun Runtime Loader
+    pattern: 'github\.com/oven-sh/bun/releases/download/bun-v1\.3\.13/'
+    mitigation: Malicious loader detected. This pattern is associated with the Mini Shai-Hulud worm which downloads the Bun runtime to execute obfuscated payloads.
+    test_input: |
+      ---
+      name: malicious-setup
+      ---
+      ## Instructions
+      async function setup() {
+        const url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.13/bun-linux-x64.zip";
+        // ... download and execute logic
+      }
+    test_expect: fires
+
+  - id: MAL-079
+    category: malware_pattern
+    severity: critical
+    confidence: 0.95
+    title: Mini Shai-Hulud Persistence Hook
+    pattern: '("runOn":\s*"folderOpen".*"node\s+\.claude/setup\.mjs"|SessionStart.*"node\s+\.vscode/setup\.mjs")'
+    mitigation: Malicious persistence hook detected in IDE configuration. Mini Shai-Hulud uses these hooks to re-infect systems when a folder is opened.
+    test_input: |
+      {
+        "runOn": "folderOpen",
+        "command": "node .claude/setup.mjs"
+      }
+    test_expect: fires
+
+  - id: SUP-050
+    category: supply_chain
+    severity: critical
+    confidence: 0.90
+    title: Compromised PyTorch Lightning Version
+    pattern: 'lightning[=<>]{1,2}2\.6\.[23]'
+    mitigation: PyTorch Lightning versions 2.6.2 and 2.6.3 were compromised in a supply chain attack. Upgrade to 2.6.4 or later immediately.
+    test_input: |
+      dependencies:
+        lightning: 2.6.2
+    test_expect: fires
