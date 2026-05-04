@@ -1,5 +1,28 @@
 # SkillScan Rules Changelog
 
+## 2026.05.04.1
+
+Pattern update 2026-05-04. One new PSV rule (CVE-2025-54994 @akoskm/create-mcp-server-stdio command injection). Enrichment for SUP-039 (intercom-client 7.0.5). Vuln DB addition for intercom-client 7.0.4/7.0.5. YAML structural fix: MAL-078, MAL-079, and SUP-050 were committed in rulepack 2026.05.03.2 with incorrect placement in chain_rules (wrong indentation, missing metadata); moved to static_rules with full metadata blocks and corrected test inputs.
+
+- **PSV-064** (critical, new): **@akoskm/create-mcp-server-stdio MCP tool command injection via exec() (CVE-2025-54994, GHSA-3ch2-jxxc-v4xf, CVSS 9.3, CWE-77/CWE-78, < 0.0.13)** — The MCP server's built-in `which-app-on-port` tool concatenates user-supplied port numbers directly into `exec('lsof -i :<port>')` without sanitization. An attacker who can influence the port argument — via prompt injection targeting an AI agent using this MCP server — can inject shell metacharacters to execute arbitrary OS commands on the host. Disclosed by Liran Tal (September 2025); highlighted in the OX Security MCP supply chain advisory (April 2026). Upgrade to @akoskm/create-mcp-server-stdio 0.0.13 or later, which replaces exec() with execFile() and argv arrays.
+- **SUP-039 enrichment**: title and pattern updated to cover intercom-client 7.0.5 (additionally confirmed compromised by Wiz alongside 7.0.4 in the Mini Shai-Hulud/TeamPCP campaign). Technique name corrected from placeholder to "Supply Chain Compromise via Package Manager". References added.
+- **MAL-078 fix** (Mini Shai-Hulud Bun Runtime Loader): moved from chain_rules to static_rules, added full metadata block, expanded mitigation.
+- **MAL-079 fix** (Mini Shai-Hulud IDE persistence hook): moved from chain_rules to static_rules, added full metadata block, fixed multi-line test_input to single-line (regex `.` does not cross newlines without multiline flag), expanded title and mitigation.
+- **SUP-050 fix** (Compromised PyTorch Lightning version reference): moved from chain_rules to static_rules, added full metadata block, fixed test_input from YAML `:` notation to pip `==` notation so the pattern actually fires.
+- **Vuln DB additions:** `npm/intercom-client` 7.0.4 and 7.0.5 → PYPI-BACKDOOR-2026-0430 (critical, fixed: 7.0.6).
+
+Note: CHANGELOG entry for rulepack version 2026.05.03.2 is missing (rules were merged without a changelog entry). Separate cleanup PR needed per SKILL.md convention.
+
+Total: 270 static rules + 14 chain rules = 284.
+
+Sources:
+- CVE-2025-54994 (GHSA): https://github.com/advisories/GHSA-3ch2-jxxc-v4xf
+- CVE-2025-54994 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2025-54994
+- Node.js security advisory: https://www.nodejs-security.com/blog/create-mcp-server-stdio-command-injection-vulnerability
+- OX Security MCP advisory: https://www.ox.security/blog/mcp-supply-chain-advisory-rce-vulnerabilities-across-the-ai-ecosystem/
+- intercom-client 7.0.5 (Wiz): https://www.wiz.io/blog/mini-shai-hulud-supply-chain-sap-npm
+- intercom-client 7.0.4 (Socket): https://socket.dev/blog/intercom-s-npm-package-compromised-in-supply-chain-attack
+
 ## 2026.05.03.1
 
 Pattern update 2026-05-03. One new PSV rule covering the MCP TypeScript SDK cross-client data leak (CVE-2026-25536). Vuln DB addition for @modelcontextprotocol/sdk affected version range.

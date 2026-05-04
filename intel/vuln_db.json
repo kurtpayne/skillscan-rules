@@ -2597,6 +2597,18 @@
         "fixed": "REMOVED",
         "summary": "SAP ecosystem package compromised via Mini Shai-Hulud worm. Executes obfuscated Bun runtime payload for credential theft."
       }
+    },
+    "intercom-client": {
+      "7.0.4": {
+        "id": "PYPI-BACKDOOR-2026-0430",
+        "severity": "critical",
+        "fixed": "7.0.6"
+      },
+      "7.0.5": {
+        "id": "PYPI-BACKDOOR-2026-0430",
+        "severity": "critical",
+        "fixed": "7.0.6"
+      }
     }
   }
 }
