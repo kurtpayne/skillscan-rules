@@ -839,6 +839,22 @@
       "summary": "CVE-2026-7593 (CVSS 7.3 HIGH): OS command injection in execute_command function of Sunwood-ai-labs/command-executor-mcp-server <= 0.1.0. Allowlist validation in src/index.ts can be bypassed to execute arbitrary OS commands. Disclosed May 1, 2026; no patch available."
     }
   },
+  "xcode-mcp-server": {
+    "1.0.0": {
+      "id": "CVE-2026-7416",
+      "severity": "high",
+      "fixed": null,
+      "summary": "CVE-2026-7416 (CVSS 7.3 HIGH): OS command injection in build_project/run_tests of PolarVista/xcode-mcp-server 1.0.0. The Request argument in src/index.ts is passed to OS command execution without sanitization. No patch available as of May 2026."
+    }
+  },
+  "hwpx-mcp": {
+    "0.2.0": {
+      "id": "CVE-2026-7599",
+      "severity": "medium",
+      "fixed": null,
+      "summary": "CVE-2026-7599 (CVSS 6.3 MEDIUM, CWE-22): Path traversal via output_path in save_document/export_to_text/export_to_html of Dayoooun/hwpx-mcp 0.2.0. No patch available as of May 2026."
+    }
+  },
   "_meta": {
     "generated": "2026-05-05",
     "source": "OSV.dev (https://osv.dev)",
@@ -1500,6 +1516,11 @@
         "id": "GHSA-77gc-v2xv-rvvh",
         "severity": "high",
         "fixed": "8.2.0"
+      },
+      "12.1.1": {
+        "id": "GHSA-pwv6-vv43-88gr",
+        "severity": "high",
+        "fixed": "12.2.0"
       }
     },
     "numpy": {
@@ -2643,22 +2664,6 @@
         "fixed": "1.0.32",
         "summary": "NPM-BACKDOOR-2026-0127: @dydxprotocol/v4-client-js 3.4.1, 1.22.1, 1.15.2, 1.0.31 were compromised via stolen developer credentials (Socket, January 27 2026). Malicious code in registry.ts harvests wallet seed phrases and device fingerprints, exfiltrating to C2 dydx.priceoracle.site/v4/price."
       }
-    }
-  },
-  "xcode-mcp-server": {
-    "1.0.0": {
-      "id": "CVE-2026-7416",
-      "severity": "high",
-      "fixed": null,
-      "summary": "CVE-2026-7416 (CVSS 7.3 HIGH): OS command injection in build_project/run_tests of PolarVista/xcode-mcp-server 1.0.0. The Request argument in src/index.ts is passed to OS command execution without sanitization. No patch available as of May 2026."
-    }
-  },
-  "hwpx-mcp": {
-    "0.2.0": {
-      "id": "CVE-2026-7599",
-      "severity": "medium",
-      "fixed": null,
-      "summary": "CVE-2026-7599 (CVSS 6.3 MEDIUM, CWE-22): Path traversal via output_path in save_document/export_to_text/export_to_html of Dayoooun/hwpx-mcp 0.2.0. No patch available as of May 2026."
     }
   }
 }
