@@ -1,5 +1,27 @@
 # SkillScan Rules Changelog
 
+## 2026.05.05.1
+
+Pattern update 2026-05-05. Three new rules: SUP-051 (dYdX supply chain compromise — wallet stealer + RAT), PSV-065 (xcode-mcp-server OS command injection via CVE-2026-7416), PSV-066 (hwpx-mcp path traversal via CVE-2026-7599). Vuln DB additions for @dydxprotocol/v4-client-js (4 npm versions), dydx-v4-client (PyPI), xcode-mcp-server, and hwpx-mcp. IOC addition: dydx.priceoracle.site.
+
+- **SUP-051** (high, new): **dYdX @dydxprotocol/v4-client-js supply chain compromise — wallet stealer + RAT (C2: dydx.priceoracle.site, January 2026)** — Four npm versions (3.4.1, 1.22.1, 1.15.2, 1.0.31) and PyPI package dydx-v4-client 1.1.5post1 were published via stolen dYdX developer credentials and identified by Socket on January 27, 2026. Malicious code injected into registry.ts harvests cryptocurrency wallet seed phrases and device fingerprints, exfiltrating them to the attacker-controlled C2 dydx.priceoracle.site/v4/price. The PyPI variant additionally drops a Remote Access Trojan with C2 retrieval via dydx.priceoracle.site/py. Remove affected packages, upgrade to clean versions, and rotate all wallet seed phrases and developer credentials.
+- **PSV-065** (high, new): **xcode-mcp-server OS command injection via build_project/run_tests (CVE-2026-7416, PolarVista, 1.0.0, CVSS 7.3 HIGH)** — PolarVista/xcode-mcp-server version 1.0.0 passes the user-supplied Request argument to OS command execution without sanitization in the build_project and run_tests MCP tool handlers (src/index.ts). Exploitable remotely without authentication (AV:N/AC:L/PR:N/UI:N). No patch was available at time of disclosure (May 1, 2026). Avoid deploying this MCP server on internet-accessible hosts.
+- **PSV-066** (medium, new): **hwpx-mcp path traversal via output_path in document export tools (CVE-2026-7599, Dayoooun, 0.2.0, CVSS 6.3 MEDIUM, CWE-22)** — Dayoooun/hwpx-mcp version 0.2.0, an MCP server for Korean HWP/HWPX document formats, accepts a user-supplied output_path parameter in save_document, export_to_text, and export_to_html without sanitization, enabling arbitrary file write via path traversal sequences. Disclosed May 1, 2026; no patch available.
+- **Vuln DB additions:** npm/@dydxprotocol/v4-client-js 3.4.1/1.22.1/1.15.2/1.0.31 → NPM-BACKDOOR-2026-0127 (critical). python/dydx-v4-client 1.1.5post1 → PYPI-BACKDOOR-2026-0127 (critical). Product entries: xcode-mcp-server 1.0.0 → CVE-2026-7416 (high, no fix). hwpx-mcp 0.2.0 → CVE-2026-7599 (medium, no fix).
+- **IOC additions:** dydx.priceoracle.site (dYdX supply chain C2, January 2026).
+
+Candidates researched and already covered: PyTorch Lightning Mini Shai-Hulud (MAL + SUP-050), CanisterSprawl/pgserve (CanisterWorm rules + Namastex rule), n8n-MCP SSRF CVE-2026-39974 (PSV), Azure Data Explorer MCP KQL injection CVE-2026-33980 (PSV), Splunk MCP CVE-2026-20205 (PSV), magento2-dev-mcp CVE-2026-5603 (PSV), command-executor-mcp-server CVE-2026-7593 (PSV-062), XInference PyPI (existing rule), axios npm supply chain (existing rule), intercom-client supply chain (existing rule), SAP CAP npm Mini Shai-Hulud (existing rule), LiteLLM compromise (existing rule), GlassWorm/OpenVSX (existing rules).
+
+Total: 274 static rules + 14 chain rules = 288.
+
+Sources:
+- dYdX supply chain (Socket): https://socket.dev/blog/malicious-dydx-packages-published-to-npm-and-pypi
+- dYdX supply chain (THN): https://thehackernews.com/2026/02/compromised-dydx-npm-and-pypi-packages.html
+- CVE-2026-7416 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-7416
+- CVE-2026-7416 (ThreatInt): https://cve.threatint.eu/CVE/CVE-2026-7416
+- CVE-2026-7599 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-7599
+- CVE-2026-7599 (ThreatInt): https://cve.threatint.eu/CVE/CVE-2026-7599
+
 ## 2026.05.04.1
 
 Pattern update 2026-05-04. One new PSV rule (CVE-2025-54994 @akoskm/create-mcp-server-stdio command injection). Enrichment for SUP-039 (intercom-client 7.0.5). Vuln DB addition for intercom-client 7.0.4/7.0.5. YAML structural fix: MAL-078, MAL-079, and SUP-050 were committed in rulepack 2026.05.03.2 with incorrect placement in chain_rules (wrong indentation, missing metadata); moved to static_rules with full metadata blocks and corrected test inputs.
