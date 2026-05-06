@@ -1,5 +1,15 @@
 # SkillScan Rules Changelog
 
+## 2026.05.06.1
+
+Pattern update 2026-05-06. Three new PSV rules:
+
+- **PSV-067** — `mcp-atlassian` MCPwnfluence: unauthenticated SSRF + arbitrary file write RCE chain (CVE-2026-27825 CVSS 9.1 + CVE-2026-27826 CVSS 8.2, GHSA-xjgw-4wvw-rgm4, < 0.17.0, 4M+ downloads). `confluence_download_attachment` tool accepts unconstrained `download_path` (path traversal to authorized_keys/cron.d); `X-Atlassian-Jira-Url` / `X-Atlassian-Confluence-Url` headers honored without validation (SSRF). Pluto Security "MCPwnfluence" disclosure 2026-02-19; fixed 2026-02-24.
+- **PSV-068** — MCP Java SDK (`io.modelcontextprotocol.sdk:mcp-core`) DNS rebinding via missing Origin validation (CVE-2026-35568, GHSA-8jxr-pr72-r468, CVSS 7.6, CWE-346, < 1.0.0). No Origin header validation before 1.0.0 allows browser-based DNS rebinding to invoke any MCP tool call on a local server. Fixed in 1.0.0 (2026-04-07).
+- **PSV-069** — OpenClaw MCP stdio config env var injection via unsafe cast in `resolveStdioMcpServerLaunchConfig` (GHSA-MJ59-H3Q9-GHFH, < 2026.4.20). Opening a crafted workspace config triggers arbitrary code execution via malicious env entries (NODE_OPTIONS, LD_PRELOAD). Distinct from CVE-2026-22177 (PSV-050, < 2026.2.21) which targeted general startup config. Fixed 2026-04-20.
+
+Vuln DB additions: `mcp-atlassian` (CVE-2026-27825, CVE-2026-27826), `mcp-java-sdk` (CVE-2026-35568), `openclaw` (GHSA-MJ59-H3Q9-GHFH).
+
 ## 2026.05.05.1
 
 Pattern update 2026-05-05. Three new rules: SUP-051 (dYdX supply chain compromise — wallet stealer + RAT), PSV-065 (xcode-mcp-server OS command injection via CVE-2026-7416), PSV-066 (hwpx-mcp path traversal via CVE-2026-7599). Vuln DB additions for @dydxprotocol/v4-client-js (4 npm versions), dydx-v4-client (PyPI), xcode-mcp-server, and hwpx-mcp. IOC addition: dydx.priceoracle.site.
