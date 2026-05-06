@@ -861,6 +861,28 @@
       "summary": "CVE-2026-7599 (CVSS 6.3 MEDIUM, CWE-22): Path traversal via output_path in save_document/export_to_text/export_to_html of Dayoooun/hwpx-mcp 0.2.0. No patch available as of May 2026."
     }
   },
+  "mcp-atlassian": {
+    "< 0.17.0 (CVE-2026-27825)": {
+      "id": "CVE-2026-27825",
+      "severity": "critical",
+      "fixed": "0.17.0",
+      "summary": "mcp-atlassian arbitrary file write via unconstrained download_path in confluence_download_attachment tool (CVE-2026-27825, GHSA-xjgw-4wvw-rgm4, CVSS 9.1, CWE-22). Missing directory confinement enables path traversal writes to arbitrary locations (authorized_keys, cron.d). Part of MCPwnfluence attack chain with CVE-2026-27826. 4M+ downloads. Fixed 2026-02-24."
+    },
+    "< 0.17.0 (CVE-2026-27826)": {
+      "id": "CVE-2026-27826",
+      "severity": "high",
+      "fixed": "0.17.0",
+      "summary": "mcp-atlassian SSRF via unvalidated X-Atlassian-Jira-Url / X-Atlassian-Confluence-Url headers (CVE-2026-27826, CVSS 8.2, CWE-918). Middleware honors these headers without validation, enabling SSRF to arbitrary internal hosts. Part of MCPwnfluence RCE chain with CVE-2026-27825."
+    }
+  },
+  "mcp-java-sdk": {
+    "< 1.0.0 (CVE-2026-35568)": {
+      "id": "CVE-2026-35568",
+      "severity": "high",
+      "fixed": "1.0.0",
+      "summary": "MCP Java SDK (io.modelcontextprotocol.sdk:mcp-core) DNS rebinding vulnerability via missing Origin header validation (CVE-2026-35568, GHSA-8jxr-pr72-r468, CVSS 7.6, CWE-346). No Origin validation before 1.0.0 allows browser-based DNS rebinding to invoke any tool call on a local MCP server. Fixed in 1.0.0 (2026-04-07)."
+    }
+  },
   "_meta": {
     "generated": "2026-05-06",
     "source": "OSV.dev (https://osv.dev)",
@@ -2670,28 +2692,6 @@
         "fixed": "1.0.32",
         "summary": "NPM-BACKDOOR-2026-0127: @dydxprotocol/v4-client-js 3.4.1, 1.22.1, 1.15.2, 1.0.31 were compromised via stolen developer credentials (Socket, January 27 2026). Malicious code in registry.ts harvests wallet seed phrases and device fingerprints, exfiltrating to C2 dydx.priceoracle.site/v4/price."
       }
-    }
-  },
-  "mcp-atlassian": {
-    "< 0.17.0 (CVE-2026-27825)": {
-      "id": "CVE-2026-27825",
-      "severity": "critical",
-      "fixed": "0.17.0",
-      "summary": "mcp-atlassian arbitrary file write via unconstrained download_path in confluence_download_attachment tool (CVE-2026-27825, GHSA-xjgw-4wvw-rgm4, CVSS 9.1, CWE-22). Missing directory confinement enables path traversal writes to arbitrary locations (authorized_keys, cron.d). Part of MCPwnfluence attack chain with CVE-2026-27826. 4M+ downloads. Fixed 2026-02-24."
-    },
-    "< 0.17.0 (CVE-2026-27826)": {
-      "id": "CVE-2026-27826",
-      "severity": "high",
-      "fixed": "0.17.0",
-      "summary": "mcp-atlassian SSRF via unvalidated X-Atlassian-Jira-Url / X-Atlassian-Confluence-Url headers (CVE-2026-27826, CVSS 8.2, CWE-918). Middleware honors these headers without validation, enabling SSRF to arbitrary internal hosts. Part of MCPwnfluence RCE chain with CVE-2026-27825."
-    }
-  },
-  "mcp-java-sdk": {
-    "< 1.0.0 (CVE-2026-35568)": {
-      "id": "CVE-2026-35568",
-      "severity": "high",
-      "fixed": "1.0.0",
-      "summary": "MCP Java SDK (io.modelcontextprotocol.sdk:mcp-core) DNS rebinding vulnerability via missing Origin header validation (CVE-2026-35568, GHSA-8jxr-pr72-r468, CVSS 7.6, CWE-346). No Origin validation before 1.0.0 allows browser-based DNS rebinding to invoke any tool call on a local MCP server. Fixed in 1.0.0 (2026-04-07)."
     }
   }
 }
