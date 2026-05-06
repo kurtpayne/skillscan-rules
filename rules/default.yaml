@@ -1,4 +1,4 @@
-version: 2026.05.05.1
+version: 2026.05.06.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -14665,6 +14665,153 @@ static_rules:
     hwpx-mcp 0.2.0 (CVE-2026-7599, CVSS 6.3): path traversal via output_path
     in save_document, export_to_text, and export_to_html MCP tools. Upgrade
     when a patched version is available.
+  test_expect: fires
+- id: PSV-067
+  category: passive_surveillance
+  severity: critical
+  confidence: 0.93
+  title: 'mcp-atlassian MCPwnfluence — unauthenticated SSRF + arbitrary file write RCE chain (CVE-2026-27825/27826, GHSA-xjgw-4wvw-rgm4, < 0.17.0)'
+  pattern: '(?i)(?:CVE-2026-2782[56]|GHSA-xjgw-4wvw-rgm4|mcp[_\s-]?atlassian[^\n]{0,200}(?:0\.(?:1[0-6]|[0-9])\b|path[_\s-]?traversal|arbitrary[_\s-]?file[_\s-]?write|ssrf|unauthenticat)|confluence_download_attachment[^\n]{0,120}download_path|X-Atlassian-(?:Jira|Confluence)-Url[^\n]{0,120}(?:ssrf|arbitrary|forged|internal|127\.|0\.0\.0\.0|localhost|169\.254|file://|10\.\d+\.|172\.(?:1[6-9]|2[0-9]|3[01])\.))'
+  mitigation: 'CVE-2026-27825 (GHSA-xjgw-4wvw-rgm4, CVSS 9.1, CWE-22) is a critical arbitrary file write in mcp-atlassian versions before 0.17.0. The confluence_download_attachment MCP tool accepts a download_path parameter without directory confinement, enabling path traversal writes to arbitrary locations (e.g., ~/.ssh/authorized_keys, /etc/cron.d/). CVE-2026-27826 (CVSS 8.2, CWE-918) is a companion SSRF — middleware honors X-Atlassian-Jira-Url and X-Atlassian-Confluence-Url request headers without validation, enabling SSRF to internal hosts. Together ("MCPwnfluence", Pluto Security, 2026-02-19), an unauthenticated network-adjacent attacker sends two HTTP requests and achieves full RCE. mcp-atlassian has 4.4K+ stars and 4M+ downloads. Upgrade to mcp-atlassian >= 0.17.0 (fixed 2026-02-24).'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-06'
+    updated: '2026-05-06'
+    tags:
+    - passive_surveillance
+    - psv
+    - mcp-atlassian
+    - ssrf
+    - arbitrary-file-write
+    - rce
+    - unauthenticated
+    - cve-2026-27825
+    - cve-2026-27826
+    last_modified: '2026-05-06'
+    techniques:
+    - id: PSV-067
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-06'
+      last_modified: '2026-05-06'
+    quality:
+      precision_estimate: 0.93
+      benchmark_set: core-static-v1
+    references:
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-27825
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-27826
+    - https://github.com/advisories/GHSA-xjgw-4wvw-rgm4
+    - https://pluto.security/blog/mcpwnfluence-cve-2026-27825-critical/
+    - https://arcticwolf.com/resources/blog/cve-2026-27825/
+    - https://github.com/plutosecurity/MCPwnfluence
+  test_input: |
+    # mcp-atlassian MCPwnfluence (CVE-2026-27825, CVE-2026-27826)
+
+    This skill documents GHSA-xjgw-4wvw-rgm4 (CVE-2026-27825), an unauthenticated
+    arbitrary file write in mcp-atlassian < 0.17.0. The confluence_download_attachment
+    tool exposes an unconstrained download_path parameter allowing path traversal writes.
+    Paired with CVE-2026-27826 (SSRF via X-Atlassian-Jira-Url header forged to localhost),
+    this achieves full unauthenticated RCE. Upgrade mcp-atlassian to >= 0.17.0.
+  test_expect: fires
+- id: PSV-068
+  category: passive_surveillance
+  severity: high
+  confidence: 0.9
+  title: 'MCP Java SDK DNS rebinding via missing Origin validation (CVE-2026-35568, GHSA-8jxr-pr72-r468, mcp-core < 1.0.0)'
+  pattern: '(?i)(?:CVE-2026-35568|GHSA-8jxr-pr72-r468|io\.modelcontextprotocol\.sdk[^\n]{0,80}(?:mcp[_\s-]?core|dns[_\s-]?rebind|origin[_\s-]?valid|0\.[0-9]+\.[0-9]+)|mcp[_\s-]?core[^\n]{0,120}(?:dns[_\s-]?rebind|origin[_\s-]?valid|CVE[_\s-]?2026[_\s-]?35568|<[_\s=]*1\.0\.0)|modelcontextprotocol[^\n]{0,80}java[_\s-]?sdk[^\n]{0,80}(?:dns[_\s-]?rebind|origin[_\s-]?valid|0\.[0-9]))'
+  mitigation: "CVE-2026-35568 (GHSA-8jxr-pr72-r468, CVSS 7.6, CWE-346) is a DNS rebinding vulnerability in the MCP Java SDK (io.modelcontextprotocol.sdk:mcp-core) prior to version 1.0.0. All versions before 1.0.0 perform no Origin header validation, violating the MCP transport specification. A remote attacker leverages DNS rebinding to make a victim's browser contact a locally-running Java MCP server and invoke any tool call as if they were a locally connected AI agent, enabling unauthorized access to all exposed MCP tools. Fixed in mcp-core 1.0.0 (2026-04-07). Upgrade io.modelcontextprotocol.sdk:mcp-core to >= 1.0.0 immediately."
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-06'
+    updated: '2026-05-06'
+    tags:
+    - passive_surveillance
+    - psv
+    - mcp-java-sdk
+    - dns-rebinding
+    - origin-validation
+    - cve-2026-35568
+    last_modified: '2026-05-06'
+    techniques:
+    - id: PSV-068
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-06'
+      last_modified: '2026-05-06'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-35568
+    - https://github.com/modelcontextprotocol/java-sdk/security/advisories/GHSA-8jxr-pr72-r468
+    - https://advisories.gitlab.com/pkg/maven/io.modelcontextprotocol.sdk/mcp-core/CVE-2026-35568/
+  test_input: |
+    # MCP Java SDK DNS Rebinding (CVE-2026-35568)
+
+    CVE-2026-35568 (GHSA-8jxr-pr72-r468) affects the MCP Java SDK
+    (io.modelcontextprotocol.sdk:mcp-core) before version 1.0.0.
+    The mcp-core library performs no Origin header validation before 1.0.0,
+    allowing browser-based dns rebinding attacks to invoke any MCP tool call
+    on a local or network-adjacent server. Upgrade to mcp-core 1.0.0.
+  test_expect: fires
+- id: PSV-069
+  category: passive_surveillance
+  severity: high
+  confidence: 0.91
+  title: 'OpenClaw MCP stdio config env var injection via unsafe cast (GHSA-MJ59-H3Q9-GHFH, < 2026.4.20)'
+  pattern: '(?i)(?:GHSA-mj59-h3q9-ghfh|resolveStdioMcpServerLaunchConfig[^\n]{0,120}(?:env|inject|cast|arbitrary|config|unsafe)|openclaw[^\n]{0,200}(?:2026\.(?:[12]\.[0-9.]+|3\.[0-9.]+|4\.[0-9]\b|4\.1[0-9]\b)[^\n]{0,80}(?:mcp[_\s-]?stdio|stdio[_\s-]?mcp|resolveStdio|env[_\s-]?inject|arbitrary[_\s-]?(?:code|exec)|launch[_\s-]?config)|mcp[_\s-]?stdio[_\s-]?(?:config|transport|launch)[^\n]{0,80}(?:env[_\s-]?inject|arbitrary[_\s-]?(?:code|exec)|unsafe[_\s-]?cast)))'
+  mitigation: 'GHSA-MJ59-H3Q9-GHFH is an arbitrary code execution vulnerability in OpenClaw versions prior to 2026.4.20. The resolveStdioMcpServerLaunchConfig function maps the env field from MCP stdio transport workspace configurations using an unsafe generic cast without sanitizing dangerous environment variable keys (e.g., NODE_OPTIONS, LD_PRELOAD). Opening a crafted repository whose workspace config supplies malicious env entries triggers arbitrary code execution on server initialization. This is distinct from CVE-2026-22177 (PSV-050, < 2026.2.21), which targeted the general startup config path; this advisory targets the MCP stdio transport config path specifically. Update to OpenClaw >= 2026.4.20 (fix commit 62fa5071896e95edc7f67d1cebc70a2859e283af, 2026-04-20).'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-06'
+    updated: '2026-05-06'
+    tags:
+    - passive_surveillance
+    - psv
+    - openclaw
+    - env-var-injection
+    - mcp-stdio
+    - arbitrary-code-execution
+    last_modified: '2026-05-06'
+    techniques:
+    - id: PSV-069
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-05-06'
+      last_modified: '2026-05-06'
+    quality:
+      precision_estimate: 0.91
+      benchmark_set: core-static-v1
+    references:
+    - https://github.com/openclaw/openclaw/security/advisories/GHSA-MJ59-H3Q9-GHFH
+    - https://cvereports.com/reports/GHSA-MJ59-H3Q9-GHFH
+  test_input: |
+    # OpenClaw MCP Stdio Env Var Injection (GHSA-MJ59-H3Q9-GHFH)
+
+    GHSA-MJ59-H3Q9-GHFH affects OpenClaw versions prior to 2026.4.20.
+    The resolveStdioMcpServerLaunchConfig function in the MCP stdio
+    transport layer maps workspace env config via an unsafe cast,
+    enabling arbitrary code execution when a malicious workspace
+    config file is opened. Update to OpenClaw 2026.4.20 or later.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
