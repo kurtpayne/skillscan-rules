@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.05.07.1
+
+Pattern update 2026-05-07. Two new rules: MAL-080 (QLNX Quasar Linux RAT) and PSV-070 (Oracle MCP Server Helper Tool SQL injection, CVE-2026-35228).
+
+- **MAL-080** (critical, new): **QLNX (Quasar Linux) PAM backdoor and developer credential harvester targeting supply chain** — Trend Micro disclosed QLNX (May 5, 2026), a previously undocumented Linux RAT targeting developer and DevOps workstations to enable downstream supply chain attacks. QLNX deploys a malicious PAM module via LD_PRELOAD compiled on the target host from embedded C source, intercepting plaintext passwords at authentication time and XOR-encrypting them to `/var/log/.ICE-unix`. A dual-layer rootkit (userland LD_PRELOAD + kernel-level eBPF) hides files, PIDs, and network ports. The credential harvester extracts secrets from `.npmrc`, `.pypirc`, `.git-credentials`, `.aws/credentials`, `.kube/config`, `.docker/config.json`, `.vault-token`, and `.env`, then exfiltrates via a 58-command TLS C2 framework. Stolen registry tokens are used for downstream package poisoning. Distinctive hard IOCs: hardcoded PAM master password `O$$f$QtYJK`; credential cache at `/var/log/.ICE-unix`; lock file `/tmp/.X752e2ca1-lock` (DJB2("quasar_linux") = 0x752e2ca1). The LiteLLM supply chain compromise (March 2026) followed this exact credential-theft-to-trojanization pattern.
+- **PSV-070** (high, new): **Oracle MCP Server Helper Tool unauthenticated SQL injection via HTTP (CVE-2026-35228, versions 1.0.1 – 1.0.156)** — Oracle Critical Patch Update (April 2026) discloses CVE-2026-35228, an easily exploitable SQL injection vulnerability in the Oracle MCP Server Helper Tool (Oracle Open Source Projects). An unauthenticated attacker with HTTP network access can submit crafted requests that cause the tool to execute malicious SQL, enabling unauthorized data access or modification. Affects versions 1.0.1 through 1.0.156; update above 1.0.156.
+
+Vuln DB additions: `oracle-mcp-server-helper` (CVE-2026-35228, high, versions 1.0.1–1.0.156).
+IOC additions: none.
+
+Total: 279 static rules + 14 chain rules = 293.
+
+Sources:
+- QLNX (Trend Micro): https://www.trendmicro.com/en_us/research/26/e/quasar-linux-qlnx-a-silent-foothold-in-the-software-supply-chain.html
+- QLNX (BleepingComputer): https://www.bleepingcomputer.com/news/security/new-stealthy-quasar-linux-malware-targets-software-developers/
+- QLNX (SOC Prime): https://socprime.com/active-threats/qlnx-linux-rat-uses-rootkit-and-pam-backdoor/
+- CVE-2026-35228 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-35228
+- CVE-2026-35228 (Oracle CPUApr2026): https://www.oracle.com/security-alerts/cpuapr2026.html
+
+Candidates researched and already covered or excluded: PyTorch Lightning Mini Shai-Hulud (existing MAL+SUP rules + vuln_db), CanisterSprawl (existing MAL rule + vuln_db), n8n-MCP SSRF CVE-2026-39974 (PSV rule + vuln_db), Azure Data Explorer MCP KQL injection CVE-2026-33980 (PSV rule + vuln_db), Splunk MCP CVE-2026-20205 (PSV rule + vuln_db), GlassWorm (multiple existing MAL rules), Live Server CVE-2025-65717 (existing PSV rule + vuln_db), MCP STDIO systemic RCE variants (existing PSV rules for individual CVEs).
+
 ## 2026.05.06.1
 
 Pattern update 2026-05-06. Three new PSV rules:
