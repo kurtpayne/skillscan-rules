@@ -1,4 +1,4 @@
-version: 2026.05.06.1
+version: 2026.05.07.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -14812,6 +14812,98 @@ static_rules:
     transport layer maps workspace env config via an unsafe cast,
     enabling arbitrary code execution when a malicious workspace
     config file is opened. Update to OpenClaw 2026.4.20 or later.
+  test_expect: fires
+- id: MAL-080
+  category: malware_pattern
+  severity: critical
+  confidence: 0.95
+  title: QLNX (Quasar Linux) PAM backdoor and developer credential harvester targeting supply chain
+  pattern: '(?i)(?:O\$\$f\$QtYJK|/var/log/\.ICE-unix|/tmp/\.X752e2ca1-lock|quasar[_\s-]?linux[^\n]{0,200}(?:pam[_\s-]?(?:hook|backdoor|inject|inline)|ld[_\s-]?preload|ebpf[_\s-]?rootkit|credential[_\s-]?harvest|ICE-unix|752e2ca1)|QLNX[^\n]{0,200}(?:pam[_\s-]?(?:hook|backdoor)|ld[_\s-]?preload|ebpf|rootkit|credential|supply[_\s-]?chain))'
+  mitigation: 'QLNX (Quasar Linux) is a sophisticated Linux RAT targeting developer and DevOps workstations to enable downstream supply chain attacks via stolen npm/PyPI registry credentials. It deploys a malicious PAM module via LD_PRELOAD that intercepts plaintext passwords at authentication time, XOR-encrypting and caching them to /var/log/.ICE-unix. A compile-on-target design ships embedded C PAM backdoor source that builds a host-architecture-matched shared library, bypassing signature-based detection. A dual-layer rootkit (userland LD_PRELOAD + kernel-level eBPF) hides files, processes, PIDs, and network ports. The credential harvester systematically extracts secrets from .npmrc, .pypirc, .git-credentials, .aws/credentials, .kube/config, .docker/config.json, .vault-token, and .env, then exfiltrates them to the C2 over TLS. A 58-command RAT framework maintains persistent C2 access. Distinctive indicators: hardcoded master PAM password O$$f$QtYJK; credential cache at /var/log/.ICE-unix; lock file /tmp/.X752e2ca1-lock (DJB2 hash of string "quasar_linux" = 0x752e2ca1). Sweep for LD_PRELOAD entries referencing unexpected .so files, suspicious gcc/cc compilation of embedded C source, and the lock file path. Source: Trend Micro (May 2026).'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-07'
+    updated: '2026-05-07'
+    tags:
+    - malware_pattern
+    - mal
+    - qlnx
+    - quasar-linux
+    - pam-backdoor
+    - supply-chain
+    - credential-theft
+    last_modified: '2026-05-07'
+    techniques:
+    - id: MAL-080
+      name: Malware or malicious behavior
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-05-07'
+      last_modified: '2026-05-07'
+    quality:
+      precision_estimate: 0.95
+      benchmark_set: core-static-v1
+    references:
+    - https://www.trendmicro.com/en_us/research/26/e/quasar-linux-qlnx-a-silent-foothold-in-the-software-supply-chain.html
+    - https://www.bleepingcomputer.com/news/security/new-stealthy-quasar-linux-malware-targets-software-developers/
+    - https://socprime.com/active-threats/qlnx-linux-rat-uses-rootkit-and-pam-backdoor/
+  test_input: |
+    # QLNX Quasar Linux PAM Backdoor — Developer Credential Harvester
+    QLNX deploys a PAM module using hardcoded master password O$$f$QtYJK to bypass
+    authentication and intercept plaintext credentials. Captured secrets are XOR-encrypted
+    and written to /var/log/.ICE-unix. A mutex lock file at /tmp/.X752e2ca1-lock
+    (DJB2 hash of quasar_linux) prevents duplicate instances.
+  test_expect: fires
+- id: PSV-070
+  category: passive_surveillance
+  severity: high
+  confidence: 0.9
+  title: Oracle MCP Server Helper Tool unauthenticated SQL injection via HTTP (CVE-2026-35228, 1.0.1 - 1.0.156)
+  pattern: '(?i)(?:CVE-2026-35228|oracle[_\s-]?mcp[_\s-]?server[_\s-]?helper[^\n]{0,200}(?:sql[_\s-]?inject|unauthenticat|1\.0\.\d+)|oracle[_\s-]?mcp[_\s-]?helper[^\n]{0,120}(?:sql|inject|1\.0\.))'
+  mitigation: 'CVE-2026-35228 is an easily exploitable SQL injection vulnerability in the Oracle MCP Server Helper Tool (Oracle Open Source Projects), affecting versions 1.0.1 through 1.0.156. An unauthenticated attacker with network access via HTTP can submit crafted requests that cause the tool to execute malicious SQL, potentially leading to unauthorized data access or modification of any database the tool can reach. Update to a version above 1.0.156 per the Oracle Critical Patch Update Advisory (April 2026). As a defense-in-depth measure, restrict HTTP access to the MCP Server Helper Tool to trusted networks, apply WAF rules to filter SQL metacharacters in MCP request parameters, and audit database permissions to enforce least privilege.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-07'
+    updated: '2026-05-07'
+    tags:
+    - passive_surveillance
+    - psv
+    - oracle
+    - mcp-server
+    - sql-injection
+    - cve-2026-35228
+    last_modified: '2026-05-07'
+    techniques:
+    - id: PSV-070
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-05-07'
+      last_modified: '2026-05-07'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+    - https://nvd.nist.gov/vuln/detail/CVE-2026-35228
+    - https://www.oracle.com/security-alerts/cpuapr2026.html
+    - https://www.redpacketsecurity.com/cve-alert-cve-2026-35228-oracle-corporation-oracle-mcp-server-helper-tool-product-of-oracle-open-source-projects/
+  test_input: |
+    # Oracle MCP Server Helper Tool SQL Injection (CVE-2026-35228)
+    CVE-2026-35228 affects oracle-mcp-server-helper versions 1.0.1 through 1.0.156.
+    Unauthenticated SQL injection via HTTP allows an attacker to execute malicious SQL
+    against the database backend without any credentials.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
