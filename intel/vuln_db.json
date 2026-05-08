@@ -898,7 +898,7 @@
     "severity": "high"
   },
   "_meta": {
-    "generated": "2026-05-07",
+    "generated": "2026-05-08",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
