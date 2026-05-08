@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.05.08.1
+
+Pattern update 2026-05-08. One new rule: PINJ-027 (OpenClaw log poisoning — indirect prompt injection via WebSocket headers, GHSA-g27f-9qjv-22pm).
+
+- **PINJ-027** (medium, new): **OpenClaw log poisoning — indirect prompt injection via WebSocket headers (GHSA-g27f-9qjv-22pm, openclaw < 2026.2.13)** — Eye Security disclosed (GHSA-g27f-9qjv-22pm) that in OpenClaw prior to 2026.2.13, the gateway logs raw Origin and User-Agent WebSocket header values on the "closed before connect" path without sanitization or length limits. An unauthenticated attacker can send crafted connection attempts with up to ~15 KB of arbitrary header content, which is written verbatim into core gateway logs. Under AI-assisted debugging workflows where those logs are fed to an LLM, the injected content acts as an indirect prompt injection payload — potentially hijacking the LLM's actions. Fixed in 2026.2.13 (header values now sanitized and truncated before logging). Rule fires on GHSA ID, openclaw + log-poison context, and openclaw version strings in the vulnerable range (< 2026.2.13).
+
+Vuln DB additions: `openclaw` (GHSA-g27f-9qjv-22pm, medium, < 2026.2.13).
+IOC additions: none.
+
+Total: 280 static rules + 14 chain rules = 294.
+
+Sources:
+- GHSA-g27f-9qjv-22pm (GitHub Advisory): https://github.com/openclaw/openclaw/security/advisories/GHSA-g27f-9qjv-22pm
+- Eye Security research: https://research.eye.security/log-poisoning-in-openclaw/
+- Eye Security blog: https://www.eye.security/blog/log-poisoning-openclaw-ai-agent-injection-risk
+
+Candidates researched and already covered or excluded: QLNX Quasar Linux RAT (MAL-080, 2026.05.07.1), Oracle MCP Server Helper CVE-2026-35228 (PSV-070, 2026.05.07.1), n8n-MCP SSRF CVE-2026-39974 (covered), Azure Data Explorer MCP KQL injection CVE-2026-33980 (covered), Splunk MCP CVE-2026-20205 (covered), PyTorch Lightning Mini Shai-Hulud (covered), SAP CAP npm packages (SUP-049, covered), Axios npm compromise (covered), LiteLLM TeamPCP (covered).
+
 ## 2026.05.07.1
 
 Pattern update 2026-05-07. Two new rules: MAL-080 (QLNX Quasar Linux RAT) and PSV-070 (Oracle MCP Server Helper Tool SQL injection, CVE-2026-35228).

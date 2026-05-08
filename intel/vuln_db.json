@@ -266,6 +266,12 @@
       "severity": "high",
       "fixed": "2026.4.20",
       "notes": "MCP stdio config env var injection via unsafe cast in resolveStdioMcpServerLaunchConfig (GHSA-MJ59-H3Q9-GHFH, CWE-454). Opening malicious workspace triggers arbitrary code execution via crafted env field (NODE_OPTIONS, LD_PRELOAD). Fix commit 62fa5071896e95edc7f67d1cebc70a2859e283af."
+    },
+    "< 2026.2.13 (GHSA-g27f-9qjv-22pm)": {
+      "id": "GHSA-g27f-9qjv-22pm",
+      "severity": "medium",
+      "fixed": "2026.2.13",
+      "notes": "Indirect prompt injection via unsanitized WebSocket headers in gateway logs (log poisoning). Origin and User-Agent values on the closed-before-connect path are written to core logs without sanitization or length limits; if logs are consumed by an LLM (e.g., AI-assisted debugging), attacker-controlled header content becomes an indirect prompt injection payload. Up to ~15 KB can be injected per connection attempt. Fixed: header values are now sanitized and truncated before logging."
     }
   },
   "n8n-mcp": {
