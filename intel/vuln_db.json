@@ -2722,5 +2722,19 @@
         "summary": "NPM-BACKDOOR-2026-0127: @dydxprotocol/v4-client-js 3.4.1, 1.22.1, 1.15.2, 1.0.31 were compromised via stolen developer credentials (Socket, January 27 2026). Malicious code in registry.ts harvests wallet seed phrases and device fingerprints, exfiltrating to C2 dydx.priceoracle.site/v4/price."
       }
     }
+  },
+  "fastgpt": {
+    "cve": "CVE-2026-44284",
+    "severity": "medium",
+    "cvss": 6.3,
+    "cwe": "CWE-918",
+    "affected_versions": "< 4.14.17",
+    "fixed_version": "4.14.17",
+    "description": "SSRF vulnerability in FastGPT MCP tool URL handling. An authenticated user with permission to create or manage MCP toolsets can store an internal endpoint (e.g. http://localhost:3000/mcp) as an MCP tool URL. The FastGPT backend workflow runner later fetches that stored URL without revalidating the destination, bypassing SSRF protection and allowing pivoting to internal services.",
+    "references": [
+      "https://www.thehackerwire.com/vulnerability/CVE-2026-44284/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-44284"
+    ],
+    "added": "2026-05-09"
   }
 }

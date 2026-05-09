@@ -1,5 +1,22 @@
 # SkillScan Rules Changelog
 
+## 2026.05.09.1
+
+Pattern update 2026-05-09. One new rule: PSV-071 (FastGPT MCP tool endpoint SSRF, CVE-2026-44284).
+
+- **PSV-071** (medium, new): **FastGPT MCP tool endpoint SSRF via stored internal URL (CVE-2026-44284, FastGPT < 4.14.17)** — Disclosed May 8, 2026 (CVSS 6.3, CWE-918). Prior to version 4.14.17, FastGPT had an inconsistent SSRF protection gap in MCP tool URL handling. An authenticated user with permission to create or manage MCP toolsets could store an internal endpoint (e.g. `http://localhost:3000/mcp`) as an MCP tool URL; the FastGPT backend workflow runner later fetches that stored URL without revalidating the destination, bypassing SSRF protection. This allows an authenticated attacker to pivot to internal services reachable by the FastGPT backend. Fixed in FastGPT 4.14.17. Rule fires on CVE ID, FastGPT + internal URL near MCP tool/endpoint keywords, and FastGPT + version strings in the vulnerable range (< 4.14.17).
+
+Vuln DB additions: `fastgpt` (CVE-2026-44284, medium, < 4.14.17).
+IOC additions: none.
+
+Total: 281 static rules + 14 chain rules = 295.
+
+Sources:
+- CVE-2026-44284 (TheHackerWire): https://www.thehackerwire.com/vulnerability/CVE-2026-44284/
+- CVE-2026-44284 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-44284
+
+Candidates researched and already covered or excluded: QLNX Quasar Linux RAT (MAL-080, 2026.05.07.1), OpenClaw log poisoning GHSA-g27f-9qjv-22pm (PINJ-027, 2026.05.08.1), Splunk MCP CVE-2026-20205 (covered), Azure Data Explorer MCP CVE-2026-33980 (covered), n8n-MCP SSRF CVE-2026-39974 (covered), OpenClaw auth bypass CVE-2026-22172 (covered), PyTorch Lightning Mini Shai-Hulud (covered).
+
 ## 2026.05.08.1
 
 Pattern update 2026-05-08. One new rule: PINJ-027 (OpenClaw log poisoning — indirect prompt injection via WebSocket headers, GHSA-g27f-9qjv-22pm).
