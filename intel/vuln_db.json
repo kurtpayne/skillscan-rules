@@ -904,7 +904,7 @@
     "severity": "high"
   },
   "_meta": {
-    "generated": "2026-05-08",
+    "generated": "2026-05-09",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
@@ -1172,6 +1172,11 @@
         "id": "GHSA-q84m-rmw3-4382",
         "severity": "medium",
         "fixed": "0.1.35"
+      },
+      "1.3.2": {
+        "id": "GHSA-pjwx-r37v-7724",
+        "severity": "high",
+        "fixed": "1.3.3"
       }
     },
     "langchain-community": {
@@ -1465,6 +1470,10 @@
         "id": "PYSEC-2018-69",
         "severity": "medium",
         "fixed": "2.0.9"
+      },
+      "4.0.0": {
+        "id": "GHSA-r374-rxx8-8654",
+        "severity": "low"
       }
     },
     "jinja2": {
