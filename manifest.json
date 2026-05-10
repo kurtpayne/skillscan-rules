@@ -1,12 +1,12 @@
 {
-  "version": "2026.05.09.1",
+  "version": "2026.05.10.1",
   "released_at": "2026-04-26T17:15:00.973005+00:00",
   "files": {
     "rules/ast_flows.yaml": {
       "sha256": "31e2cb8954d66d9818e868a7b596bb19585c1569c4475e797fd66f5c14eba25e"
     },
     "rules/default.yaml": {
-      "sha256": "79274c09e236b73644ac3cc8a58b22f119b2caa4f8117de8038312b4237ab97c"
+      "sha256": "ce357104fb46e199b857a1c4dccfd5561dca570055686a279b7b20072eb2d751"
     },
     "rules/multilang.yaml": {
       "sha256": "1d4784072b02aa40215be0974f87d8832c6bd1e7d0a0d7957e1a4228bce5afe1"
@@ -18,7 +18,7 @@
       "sha256": "aef9d1e320a08b256374b1917520d035dfcd78476bd7c5b4895a5cf3e647edce"
     },
     "intel/vuln_db.json": {
-      "sha256": "bd3700ee6a0d69638b8c26a10e6208cec4d4706b1ca0592caef334eb4c21f8b9"
+      "sha256": "0c6bc5349503a3e267fe34aab32acbaca1720b1d5f727bb919850df32262c6fd"
     }
   },
   "updated": "2026-05-10"
