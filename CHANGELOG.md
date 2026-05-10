@@ -1,5 +1,28 @@
 # SkillScan Rules Changelog
 
+## 2026.05.10.1
+
+Pattern update 2026-05-10. Three new rules: PINJ-028 (Spring AI memory poisoning), PSV-072 (GitLab MCP SSE auth bypass), PSV-073 (profullstack MCP command injection).
+
+- **PINJ-028** (high, new): **Spring AI PromptChatMemoryAdvisor prompt injection via memory poisoning (CVE-2026-41713, spring-ai < 1.0.7 / < 1.1.6)** — Published May 8, 2026 (CVSS 7.2 HIGH, CWE-99). The PromptChatMemoryAdvisor component in Spring AI 1.0.0–1.0.6 and 1.1.0–1.1.5 stores user input in conversation memory without sanitization; that stored content is later reinterpreted by the AI model, enabling cross-turn prompt injection. PromptChatMemoryAdvisor has been deprecated; the fix requires callers to supply an explicit conversation ID. Fixed in spring-ai 1.0.7 and 1.1.6. Rule fires on CVE ID, `PromptChatMemoryAdvisor` class references, and Maven artifact `org.springframework.ai:*` at vulnerable version strings. Reporter: Ahmed Sekka.
+
+- **PSV-072** (high, new): **@yoda.digital/gitlab-mcp-server SSE transport auth bypass and wildcard CORS (CVE-2026-44895, < 0.6.0)** — All versions of @yoda.digital/gitlab-mcp-server before 0.6.0 run their SSE HTTP transport with no authentication and wildcard CORS on all interfaces (0.0.0.0). `GET /sse` and `POST /messages?sessionId=<id>` require no credentials; any network-adjacent attacker can open an SSE session and issue arbitrary MCP tool calls using the server's loaded `GITLAB_PERSONAL_ACCESS_TOKEN`, gaining full access to all 86 GitLab tools. CVSS HIGH (C:H/I:N/A:H), CWE-306 + CWE-942. Fixed in 0.6.0. Rule fires on CVE ID, npm package name `@yoda.digital/gitlab-mcp-server`, and GitHub repo `yoda-digital/mcp-gitlab-server`.
+
+- **PSV-073** (critical, new): **@profullstack/mcp-server unauthenticated OS command injection in domain_lookup (GHSA-v6wj-c83f-v46x, <= 1.4.12, no fix)** — CVSS 9.8 CRITICAL (CWE-78). The domain_lookup module concatenates user-supplied `domains`/`keywords` arrays directly into shell commands via `execAsync()` (pattern: `tldx ${keywords.join(' ')}`). Shell metacharacters in input execute arbitrary commands with server process privileges. The server binds to 0.0.0.0 with no authentication; exploitation is remote and unauthenticated. No fix available as of 2026-05-10. Rule fires on GHSA ID and npm package name `@profullstack/mcp-server`.
+
+Vuln DB additions: `spring-ai` (CVE-2026-41713, high, 1.0.0–1.0.6 / 1.1.0–1.1.5), `@yoda.digital/gitlab-mcp-server` (CVE-2026-44895, high, < 0.6.0), `@profullstack/mcp-server` (GHSA-v6wj-c83f-v46x, critical, <= 1.4.12).
+IOC additions: none.
+
+Total: 284 static rules + 14 chain rules = 298.
+
+Sources:
+- CVE-2026-41713 (Spring): https://spring.io/security/cve-2026-41713/
+- Spring AI 1.0.7/1.1.6 release: https://spring.io/blog/2026/05/08/spring-ai-1-0-7-1-1-6-2-0-0-M6-available-now/
+- CVE-2026-44895 (GitLab advisory): https://advisories.gitlab.com/npm/@yoda.digital/gitlab-mcp-server/CVE-2026-44895/
+- GHSA-v6wj-c83f-v46x (GitHub): https://github.com/advisories/GHSA-v6wj-c83f-v46x
+
+Candidates researched and already covered or excluded: Splunk MCP CVE-2026-20205 (covered), Azure Data Explorer MCP CVE-2026-33980 (covered), PyTorch Lightning Mini Shai-Hulud (covered), QLNX Quasar Linux RAT (covered MAL-080), GlassWorm (covered MAL-066 + multiple waves).
+
 ## 2026.05.09.1
 
 Pattern update 2026-05-09. One new rule: PSV-071 (FastGPT MCP tool endpoint SSRF, CVE-2026-44284).
