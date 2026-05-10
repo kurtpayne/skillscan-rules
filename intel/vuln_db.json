@@ -918,7 +918,7 @@
     "added": "2026-05-09"
   },
   "_meta": {
-    "generated": "2026-05-09",
+    "generated": "2026-05-10",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
