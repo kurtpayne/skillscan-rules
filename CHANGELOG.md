@@ -1,5 +1,27 @@
 # SkillScan Rules Changelog
 
+## 2026.05.11.1
+
+Pattern update 2026-05-11. Two new rules: PSV-074 (Cline kanban WebSocket hijacking, CVE-2026-44211), PSV-075 (n8n-MCP log disclosure, CVE-2026-41495).
+
+- **PSV-074** (critical, new): **Cline kanban server cross-origin WebSocket hijacking, no Origin validation (CVE-2026-44211, GHSA-5c57-rqjx-35g2, cline <= 2.13.0)** — Disclosed by Oasis Security on May 8, 2026 (CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H Critical, CWE-1385/CWE-306). The Cline kanban agent-orchestration board (npm package `cline`, all versions up to 2.13.0) starts a WebSocket server on 127.0.0.1:3484 with no Origin header validation. Because browsers do not enforce CORS on WebSocket handshakes, any web page a developer visits while kanban is running can silently connect to port 3484 and (1) exfiltrate real-time workspace data (filesystem paths, task descriptions, git branch names, AI agent chat messages) or (2) inject arbitrary prompts into running Cline/Claude Code/Codex agent sessions, enabling RCE. No patch available as of disclosure. Rule fires on CVE ID, GHSA ID, cline + kanban + websocket/origin/port-3484 context, and port :3484 + origin-validation keywords.
+
+- **PSV-075** (low, new): **n8n-MCP HTTP transport logs bearer tokens from unauthorized /mcp requests (CVE-2026-41495, n8n-mcp < 2.47.11)** — CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N Low, CWE-532. When czlonkowski/n8n-mcp runs in HTTP transport mode, POST /mcp request metadata — bearer tokens, per-tenant API keys, and JSON-RPC payloads — is written to server logs regardless of authentication outcome. Unauthenticated requests are correctly rejected with 401, but the rejected request headers (including credentials) persist in logs. In deployments with centralized log aggregation, SIEM pipelines, or shared log storage, this exposes authentication tokens to parties outside the request trust boundary. Fixed in n8n-mcp 2.47.11. Rule fires on CVE ID, n8n-mcp + bearer/API key + log persistence keywords, and czlonkowski/n8n-mcp + log/sensitive/bearer context.
+
+Vuln DB additions: `n8n-mcp` (CVE-2026-41495, low, < 2.47.11).
+IOC additions: none.
+
+Total: 286 static rules + 14 chain rules = 300.
+
+Sources:
+- CVE-2026-44211 (GitLab Advisory): https://advisories.gitlab.com/npm/cline/CVE-2026-44211/
+- CVE-2026-44211 (Oasis Security): https://www.oasis.security/blog/cline-kanban-websocket-hijack
+- CVE-2026-44211 (GBHackers): https://gbhackers.com/cline-kanban-websocket-vulnerability/
+- CVE-2026-41495 (GitLab Advisory): https://advisories.gitlab.com/npm/n8n-mcp/CVE-2026-41495/
+- CVE-2026-41495 (OffSeq Radar): https://radar.offseq.com/threat/cve-2026-41495-cwe-532-insertion-of-sensitive-info-dc23ff94
+
+Candidates researched and already covered or excluded: CVE-2026-44895 @yoda.digital/gitlab-mcp-server (PSV-072, covered 2026.05.10.1), GHSA-v6wj-c83f-v46x @profullstack/mcp-server (PSV-073, covered 2026.05.10.1), CVE-2026-44211 Cline kanban WebSocket (new PSV-074), CVE-2026-41495 n8n-MCP log disclosure (new PSV-075), CVE-2026-33032 nginx-ui (covered), CVE-2026-20205 Splunk MCP (covered), CVE-2026-33980 Azure Data Explorer MCP (covered), CVE-2026-26118 Azure MCP SSRF (covered), PyTorch Lightning Mini Shai-Hulud (covered), QLNX Quasar Linux (covered MAL-080), intercom-client 7.0.4/7.0.5 (covered), @bitwarden/cli Shai-Hulud (covered), axios 1.14.1/0.30.4 (covered), CVE-2026-39974 n8n-MCP SSRF (covered PSV-018), CVE-2026-5058 aws-mcp-server (covered), CVE-2026-32211 Azure DevOps MCP (covered), CVE-2026-30615 Windsurf zero-click (covered), TrustFall enableAllProjectMcpServers (covered), MCPJam Inspector CVE-2026-23744 (covered), CVE-2025-65717 Live Server (covered), LiteLLM TeamPCP (covered), CVE-2026-44284 FastGPT SSRF (PSV-071, covered).
+
 ## 2026.05.10.1
 
 Pattern update 2026-05-10. Three new rules: PINJ-028 (Spring AI memory poisoning), PSV-072 (GitLab MCP SSE auth bypass), PSV-073 (profullstack MCP command injection).

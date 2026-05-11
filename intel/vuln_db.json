@@ -283,6 +283,15 @@
       "source": "https://nvd.nist.gov/vuln/detail/CVE-2026-39974",
       "added": "2026-04-14",
       "rule_id": "PSV-018"
+    },
+    "CVE-2026-41495": {
+      "id": "CVE-2026-41495",
+      "severity": "low",
+      "fixed": "2.47.11",
+      "summary": "n8n-MCP HTTP transport mode logs bearer tokens and API keys from unauthorized POST /mcp requests (CWE-532). Credentials persist in server logs even after 401 rejection. Fixed in 2.47.11.",
+      "source": "https://advisories.gitlab.com/npm/n8n-mcp/CVE-2026-41495/",
+      "added": "2026-05-11",
+      "rule_id": "PSV-075"
     }
   },
   "mcp-server-taskwarrior": {
