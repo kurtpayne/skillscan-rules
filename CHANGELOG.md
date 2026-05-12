@@ -1,5 +1,25 @@
 # SkillScan Rules Changelog
 
+## 2026.05.12.1
+
+Pattern update 2026-05-12. One new rule: MAL-081 (Mini Shai-Hulud wave-3 TeamPCP supply-chain attack on @mistralai/@tanstack npm packages).
+
+- **MAL-081** (critical, new): **Mini Shai-Hulud wave-3 (TeamPCP) supply-chain attack on @mistralai/@tanstack npm packages via CI/CD cache poisoning (CVE-2026-45321, GHSA-g7cv-rxg3-hmpx)** — On 2026-05-11, TeamPCP published 84 malicious npm artifacts across 42 @tanstack packages and compromised @mistralai/mistralai 2.2.2-2.2.4, @mistralai/mistralai-azure 1.7.1-1.7.3, @mistralai/mistralai-gcp 1.7.1-1.7.3 (GHSA-3q49-cfcf-g5fm / MAL-2026-3432, CVSS 9.6). Attack chained a pull_request_target Pwn Request misconfiguration with GitHub Actions cache poisoning (1.1 GB entry) and /proc/<pid>/mem OIDC token extraction to publish malicious versions via the project's own trusted release workflow — the first documented supply-chain attack producing artifacts with valid SLSA provenance. Payload: preinstall hook downloads Bun, executes ~2.3 MB obfuscated binary, installs gh-token-monitor daemon (macOS LaunchAgent / Linux systemd) polling GitHub every 60 s. Exfil via typosquat C2 `git-tanstack.com`, Session messenger (`filev2.getsession.org`, `seed1-3.getsession.org`), and GitHub API dead drops. Secondary payload: `/tmp/transformers.pyz`. Mutex: `/tmp/tmp.ts018051808.lock`. The existing TeamPCP rules (MAL-039, MAL-041, MAL-049) cover prior waves (Trivy, Checkmarx, SAP CAP) with their respective IOCs; this rule anchors on the new-wave-specific C2 and persistence indicators.
+
+Vuln DB additions: `npm/@mistralai/mistralai` 2.2.2-2.2.4 (GHSA-3q49-cfcf-g5fm, critical, REMOVED), `npm/@mistralai/mistralai-azure` 1.7.1-1.7.3 (same), `npm/@mistralai/mistralai-gcp` 1.7.1-1.7.3 (same). 9 package-version entries total.
+IOC additions: 1 domain (`git-tanstack.com`).
+
+Total: 287 static rules + 14 chain rules = 301.
+
+Sources:
+- StepSecurity analysis: https://www.stepsecurity.io/blog/mini-shai-hulud-is-back-a-self-spreading-supply-chain-attack-hits-the-npm-ecosystem
+- TanStack GitHub issue: https://github.com/TanStack/router/issues/7383
+- Mistral AI GitHub issue: https://github.com/mistralai/client-ts/issues/217
+- The Hacker News: https://thehackernews.com/2026/05/mini-shai-hulud-worm-compromises.html
+- Aikido Security: https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised
+
+Candidates researched and already covered or excluded: CVE-2026-20205 Splunk MCP (already covered, 2026.04.XX), GHSA-MJ59-H3Q9-GHFH OpenClaw MCP stdio env var injection (already covered as PSV rule), CVE-2026-43901 Wireshark MCP (medium severity, no AI-toolchain risk angle), CVE-2026-30635 (inaccessible source, insufficient anchors), prior TeamPCP waves (MAL-039/MAL-041/MAL-049 cover Trivy/Checkmarx/SAP waves).
+
 ## 2026.05.11.1
 
 Pattern update 2026-05-11. Two new rules: PSV-074 (Cline kanban WebSocket hijacking, CVE-2026-44211), PSV-075 (n8n-MCP log disclosure, CVE-2026-41495).

@@ -2840,6 +2840,57 @@
         "fixed": "1.0.32",
         "summary": "NPM-BACKDOOR-2026-0127: @dydxprotocol/v4-client-js 3.4.1, 1.22.1, 1.15.2, 1.0.31 were compromised via stolen developer credentials (Socket, January 27 2026). Malicious code in registry.ts harvests wallet seed phrases and device fingerprints, exfiltrating to C2 dydx.priceoracle.site/v4/price."
       }
+    },
+    "@mistralai/mistralai": {
+      "2.2.2": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      },
+      "2.2.3": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      },
+      "2.2.4": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      }
+    },
+    "@mistralai/mistralai-azure": {
+      "1.7.1": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      },
+      "1.7.2": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      },
+      "1.7.3": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      }
+    },
+    "@mistralai/mistralai-gcp": {
+      "1.7.1": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      },
+      "1.7.2": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      },
+      "1.7.3": {
+        "id": "GHSA-3q49-cfcf-g5fm",
+        "severity": "critical",
+        "fixed": "REMOVED"
+      }
     }
   }
 }
