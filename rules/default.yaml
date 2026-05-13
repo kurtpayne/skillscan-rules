@@ -1,4 +1,4 @@
-version: 2026.05.12.1
+version: 2026.05.13.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -15425,6 +15425,118 @@ static_rules:
     on developer machines that installed affected packages. Network traffic
     to git-tanstack.com and filev2.getsession.org was observed. The payload
     downloads and executes transformers.pyz from the C2 host.
+  test_expect: fires
+- id: PSV-076
+  category: passive_surveillance
+  severity: medium
+  confidence: 0.85
+  title: wireshark-mcp arbitrary directory write via unvalidated dest_dir in wireshark_export_objects
+    (CVE-2026-43901, <= 1.1.5, CVSS 6.8)
+  pattern: '(?i)(?:CVE-2026-43901|wireshark[_\s-]?mcp[^\n]{0,120}(?:wireshark_export_objects|dest[_\s-]?dir[^\n]{0,60}(?:path[_\s-]?travers|arbitrary|unrestrict|WIRESHARK_MCP_ALLOWED_DIRS|1\.1\.[0-5]\b)|WIRESHARK_MCP_ALLOWED_DIRS)|wireshark_export_objects[^\n]{0,80}(?:dest[_\s-]?dir|path[_\s-]?travers|arbitrary|cve-2026-43901))'
+  mitigation: 'CVE-2026-43901 (CVSS 6.8 MEDIUM, CWE-22) is a path traversal vulnerability
+    in wireshark-mcp versions 1.1.5 and earlier. The wireshark_export_objects MCP
+    tool accepts an attacker-controlled dest_dir parameter and passes it directly
+    to tshark''s --export-objects flag without mandatory path restriction. The _allowed_dirs
+    sandbox defaults to None and only activates when the WIRESHARK_MCP_ALLOWED_DIRS
+    environment variable is explicitly set; in a default installation any filesystem
+    directory is a valid export destination. An MCP client can write tshark-exported
+    protocol objects to arbitrary paths, enabling overwrite of sensitive files, configuration
+    poisoning, or privilege escalation on misconfigured hosts. Disclosed May 11, 2026;
+    no fixed version available. Mitigate by setting WIRESHARK_MCP_ALLOWED_DIRS to
+    a restricted export directory and blocking network access to the MCP server from
+    untrusted callers.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-13'
+    updated: '2026-05-13'
+    tags:
+        - passive_surveillance
+        - psv
+        - mcp
+        - path-traversal
+        - wireshark-mcp
+        - cve-2026-43901
+    last_modified: '2026-05-13'
+    techniques:
+    - id: PSV-076
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-13'
+      last_modified: '2026-05-13'
+    quality:
+      precision_estimate: 0.85
+      benchmark_set: core-static-v1
+    references:
+    - https://vulnerability.circl.lu/vuln/cve-2026-43901
+    - https://cve.threatint.eu/CVE/CVE-2026-43901
+  test_input: |
+    # wireshark-mcp Deployment Guide
+
+    CVE-2026-43901 affects wireshark-mcp 1.1.5 and earlier. The
+    wireshark_export_objects MCP tool passes the dest_dir parameter
+    to tshark --export-objects without path restriction unless
+    WIRESHARK_MCP_ALLOWED_DIRS is configured.
+  test_expect: fires
+- id: PSV-077
+  category: passive_surveillance
+  severity: high
+  confidence: 0.88
+  title: '@mcpc-tech/code-runner-mcp unauthenticated HTTP /mcp endpoint allows RCE
+    (CVE-2026-5029, all versions, no fix)'
+  pattern: '(?i)(?:CVE-2026-5029|code[_\s-]?runner[_\s-]?mcp[^\n]{0,120}(?:--transport[_\s]+http|unauthenticated[^\n]{0,40}(?:/mcp|port[_\s]+3088)|port[_\s]+3088[^\n]{0,60}(?:unauth|no[_\s-]?auth|rce|arbitrary|cve)|arbitrary[_\s-]?code[^\n]{0,80}(?:code[_\s-]?runner|mcpc|/mcp|3088))|mcpc[_\s-]?tech[^\n]{0,80}(?:--transport[_\s]+http|port[_\s]+3088|unauthenticated|CVE-2026-5029))'
+  mitigation: 'CVE-2026-5029 is an unauthenticated remote code execution vulnerability
+    in @mcpc-tech/code-runner-mcp (all published versions; no fix available as of
+    May 2026). When started with the --transport http flag the server exposes its
+    /mcp JSON-RPC endpoint on port 3088 without any authentication requirement. Any
+    caller with network access can invoke code-execution tools and run arbitrary code
+    with the privileges of the server process. Do not run code-runner-mcp with --transport
+    http on a network-accessible interface. If HTTP transport is required, bind to
+    loopback only (--host 127.0.0.1) and enforce network-level access control. Reported
+    by CERT Polska, May 2026.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-13'
+    updated: '2026-05-13'
+    tags:
+        - passive_surveillance
+        - psv
+        - mcp
+        - rce
+        - code-runner-mcp
+        - mcpc-tech
+        - unauthenticated
+        - cve-2026-5029
+    last_modified: '2026-05-13'
+    techniques:
+    - id: PSV-077
+      name: Passive surveillance vulnerability
+    applies_to:
+      contexts:
+      - source
+      - dependency
+    lifecycle:
+      introduced: '2026-05-13'
+      last_modified: '2026-05-13'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://cert.pl/en/posts/2026/05/CVE-2026-5029/
+    - https://github.com/mcpc-tech/code-runner-mcp
+  test_input: |
+    # Code Runner MCP Server Setup
+
+    CVE-2026-5029: @mcpc-tech/code-runner-mcp exposes an unauthenticated
+    /mcp JSON-RPC endpoint on port 3088 when started with --transport http,
+    enabling unauthenticated arbitrary code execution by any network caller.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b

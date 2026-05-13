@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.05.13.1
+
+Pattern update 2026-05-13. Two new rules: PSV-076 (wireshark-mcp path traversal, CVE-2026-43901), PSV-077 (code-runner-mcp unauthenticated RCE, CVE-2026-5029). Plus PyPI vuln DB enrichment for Mini Shai-Hulud wave-3.
+
+- **PSV-076** (medium, new): **wireshark-mcp arbitrary directory write via unvalidated dest_dir in wireshark_export_objects (CVE-2026-43901, <= 1.1.5, CVSS 6.8)** — Disclosed May 11, 2026. The `wireshark_export_objects` MCP tool in wireshark-mcp 1.1.5 and earlier accepts an attacker-controlled `dest_dir` parameter and passes it to tshark's `--export-objects` flag without path restriction. The `_allowed_dirs` sandbox defaults to `None` and only activates when `WIRESHARK_MCP_ALLOWED_DIRS` is explicitly set, so any filesystem path is a valid write target in a default deployment. An MCP client can overwrite sensitive files, plant backdoors, or escalate privileges on misconfigured systems. No fix available; mitigate via `WIRESHARK_MCP_ALLOWED_DIRS` and network-level access control. Rule fires on CVE ID, `wireshark-mcp` + `wireshark_export_objects`/`dest_dir`/path-traversal/WIRESHARK_MCP_ALLOWED_DIRS context.
+
+- **PSV-077** (high, new): **@mcpc-tech/code-runner-mcp unauthenticated HTTP /mcp endpoint allows RCE (CVE-2026-5029, all versions, no fix)** — Reported by CERT Polska, May 2026. When `@mcpc-tech/code-runner-mcp` is started with `--transport http`, it exposes a `/mcp` JSON-RPC endpoint on port 3088 without any authentication. Any network caller can invoke code-execution tools and run arbitrary code with server process privileges. No fix available; mitigate by binding to loopback only (`--host 127.0.0.1`) and enforcing network-level access control. Rule fires on CVE ID, `code-runner-mcp` + `--transport http`/port-3088/unauthenticated/arbitrary-code context, and `mcpc-tech` + same keywords.
+
+Vuln DB additions: `pip/mistralai` 2.4.6 (CVE-2026-45321 / Mini Shai-Hulud wave-3, REMOVED), `pip/guardrails-ai` 0.10.1 (same), `wireshark-mcp` <= 1.1.5 (CVE-2026-43901, medium), `@mcpc-tech/code-runner-mcp` all (CVE-2026-5029, high). 4 new entries.
+IOC additions: none (git-tanstack.com already in DB from 2026.05.12.1; Session P2P infrastructure excluded to avoid FPs).
+
+Total: 289 static rules + 14 chain rules = 303.
+
+Sources:
+- CVE-2026-43901 (CIRCL): https://vulnerability.circl.lu/vuln/cve-2026-43901
+- CVE-2026-43901 (ThreatInt): https://cve.threatint.eu/CVE/CVE-2026-43901
+- CVE-2026-5029 (CERT Polska): https://cert.pl/en/posts/2026/05/CVE-2026-5029/
+- Code Runner MCP repository: https://github.com/mcpc-tech/code-runner-mcp
+- mistralai PyPI attack: https://dev.to/cryip/mistral-ai-pypi-supply-chain-attack-mistralai-246-what-python-ai-developers-must-do-right-now-c8i
+- guardrails-ai PyPI: https://thehackernews.com/2026/05/mini-shai-hulud-worm-compromises.html
+
 ## 2026.05.12.1
 
 Pattern update 2026-05-12. One new rule: MAL-081 (Mini Shai-Hulud wave-3 TeamPCP supply-chain attack on @mistralai/@tanstack npm packages).
