@@ -1,5 +1,21 @@
 # SkillScan Rules Changelog
 
+## 2026.05.14.1
+
+Pattern update 2026-05-14. No new rules. Vuln DB enrichment only: version-specific entries for @tanstack/react-router and @tanstack/router-core compromised in Mini Shai-Hulud wave-3 (CVE-2026-45321).
+
+Vuln DB additions: `@tanstack/react-router` 1.169.5 (id: MAL-081, critical, CVE-2026-45321, fixed: 1.169.6), `@tanstack/router-core` 1.169.5 (id: MAL-081, critical, CVE-2026-45321, fixed: 1.169.6). 2 new entries.
+IOC additions: none.
+
+Total: 289 static rules + 14 chain rules = 303 (unchanged).
+
+Sources:
+- GitHub mini-shai-hulud-checker: https://github.com/champjss/mini-shai-hulud-checker-20260512
+- TanStack GitHub issue #7383: https://github.com/TanStack/router/issues/7383
+- CVE-2026-45321 (NVD): https://nvd.nist.gov/vuln/detail/CVE-2026-45321
+
+Candidates researched and already covered or excluded: CVE-2026-5029 code-runner-mcp (PSV-077, covered 2026.05.13.1), CVE-2026-43901 wireshark-mcp (PSV-076, covered 2026.05.13.1), mistralai 2.4.6 PyPI (vuln_db covered 2026.05.13.1), guardrails-ai 0.10.1 PyPI (vuln_db covered 2026.05.13.1), @opensearch-project/opensearch compromise (insufficient primary source confirmation — version list came from aggregated reports, no verifiable primary source available), TanStack MAL-081 rule (covered 2026.05.12.1), nginx-ui CVE-2026-33032 (covered), @yoda.digital/gitlab-mcp-server PSV-072 (covered), @profullstack/mcp-server PSV-073 (covered).
+
 ## 2026.05.13.1
 
 Pattern update 2026-05-13. Two new rules: PSV-076 (wireshark-mcp path traversal, CVE-2026-43901), PSV-077 (code-runner-mcp unauthenticated RCE, CVE-2026-5029). Plus PyPI vuln DB enrichment for Mini Shai-Hulud wave-3.

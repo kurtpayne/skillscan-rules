@@ -1040,16 +1040,6 @@
       "summary": "Unauthenticated OS command injection in domain_lookup via unquoted execAsync() shell (CWE-78)"
     }
   },
-  "wireshark-mcp": {
-    "<= 1.1.5": {
-      "id": "CVE-2026-43901",
-      "severity": "medium",
-      "cvss": 6.8,
-      "cwe": "CWE-22",
-      "fixed": null,
-      "summary": "CVE-2026-43901 (CVSS 6.8, CWE-22): Path traversal in wireshark-mcp <= 1.1.5 via unvalidated dest_dir parameter in wireshark_export_objects MCP tool. Allows arbitrary filesystem write when WIRESHARK_MCP_ALLOWED_DIRS is not set (default). No fix available as of May 2026."
-    }
-  },
   "@mcpc-tech/code-runner-mcp": {
     "all": {
       "id": "CVE-2026-5029",
@@ -2932,6 +2922,28 @@
         "severity": "critical",
         "fixed": "REMOVED"
       }
+    }
+  },
+  "@tanstack/react-router": {
+    "1.169.5": {
+      "id": "MAL-081",
+      "severity": "critical",
+      "cvss": 9.6,
+      "fixed": "1.169.6",
+      "summary": "@tanstack/react-router@1.169.5 compromised in Mini Shai-Hulud wave-3 / TeamPCP supply chain attack (CVE-2026-45321, May 11 2026). Drops router_init.js credential stealer (SHA-256 ab4fcadaec49c03278063dd269ea5eef82d24f2124a8e15d7b90f2fa8601266c) via preinstall hook.",
+      "campaign": "Mini-Shai-Hulud",
+      "cve": "CVE-2026-45321"
+    }
+  },
+  "@tanstack/router-core": {
+    "1.169.5": {
+      "id": "MAL-081",
+      "severity": "critical",
+      "cvss": 9.6,
+      "fixed": "1.169.6",
+      "summary": "@tanstack/router-core@1.169.5 compromised in Mini Shai-Hulud wave-3 / TeamPCP supply chain attack (CVE-2026-45321, May 11 2026). Same credential-stealer payload as react-router.",
+      "campaign": "Mini-Shai-Hulud",
+      "cve": "CVE-2026-45321"
     }
   }
 }
