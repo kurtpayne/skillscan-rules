@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.05.15.1
+
+Pattern update 2026-05-15. One new rule: SUP-052 (node-ipc supply chain via expired maintainer email domain, May 14, 2026).
+
+- **SUP-052** (critical, new): **node-ipc supply chain compromise via expired maintainer email domain takeover (9.1.6/9.2.3/12.0.1, C2: sh.azurestaticprovider.net)** — On May 14, 2026, versions 9.1.6, 9.2.3, and 12.0.1 of the node-ipc npm package (3.35M+ monthly downloads) were published through a compromised maintainer account. The attacker re-registered the dormant maintainer's expired email domain (atlantis-software.net) via Namecheap, triggering a standard npm password-reset flow to gain publish rights — no vulnerability in npm required. The 80 KB obfuscated payload silently harvests 90+ credential categories (AWS, GCP, Azure, GitHub CLI, Kubernetes, HashiCorp Vault, Claude AI settings, SSH keys, shell history, database passwords), compresses them into a gzip archive, and exfiltrates to sh.azurestaticprovider.net masquerading as Azure infrastructure. A secondary DNS-TXT channel overrides the system resolver to 8.8.8.8 to bypass local DNS inspection. The malware does not establish persistence. This is a separate campaign from Mini Shai-Hulud (TeamPCP) — no OIDC token hijacking, no self-propagating worm. Rule fires on the C2 domain, the expired maintainer domain, and node-ipc pinned to any of the three compromised version strings.
+
+Vuln DB additions: `node-ipc` 9.1.6, 9.2.3, 12.0.1 (id: SUP-052, critical, fixed: 9.2.1 / 12.0.0). 3 new entries.
+IOC additions: `sh.azurestaticprovider.net` (C2), `atlantis-software.net` (expired maintainer domain). 2 new domains.
+
+Total: 290 static rules + 14 chain rules = 304.
+
+Sources:
+- The Hacker News: https://thehackernews.com/2026/05/stealer-backdoor-found-in-3-node-ipc.html
+- StepSecurity advisory: https://www.stepsecurity.io/blog/node-ipc-npm-supply-chain-attack
+- SafeDep analysis: https://safedep.io/malicious-node-ipc-npm-compromise/
+- Socket: https://socket.dev/blog/node-ipc-package-compromised
+
+Candidates researched and already covered or excluded: nginx-ui CVE-2026-33032 (PSV covered in prior run), Splunk MCP CVE-2026-20205 (PSV covered in prior run), CVE-2025-65717 Live Server (PSV covered in prior run), Mini Shai-Hulud wave-3 UiPath/@opensearch-project (MAL-081 covers by C2 domain; specific versions excluded — no primary-source version list verifiable, consistent with 2026.05.14.1 exclusion), nginx-ui CVE-2026-33032 (already covered).
+
 ## 2026.05.14.1
 
 Pattern update 2026-05-14. No new rules. Vuln DB enrichment only: version-specific entries for @tanstack/react-router and @tanstack/router-core compromised in Mini Shai-Hulud wave-3 (CVE-2026-45321).
