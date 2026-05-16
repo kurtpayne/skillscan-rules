@@ -1,5 +1,30 @@
 # SkillScan Rules Changelog
 
+## 2026.05.16.1
+
+Pattern update 2026-05-16. Three new rules: PSV-078 (Apache Doris MCP Server SQLi, CVE-2025-66335), PSV-079 (Alibaba Cloud RDS OpenAPI MCP Server unauthenticated RAG info disclosure, no CVE), PSV-080 (Apache Pinot/StarTree MCP Server SQLi via auth bypass, no CVE).
+
+- **PSV-078** (medium, new): **Apache Doris MCP Server SQL injection (CVE-2025-66335, GHSA-qhfq-gvvc-5q6q, doris-mcp-server < 0.6.1)** — CVE-2025-66335 (CVSS 5.3, CWE-89) is a SQL injection vulnerability in the Apache Doris MCP Server (PyPI: `doris-mcp-server`) affecting versions >= 0.1.0 and < 0.6.1. The MCP query execution interface fails to adequately validate and neutralize input parameters before constructing SQL statements, allowing attackers to inject additional SQL syntax that alters query behavior, executes unintended statements, and bypasses intended access restrictions. Fixed in `doris-mcp-server` 0.6.1. Discovered by Tomer Peled (Akamai), reported May 2026.
+
+- **PSV-079** (medium, new): **Alibaba Cloud RDS OpenAPI MCP Server unauthenticated RAG tool info disclosure (alibabacloud-rds-openapi-mcp-server, all versions, no fix)** — The Alibaba Cloud RDS OpenAPI MCP Server does not authenticate users before invoking the RAG (retrieval-augmented generation) MCP tool. Any client that can reach the MCP endpoint can invoke the RAG tool without credentials, potentially accessing sensitive metadata from the vector index including table names, schema definitions, and database structure. Alibaba declined to patch this vulnerability (classified as "not applicable"). All published versions affected. No fix available. Reported to CERT/CC by Tomer Peled (Akamai), May 2026.
+
+- **PSV-080** (high, new): **Apache Pinot (StarTree) MCP Server SQL injection via auth bypass (mcp-pinot-server, <= 1.1.0)** — The Apache Pinot MCP Server (PyPI: `mcp-pinot-server`, maintained by StarTree at github.com/startreedata/mcp-pinot) versions through 1.1.0 have an authentication bypass that enables SQL injection against the connected Pinot instance. The MCP endpoint does not enforce authentication by default, allowing unauthenticated callers to execute arbitrary Pinot SQL queries. In externally-exposed environments this enables full database takeover. StarTree has added an OAuth option for HTTP transport but SQL injection persists in the code. No CVE assigned as of May 2026. Reported by Tomer Peled (Akamai).
+
+Vuln DB additions: `doris-mcp-server` 0.1.0–0.5.1 (id: CVE-2025-66335, medium, fixed: 0.6.1); `alibabacloud-rds-openapi-mcp-server` 0.1.0/0.2.0/1.0.0 (id: PSV-079, medium, no fix); `mcp-pinot-server` 0.1.0/1.0.0/1.1.0 (id: PSV-080, high, no fix). 12 new entries.
+IOC additions: none.
+
+Total: 293 static rules + 14 chain rules = 307.
+
+Sources:
+- The Register (Tomer Peled/Akamai report): https://www.theregister.com/security/2026/05/13/bug-hunter-tracks-down-three-serious-mcp-database-flaws-one-left-unpatched/
+- GitHub Advisory (CVE-2025-66335): https://github.com/advisories/GHSA-qhfq-gvvc-5q6q
+- NVD (CVE-2025-66335): https://nvd.nist.gov/vuln/detail/CVE-2025-66335
+- Apache Doris MCP Server: https://github.com/apache/doris-mcp-server
+- Alibaba Cloud RDS MCP: https://github.com/aliyun/alibabacloud-rds-openapi-mcp-server
+- StarTree Pinot MCP: https://github.com/startreedata/mcp-pinot
+
+Candidates researched and already covered or excluded: CVE-2026-5058 aws-mcp-server (PSV covered), CVE-2026-33980 Azure Data Explorer MCP (PSV covered), CVE-2026-20205 Splunk MCP (PSV covered), CVE-2026-26118 Azure MCP SSRF (PSV covered), CVE-2025-65717 VS Code Live Server (PSV covered), CVE-2026-33032 nginx-ui MCP (PSV covered), TeamPCP/Shai-Hulud all waves (multiple SUP/MAL rules), MAL-081 @mistralai/@tanstack wave-3 (covered), SUP-052 node-ipc (covered yesterday).
+
 ## 2026.05.15.1
 
 Pattern update 2026-05-15. One new rule: SUP-052 (node-ipc supply chain via expired maintainer email domain, May 14, 2026).
