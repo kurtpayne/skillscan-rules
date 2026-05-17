@@ -1148,6 +1148,13 @@
       "summary": "PSV-080: Apache Pinot (StarTree) MCP Server has an authentication bypass enabling SQL injection against the connected Pinot instance. Unauthenticated callers can execute arbitrary Pinot SQL queries; in exposed environments this enables full database takeover. No CVE assigned. OAuth option added in later versions but SQLi persists."
     }
   },
+  "microsoft.semantickernel": {
+    "1.70.0": {
+      "id": "CVE-2026-25592",
+      "severity": "high",
+      "fixed": "1.71.0"
+    }
+  },
   "_meta": {
     "generated": "2026-05-17",
     "source": "OSV.dev (https://osv.dev)",
@@ -3055,13 +3062,6 @@
         "affected_range": "==12.0.1",
         "published": "2026-05-14"
       }
-    }
-  },
-  "microsoft.semantickernel": {
-    "1.70.0": {
-      "id": "CVE-2026-25592",
-      "severity": "high",
-      "fixed": "1.71.0"
     }
   }
 }
