@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.05.17.1
+
+Pattern update 2026-05-17. Two new rules: PSV-081 (Semantic Kernel Python InMemoryVectorStore eval injection RCE, CVE-2026-26030), PSV-082 (Semantic Kernel .NET SessionsPythonPlugin arbitrary file write, CVE-2026-25592).
+
+- **PSV-081** (high, new): **Semantic Kernel Python InMemoryVectorStore eval injection RCE (CVE-2026-26030, < 1.39.4)** — CVE-2026-26030 (CWE-95) is a code injection vulnerability in the Microsoft Semantic Kernel Python library prior to 1.39.4. The InMemoryVectorStore default filter function uses unsafe string interpolation with `eval()` on parameters derived from AI model output. An attacker who can influence model responses (via prompt injection) can inject arbitrary Python code and achieve remote code execution on the agent host. Fixed in semantic-kernel 1.39.4. Discovered and disclosed by Microsoft Security Response Center, May 2026.
+
+- **PSV-082** (high, new): **Semantic Kernel .NET SessionsPythonPlugin arbitrary file write (CVE-2026-25592, < 1.71.0)** — CVE-2026-25592 (CWE-434/CWE-73) is an arbitrary file write vulnerability in the Microsoft Semantic Kernel .NET SDK prior to 1.71.0. The `DownloadFileAsync` function in `SessionsPythonPlugin` was inadvertently decorated with `[KernelFunction]`, exposing the `localFilePath` parameter to AI model control with no path validation or directory restriction. Attackers can chain `ExecuteCode` and `DownloadFileAsync` to write files to arbitrary host paths (e.g. startup folders), escaping container sandbox isolation and achieving persistent RCE. Fixed in Microsoft.SemanticKernel 1.71.0. Discovered and disclosed by Microsoft Security Response Center, May 2026.
+
+Vuln DB additions: `semantic-kernel` (Python) 1.39.3 (id: CVE-2026-26030, high, fixed: 1.39.4); `microsoft.semantickernel` (.NET) 1.70.0 (id: CVE-2026-25592, high, fixed: 1.71.0). 2 new entries.
+IOC additions: none.
+
+Total: 295 static rules + 14 chain rules = 309.
+
+Sources:
+- Microsoft Security Blog (May 7, 2026): https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/
+- NVD CVE-2026-26030: https://nvd.nist.gov/vuln/detail/CVE-2026-26030
+- NVD CVE-2026-25592: https://nvd.nist.gov/vuln/detail/CVE-2026-25592
+- Semantic Kernel GitHub: https://github.com/microsoft/semantic-kernel
+
+Candidates researched and already covered or excluded: CVE-2026-5058 aws-mcp-server (PSV covered), CVE-2026-20205 Splunk MCP (PSV covered), CVE-2026-26118 Azure MCP SSRF (PSV covered), CVE-2025-66335 Apache Doris MCP (PSV-078), PSV-079 Alibaba RDS MCP (covered), PSV-080 Apache Pinot MCP (covered), TeamPCP/Mini Shai-Hulud all waves (MAL/SUP rules), @mistralai/@tanstack wave-3 (MAL-081), node-ipc compromise (SUP-052).
+
 ## 2026.05.16.1
 
 Pattern update 2026-05-16. Three new rules: PSV-078 (Apache Doris MCP Server SQLi, CVE-2025-66335), PSV-079 (Alibaba Cloud RDS OpenAPI MCP Server unauthenticated RAG info disclosure, no CVE), PSV-080 (Apache Pinot/StarTree MCP Server SQLi via auth bypass, no CVE).

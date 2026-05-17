@@ -2095,6 +2095,13 @@
         "fixed": null,
         "summary": "PYPI-BACKDOOR-2026-0127: dydx-v4-client 1.1.5post1 (PyPI) was compromised alongside the npm package, delivering a wallet stealer plus Remote Access Trojan (RAT) with C2 at dydx.priceoracle.site/py."
       }
+    },
+    "semantic-kernel": {
+      "1.39.3": {
+        "id": "CVE-2026-26030",
+        "severity": "high",
+        "fixed": "1.39.4"
+      }
     }
   },
   "npm": {
@@ -3048,6 +3055,13 @@
         "affected_range": "==12.0.1",
         "published": "2026-05-14"
       }
+    }
+  },
+  "microsoft.semantickernel": {
+    "1.70.0": {
+      "id": "CVE-2026-25592",
+      "severity": "high",
+      "fixed": "1.71.0"
     }
   }
 }
