@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.05.19.1
+
+Pattern update 2026-05-19. One new rule: MAL-082 (SmartLoader/StealC LuaJIT loader distributed via fake MCP repos, Polygon blockchain dead-drop C2).
+
+- **MAL-082** (high, new): **SmartLoader/StealC MCP-fake-repo campaign — Polygon blockchain dead-drop C2 (polygon.drpc.org eth\_call) + LuaJIT lua51.dll loader** — SmartLoader is a LuaJIT-based infostealer loader distributed via 109+ fake GitHub repositories that clone legitimate MCP server projects (including Oura Ring MCP). Each malicious ZIP contains a one-line batch launcher, LuaJIT 2.1, lua51.dll, and an obfuscated Lua payload disguised as .txt/.log. SmartLoader queries a Polygon smart contract via JSON-RPC eth\_call to polygon.drpc.org (dead-drop resolver) for the current C2 URL, then downloads and reflectively loads a StealC PE. Persistence via two scheduled tasks under %LOCALAPPDATA% masquerading as audio manager or Office components. Active as of April 2026; 109 repos across 103 GitHub accounts confirmed. Rule fires on polygon.drpc.org + eth\_call/JSON-RPC context, or lua51.dll + batch/log/txt context.
+
+Vuln DB additions: none.
+IOC additions: none (polygon.drpc.org is a legitimate service being abused; no dedicated C2 domain identified in open-source reporting).
+
+Total: 296 static rules + 14 chain rules = 310.
+
+Sources:
+- The Hacker News: https://thehackernews.com/2026/02/smartloader-attack-uses-trojanized-oura.html
+- GBHackers: https://gbhackers.com/109-fake-github-repos/
+- Hexastrike: https://hexastrike.com/resources/blog/threat-intelligence/cloned-loaded-and-stolen-how-109-fake-github-repositories-delivered-smartloader-and-stealc/
+- SOCPrime: https://socprime.com/active-threats/smartloader-analysis/
+
+Candidates researched and already covered or excluded: Mini Shai-Hulud wave-3 UiPath/@opensearch-project (MAL-081 covers by C2 domain, consistent with prior exclusion note; no primary-source version list verifiable), CVE-2026-30615 Windsurf (PSV already covered), CVE-2026-26118 Azure MCP SSRF (PSV already covered), CVE-2026-22252 LibreChat (PSV already covered), CVE-2026-22688 WeKnora (PSV already covered), CVE-2025-49596 MCP Inspector (PSV already covered), CVE-2025-54136 Cursor MCPoison (PSV already covered), CVE-2025-54994 @akoskm/create-mcp-server-stdio (PSV already covered), CVE-2026-44284 FastGPT (PSV already covered), CVE-2026-45321 TanStack/Mistral AI wave-3 (MAL-081 already covered), node-ipc (SUP-052 already covered).
+
 ## 2026.05.17.1
 
 Pattern update 2026-05-17. Two new rules: PSV-081 (Semantic Kernel Python InMemoryVectorStore eval injection RCE, CVE-2026-26030), PSV-082 (Semantic Kernel .NET SessionsPythonPlugin arbitrary file write, CVE-2026-25592).
