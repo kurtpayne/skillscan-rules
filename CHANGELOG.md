@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.05.20.1
+
+Pattern update 2026-05-20. Two new rules: MAL-083 (PromptMink DPRK crypto credential stealer) and SUP-053 (npm typosquatting Microsoft AI packages with Claude Code SessionStart hook backdoor).
+
+- **MAL-083** (critical, new): **PromptMink DPRK (Famous Chollima) crypto credential stealer via trojanized npm/PyPI packages (@validate-sdk/v2, @solana-launchpad/sdk, scraper-npm, C2: ipfs-url-validator.vercel.app)** — PromptMink is a multi-stage credential-stealing campaign attributed to Famous Chollima (North Korea), disclosed by ReversingLabs on April 29, 2026. The primary malicious npm payload, @validate-sdk/v2, masquerades as a data-validation library. It targets crypto wallet configuration, SSH keys, and cloud credentials, exfiltrating to `ipfs-url-validator.vercel.app/fetchbs58` via a Base64-encoded C2 URL. The first-stage bait, @solana-launchpad/sdk, contains no malicious code itself but silently pulls in @validate-sdk/v2 as a transitive dependency. The campaign gained notoriety when it entered the open-source autonomous crypto trading project `openpaw-graveyard` via a commit co-authored by Claude Opus (February 28, 2026). A PyPI port, `scraper-npm`, reimplements the same stealer in Python and adds SSH-key persistence. ReversingLabs tracked 60+ packages and 300+ versions over a seven-month period (October 2025–April 2026). Rule fires on the primary payload name, PyPI port, or C2 domain.
+
+- **SUP-053** (critical, new): **npm typosquatting Microsoft AI packages with Claude Code SessionStart hook backdoor (microsoft-applicationinsights-common v3.4.2 / ms-graph-types v2.43.2, C2: 207.90.194.2:443)** — Five typosquatting npm packages published by accounts named `superbase` and `micresoft` ship identical 4.5 MB UPX-compressed ELF binaries inside a `.claude/` directory. Two confirmed packages: `microsoft-applicationinsights-common` v3.4.2 (typosquat of `@microsoft/applicationinsights-common`) and `ms-graph-types` v2.43.2 (typosquat of `@types/microsoft-graph`), both mirroring the legitimate packages' current version numbers to evade semver-range audits. The binary executes on `npm install` and, by hijacking the Claude Code `SessionStart` hook, re-executes on every subsequent Claude Code session start in the affected project — meaning a single install creates persistent re-execution until the package is removed. The binary exfiltrates environment variables, home directory contents, git credentials, and `/proc/` entries to `207.90.194.2:443`. VirusTotal: `Program:Script/Wacapew.A!ml`. Discovered by SafeDep, May 13, 2026. Use `@microsoft/applicationinsights-common` and `@types/microsoft-graph` (scoped) exclusively.
+
+Vuln DB additions: `@validate-sdk/v2` (npm, MAL-083, all versions), `@solana-launchpad/sdk` (npm, MAL-083, bait), `scraper-npm` (pip, MAL-083, all versions), `microsoft-applicationinsights-common` (npm, SUP-053, v3.4.2), `ms-graph-types` (npm, SUP-053, v2.43.2). 5 new entries.
+IOC additions: `207.90.194.2` (SUP-053 C2 IP), `ipfs-url-validator.vercel.app` (MAL-083 C2 domain). 1 new IP + 1 new domain.
+
+Total: 298 static rules + 14 chain rules = 312.
+
+Sources:
+- ReversingLabs: https://www.reversinglabs.com/blog/claude-promptmink-malware-crypto
+- The Hacker News (DPRK wave): https://thehackernews.com/2026/04/new-wave-of-dprk-attacks-uses-ai.html
+- CyberSecurityNews (PromptMink): https://cybersecuritynews.com/claude-generated-commit-adds-promptmink-malware/
+- SafeDep (Claude Code hooks): https://safedep.io/malicious-npm-packages-claude-code-hooks/
+
+Candidates researched and already covered or excluded: CVE-2026-26118 Azure MCP SSRF (PSV covered in prior runs), Cline@2.3.0 OpenClaw (already in vuln_db NPM-CLINE-2026-03), Axios supply chain (already in vuln_db + IOC sfrclak.com), Mini Shai-Hulud wave (MAL-081 covers by C2), SmartLoader/StealC (MAL-082), nginx-ui CVE-2026-33032 (PSV covered), GlassWorm/OpenVSX (MAL-066), Claude Code SessionStart hook general pattern (existing rule at line 4144).
+
 ## 2026.05.19.1
 
 Pattern update 2026-05-19. One new rule: MAL-082 (SmartLoader/StealC LuaJIT loader distributed via fake MCP repos, Polygon blockchain dead-drop C2).
