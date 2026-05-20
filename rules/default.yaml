@@ -1,4 +1,4 @@
-version: 2026.05.17.1
+version: 2026.05.19.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -15893,6 +15893,81 @@ static_rules:
     ```xml
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.70.0" />
     ```
+  test_expect: fires
+- id: MAL-082
+  category: malware_pattern
+  severity: high
+  confidence: 0.88
+  title: SmartLoader/StealC MCP-fake-repo campaign — Polygon blockchain dead-drop
+    C2 (polygon.drpc.org eth_call) + LuaJIT lua51.dll loader
+  pattern: '(?i)(?:polygon\.drpc\.org[^\n]{0,300}(?:eth_call|json.?rpc|dead.?drop|smart.?contract|c2[_\s-]?(?:resolv|url|endpoint))|(?:eth_call|json.?rpc)[^\n]{0,300}polygon\.drpc\.org|lua51\.dll[^\n]{0,200}(?:batch|\.log|\.txt))'
+  mitigation: SmartLoader is a LuaJIT-based infostealer loader distributed (as of
+    April 2026) via 109+ fake GitHub repositories that clone legitimate MCP server
+    projects — including Oura Ring MCP (oura-mcp). Each malicious ZIP contains a
+    one-line batch launcher, a renamed LuaJIT 2.1 binary, lua51.dll, and an obfuscated
+    Lua payload disguised as a .txt or .log file. SmartLoader uses a Polygon smart
+    contract via JSON-RPC eth_call to polygon.drpc.org as a dead-drop resolver to
+    obtain the current C2 URL, then downloads and reflectively executes a StealC
+    infostealer PE. Persistence is via two scheduled tasks under %LOCALAPPDATA% that
+    masquerade as audio manager or Office components. Never run LuaJIT binaries obtained
+    from unverified MCP server repositories. Audit %LOCALAPPDATA% for unexpected
+    lua51.dll and LuaJIT executables. Active campaign — 109 repos across 103 GitHub
+    accounts confirmed by Hexastrike/GBHackers (April 2026).
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-19'
+    updated: '2026-05-19'
+    tags:
+    - malware_pattern
+    - mal
+    - smartloader
+    - stealc
+    - luajit
+    - blockchain-c2
+    - polygon
+    - oura-mcp
+    last_modified: '2026-05-19'
+    techniques:
+    - id: MAL-082
+      name: Malware or malicious behavior
+    applies_to:
+      contexts:
+      - source
+      - workflow
+      - dependency
+    lifecycle:
+      introduced: '2026-05-19'
+      last_modified: '2026-05-19'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+    - https://thehackernews.com/2026/02/smartloader-attack-uses-trojanized-oura.html
+    - https://gbhackers.com/109-fake-github-repos/
+    - https://hexastrike.com/resources/blog/threat-intelligence/cloned-loaded-and-stolen-how-109-fake-github-repositories-delivered-smartloader-and-stealc/
+    - https://socprime.com/active-threats/smartloader-analysis/
+  test_input: |
+    # Oura Ring MCP Server
+
+    Provides Oura Ring API access via Model Context Protocol.
+
+    ## Quick Start
+
+    Extract the release archive and run the batch launcher:
+
+    ```batch
+    @echo off
+    luajit.exe loader.log
+    ```
+
+    Requires lua51.dll bundled in the archive.
+
+    ## Implementation Notes
+
+    Blockchain C2 resolution uses polygon.drpc.org (eth_call to resolve current
+    C2 endpoint from Polygon smart contract).
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
