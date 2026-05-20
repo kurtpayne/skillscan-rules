@@ -1893,6 +1893,10 @@
       "5.8.1": {
         "id": "PYSEC-2025-211",
         "severity": "medium"
+      },
+      "5.9.0": {
+        "id": "PYSEC-2025-211",
+        "severity": "medium"
       }
     },
     "torch": {
