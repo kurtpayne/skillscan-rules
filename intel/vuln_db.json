@@ -1156,7 +1156,7 @@
     }
   },
   "_meta": {
-    "generated": "2026-05-19",
+    "generated": "2026-05-20",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
@@ -1471,6 +1471,10 @@
         "id": "GHSA-45pg-36p6-83v9",
         "severity": "low",
         "fixed": "0.2.19"
+      },
+      "1.0.0a1": {
+        "id": "PYSEC-2024-278",
+        "severity": "medium"
       }
     },
     "llama-index": {
@@ -1875,6 +1879,10 @@
         "id": "GHSA-69w3-r845-3855",
         "severity": "medium",
         "fixed": "5.0.0rc3"
+      },
+      "5.8.1": {
+        "id": "PYSEC-2025-211",
+        "severity": "medium"
       }
     },
     "torch": {
@@ -1904,9 +1912,23 @@
         "fixed": "2.5.0"
       },
       "2.7.0": {
-        "id": "GHSA-3749-ghw9-m3mg",
-        "severity": "low",
-        "fixed": "2.7.1-rc1"
+        "id": "PYSEC-2025-205",
+        "severity": "medium",
+        "fixed": "2.7.1"
+      },
+      "2.9.1": {
+        "id": "PYSEC-2025-189",
+        "severity": "medium"
+      },
+      "2.6.0": {
+        "id": "PYSEC-2025-198",
+        "severity": "medium",
+        "fixed": "2.7.0"
+      },
+      "2.8.0": {
+        "id": "PYSEC-2025-203",
+        "severity": "medium",
+        "fixed": "2.9.0"
       }
     },
     "litellm": {
