@@ -1,5 +1,34 @@
 # SkillScan Rules Changelog
 
+## 2026.05.21.1
+
+Pattern update 2026-05-21. Four new rules: MAL-084 (@antv npm wave-4), PSV-083 (Gemini CLI CI RCE), PSV-084 (Cursor git hook sandbox escape), PSV-085 (PraisonAI missing auth).
+
+- **MAL-084** (critical, new): **Mini Shai-Hulud wave-4 (TeamPCP) @antv npm ecosystem compromise via maintainer account takeover (echarts-for-react@3.2.7, C2: t.m-kosche.com, May 19 2026)** — On May 19 2026 (01:56–02:18 UTC) the npm maintainer account `atool` was compromised and 637 malicious versions were published across 317 packages in the `@antv` ecosystem and adjacent packages (`size-sensor`, `echarts-for-react`, `timeago.js`, `jest-canvas-mock`, `jest-date-mock`) in a 22-minute automated burst. The payload is a 498 KB obfuscated Bun bundle (`index.js`) delivered as a preinstall hook. It harvests GitHub PATs, AWS credentials (env, config, EC2 IMDS, ECS metadata, Secrets Manager), Kubernetes service account tokens, HashiCorp Vault tokens, npm access tokens, SSH keys, and 1Password/Bitwarden/pass vault data, exfiltrating to `t.m-kosche.com:443` and the Session P2P network (`filev2.getsession.org`). A Python backdoor (`cat.py`) provides persistent remote access. GitHub removed 640 malicious packages and invalidated 61,274 npm granular access tokens. Any project with `"echarts-for-react": "^3.0.6"` resolved to `3.2.7` (malicious) on a clean install. Attribution: TeamPCP (same operators as waves 1–3, same Bun obfuscation toolkit). Rule fires on the new C2 domain `t.m-kosche.com`, the compromised version `echarts-for-react@3.2.7`, or campaign+scope references.
+
+- **PSV-083** (critical, new): **Google Gemini CLI CI headless folder-trust bypass + --yolo tool-allowlist bypass RCE (GHSA-wpqr-6v78-jr5g, @google/gemini-cli < 0.39.1, CVSS 10.0, CWE-20/77/78)** — GHSA-wpqr-6v78-jr5g is a dual RCE in `@google/gemini-cli` prior to 0.39.1 (and `= 0.40.0-preview.2`). (1) **Folder Trust Bypass**: headless/CI mode automatically trusted workspace folders for loading `.env` and `.gemini/settings.json` without user consent, enabling RCE from a malicious config file in any untrusted repository clone. (2) **--yolo Tool Allowlist Bypass**: fine-grained tool restrictions were silently ignored in `--yolo` mode, enabling prompt-injection-triggered RCE with shell command permissions. No CVE assigned. Upgrade to 0.39.1 or 0.40.0-preview.3. CVSS 10.0 (AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H). Rule fires on GHSA ID, `@google/gemini-cli` with vulnerable version reference, or headless CI / folder trust / yolo allowlist bypass keywords.
+
+- **PSV-084** (high, new): **Cursor IDE sandbox escape via .git hook write (CVE-2026-26268, GHSA-8pcm-8jpx-hv8r, CVSS 8.1, CWE-862, Cursor < 2.5)** — The Cursor IDE AI agent sandbox failed to restrict write access to `.git` configuration files. Prompt injection via a malicious repository can instruct the AI agent to write an executable payload to `.git/hooks/pre-commit` (or any other hook). The payload executes outside the sandbox with full user filesystem permissions the next time the victim runs a git operation that triggers the hook. Fixed in Cursor 2.5 with proper authorization controls on sandbox writes to `.git/` files. Rule fires on CVE/GHSA ID or Cursor + git hook + sandbox escape keyword patterns.
+
+- **PSV-085** (high, new): **PraisonAI legacy API server missing authentication (CVE-2026-44338, GHSA-6rmh-7xcm-cpxj, CVSS 7.3, CWE-306, 2.5.6–4.6.33)** — The legacy Flask API server in PraisonAI hard-codes `AUTH_ENABLED = False` and `AUTH_TOKEN = None`. The authentication check always returns `True` when authentication is disabled, so both `/agents` (exposes agent configuration) and `/chat` (triggers workflow execution) fail open to any unauthenticated caller. Deployment templates recommend binding to `0.0.0.0`, making this externally exploitable. Active scanning began within 3h44m of the May 14 2026 advisory publication. Upgrade to praisonai 4.6.34. Rule fires on CVE/GHSA ID, `praisonai` + `AUTH_ENABLED = False`, or unauthenticated `/agents`/`/chat` endpoint references.
+
+Vuln DB additions: `echarts-for-react@3.2.7` (MAL-084 supply chain), `@google/gemini-cli <0.39.1` + `=0.40.0-preview.2` (PSV-083), `pip/praisonai >=2.5.6,<4.6.34` (PSV-085), `cursor/<2.5` (PSV-084). 5 new entries.
+IOC additions: `t.m-kosche.com` (MAL-084 C2 domain). 1 new domain.
+
+Total: 302 static rules + 14 chain rules = 316.
+
+Sources:
+- Microsoft Security Blog (@antv wave-4): https://www.microsoft.com/en-us/security/blog/2026/05/20/mini-shai-hulud-compromised-antv-npm-packages-enable-ci-cd-credential-theft/
+- The Hacker News (@antv): https://thehackernews.com/2026/05/mini-shai-hulud-pushes-malicious-antv.html
+- Socket (@antv): https://socket.dev/blog/antv-packages-compromised
+- GHSA-wpqr-6v78-jr5g (Gemini CLI): https://github.com/advisories/GHSA-wpqr-6v78-jr5g
+- CSA Research Note (Gemini CLI CVSS 10): https://labs.cloudsecurityalliance.org/research/csa-research-note-gemini-cli-rce-cvss10-ai-tool-security-202/
+- GHSA-6rmh-7xcm-cpxj (PraisonAI): https://github.com/advisories/GHSA-6rmh-7xcm-cpxj
+- Sysdig (PraisonAI exploitation): https://www.sysdig.com/blog/cve-2026-44338-praisonai-authentication-bypass-in-under-4-hours-and-the-growing-trend-of-rapid-exploitation
+- Sentinelone (CVE-2026-26268 Cursor): https://www.sentinelone.com/vulnerability-database/cve-2026-26268/
+
+Candidates researched and already covered: CVE-2026-26118 Azure MCP SSRF (PSV in existing rules), Mini Shai-Hulud waves 1–3 (MAL-081, vuln_db), CVE-2026-33032 nginx-ui (vuln_db), CVE-2026-20205 Splunk MCP (vuln_db), CVE-2026-25536 MCP cross-client leak (vuln_db), CVE-2025-65717 Live Server exfiltration (vuln_db), CVE-2026-22252 LibreChat (PSV rule), CVE-2026-22688 WeKnora (PSV rule), CVE-2026-45321 TanStack/Mistral (MAL-081), Apache Doris MCP SQL injection (PSV rule), Alibaba RDS MCP (PSV-079), Pinot MCP (PSV-080).
+
 ## 2026.05.20.1
 
 Pattern update 2026-05-20. Two new rules: MAL-083 (PromptMink DPRK crypto credential stealer) and SUP-053 (npm typosquatting Microsoft AI packages with Claude Code SessionStart hook backdoor).
