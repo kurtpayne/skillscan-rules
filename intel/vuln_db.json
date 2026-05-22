@@ -1698,6 +1698,11 @@
         "id": "GHSA-v5gw-mw7f-84px",
         "severity": "medium",
         "fixed": "0.27.0"
+      },
+      "1.0.0rc1": {
+        "id": "PYSEC-2026-161",
+        "severity": "medium",
+        "fixed": "1.0.1"
       }
     },
     "cryptography": {
