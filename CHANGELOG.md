@@ -1,5 +1,28 @@
 # SkillScan Rules Changelog
 
+## 2026.05.23.1
+
+Pattern update 2026-05-23. Two new rules: MAL-085 (Nx Console v18.95.0 VS Code extension supply chain compromise) and SUP-054 (durabletask v1.4.1–1.4.3 PyPI supply chain compromise).
+
+- **MAL-085** (critical, new): **Mini Shai-Hulud wave-4 (TeamPCP) Nx Console VS Code extension supply chain compromise (nrwl.angular-console v18.95.0, May 18 2026)** — On May 18 2026 (12:30–12:48 UTC) the nrwl.angular-console VS Code extension (Nx Console, 2.2M installs) was trojanized and published to the Visual Studio Marketplace for 18 minutes. The compromised v18.95.0 silently fetched and executed a 498 KB obfuscated payload hidden in a dangling orphan commit in the official nrwl/nx GitHub repository. The payload harvests GitHub tokens, npm access tokens, AWS credentials (env + IMDS + Secrets Manager), HashiCorp Vault tokens, Kubernetes service account tokens, 1Password vault data, and ~/.claude/settings.json. Data is exfiltrated via three channels: HTTPS, GitHub API dead-drops, and DNS tunneling. A Python backdoor (cat.py) provides persistent access using the GitHub Search API as a command dead-drop signed with an attacker RSA-4096 key. Approximately 3,800 GitHub internal repositories were exfiltrated (including ~3,800 from GitHub's own estate). The root cause was a developer's machine infected by @tanstack/zod-adapter@1.166.15 (TeamPCP wave-3, May 11), seven days prior — demonstrating worm-to-extension supply chain propagation. Attribution: TeamPCP. Rule fires on the extension ID + version or campaign+product keyword combinations.
+
+- **SUP-054** (critical, new): **durabletask v1.4.1–1.4.3 PyPI supply chain compromise (TeamPCP wave-4, C2: check.git-service.com, Linux wiper + cloud credential theft, May 19 2026)** — Three malicious versions of Microsoft's official Python Durable Task client (durabletask 1.4.1, 1.4.2, 1.4.3) were published by TeamPCP on May 19 2026 and subsequently quarantined. The dropper is injected directly into Python source files; on import it fetches rope.pyz from https://check.git-service.com/rope.pyz (domain registered May 16 2026) and executes the second-stage payload, which deploys a Linux disk wiper, harvests cloud credentials from every major provider, and exfiltrates them via an attacker RSA-encrypted channel. Part of TeamPCP wave-4 (same day as the @antv npm ecosystem compromise, MAL-084). Rule fires on the C2 domain, payload filename, compromised version references, or pip install of any affected version.
+
+Vuln DB additions: `pip/durabletask` 1.4.1, 1.4.2, 1.4.3 (SUP-054, PYPI-DURABLETASK-2026-TEAMPCP-WAVE4). 3 new entries.
+IOC additions: `check.git-service.com` (SUP-054 C2 domain). 1 new domain.
+
+Total: 304 static rules + 14 chain rules = 318.
+
+Sources:
+- The Hacker News (Nx Console): https://thehackernews.com/2026/05/compromised-nx-console-18950-targeted.html
+- Nx Blog postmortem: https://nx.dev/blog/nx-console-v18-95-0-postmortem
+- StepSecurity (Nx Console): https://www.stepsecurity.io/blog/nx-console-vs-code-extension-compromised
+- Aikido (durabletask): https://www.aikido.dev/blog/durabletask-package-compromised-mini-shai-hulud
+- CyberPress (durabletask): https://cyberpress.org/microsoft-durabletask-python-client-compromised/
+- Phoenix Security (wave-4): https://phoenix.security/teampcp-github-breach-durabletask-pypi-supply-chain-wave-four-2026/
+
+Candidates researched and already covered: CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2026-20205 Splunk MCP token disclosure (PSV rule), CVE-2026-33980 Azure Data Explorer MCP KQL injection (PSV-043), Mini Shai-Hulud waves 1–3 (SUP-039, SUP-042, SUP-048–050, MAL-078–081), Mini Shai-Hulud wave-4 @antv (MAL-084), Cline kanban WebSocket hijacking CVE-2026-44211 (PSV-074), GlassWorm extension campaign (MAL-066 + multiple GlassWorm rules), Clinejection prompt injection (PINJ-005).
+
 ## 2026.05.21.1
 
 Pattern update 2026-05-21. Four new rules: MAL-084 (@antv npm wave-4), PSV-083 (Gemini CLI CI RCE), PSV-084 (Cursor git hook sandbox escape), PSV-085 (PraisonAI missing auth).
