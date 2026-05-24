@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.05.24.1
+
+Pattern update 2026-05-24. One new rule: PSV-086 (Cal.com JWT callback authentication bypass, CVE-2026-23478, CVSS 10.0).
+
+- **PSV-086** (critical, new): **Cal.com JWT callback authentication bypass — full account takeover (CVE-2026-23478, GHSA-7hg4-x4pr-3hrg, CVSS 10.0 Critical, CWE-602/CWE-639, 3.1.6–6.0.6)** — Cal.com versions 3.1.6 through 6.0.6 contain a critical authentication bypass in the custom NextAuth JWT callback (`packages/features/auth/lib/next-auth-options.ts`). When the callback is triggered with `trigger === "update"`, it accepts identity fields — including `email` — supplied by the client via `session.update()` without server-side validation. Because Cal.com uses `token.email` as the primary database lookup key to reconstruct the session, any attacker can call `session.update({ email: "victim@example.com" })` to acquire a valid JWT for an arbitrary account, enabling full account takeover with no elevated privileges required. AI scheduling agents that connect to a self-hosted Cal.com instance running 3.1.6–6.0.6 are directly exposed: a prompt injection attack or a compromised MCP client could trigger this bypass to exfiltrate meeting data or impersonate any user. Upgrade Cal.com to 6.0.7 and force session invalidation for all existing sessions. Rule fires on CVE/GHSA ID or cal.com + session.update/jwt callback + account takeover keyword combinations.
+
+Vuln DB additions: `calcom/6.0.6` representative of >=3.1.6 <6.0.7 (CVE-2026-23478, PSV-086). 1 new entry.
+IOC additions: none.
+
+Total: 305 static rules + 14 chain rules = 319.
+
+Sources:
+- GHSA-7hg4-x4pr-3hrg (Cal.com): https://github.com/calcom/cal.com/security/advisories/GHSA-7hg4-x4pr-3hrg
+- CyberPress: https://cyberpress.org/critical-cal-com-flaw-2/
+- CVE NVD: https://nvd.nist.gov/vuln/detail/CVE-2026-23478
+
+Candidates researched and already covered: Mini Shai-Hulud wave-4 @antv ecosystem (MAL-084), Nx Console v18.95.0 compromise (MAL-085), node-ipc domain takeover supply chain (MAL-083), CVE-2026-44338 PraisonAI missing auth (PSV-085), GHSA-wpqr-6v78-jr5g Gemini CLI CI RCE (PSV-083), CVE-2026-30615 Windsurf zero-click MCP injection (PSV-082 family), CVE-2026-23478 Cal.com JWT bypass (PSV-086 — new today), CVE-2026-33032 nginx-ui MCP auth bypass (vuln_db), CVE-2026-20205 Splunk MCP disclosure (vuln_db), CVE-2026-33980 Azure Data Explorer MCP SQLi (vuln_db), CVE-2025-66335 Apache Doris MCP SQLi (vuln_db), CVE-2026-39974 n8n-MCP SSRF (PSV rule), Context.ai/Vercel breach (PSV rule).
+
 ## 2026.05.23.1
 
 Pattern update 2026-05-23. Two new rules: MAL-085 (Nx Console v18.95.0 VS Code extension supply chain compromise) and SUP-054 (durabletask v1.4.1–1.4.3 PyPI supply chain compromise).
