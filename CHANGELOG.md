@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.05.25.1
+
+Pattern update 2026-05-25. One new rule: MAL-086 (TrapDoor multi-ecosystem supply-chain credential stealer targeting crypto/AI-dev toolchains).
+
+- **MAL-086** (critical, new): **TrapDoor multi-ecosystem supply-chain credential stealer targeting crypto/AI-dev toolchains (npm/PyPI/crates.io, CLAUDE.md/.cursorrules zero-width poisoning, May 2026)** — TrapDoor is a coordinated supply-chain campaign (first observed May 22 2026) deploying 34 malicious packages and 384+ artifact versions across npm (21 packages), PyPI (7 packages), and Crates.io (6 packages). Named packages include `token-usage-tracker`, `wallet-security-checker`, `defi-env-auditor`, `prompt-engineering-toolkit`, `llm-context-compressor` (npm); `cryptowallet-safety`, `defi-risk-scanner`, `eth-security-auditor` (PyPI); `sui-move-build-helper`, `move-compiler-tools` (Crates.io). The npm payload is a 1,149-line credential harvester (`trap-core.js`) executed via postinstall hook, stealing SSH keys, Sui/Solana/Aptos wallet keystores, AWS credentials, GitHub tokens, browser profile data, crypto wallet extension data, environment variables, and API keys. A distinctive feature is deliberate AI-developer targeting: the payload writes hidden zero-width Unicode prompt-injection instructions into `.cursorrules` and `CLAUDE.md` files in the project root, tricking AI coding assistants (Cursor, Claude Code) into running what appears to be a routine project security scan but is actually credential exfiltration under the guise of an automated audit. Crates.io packages use XOR encryption with hardcoded key `cargo-build-helper-2026`. Payload delivery and C2 via `ddjidd564.github.io`. Campaign marker `P-2024-001`. Attribution: GitHub account `ddjidd564`. Rule fires on any TrapDoor package name, `trap-core.js`, or the `P-2024-001` campaign marker.
+
+Vuln DB additions: `npm/token-usage-tracker`, `npm/wallet-security-checker`, `npm/defi-env-auditor`, `npm/prompt-engineering-toolkit`, `npm/llm-context-compressor`, `pip/cryptowallet-safety`, `pip/defi-risk-scanner`, `pip/eth-security-auditor` (all MAL-086, all versions malicious). 8 new entries.
+IOC additions: `ddjidd564.github.io` (MAL-086 TrapDoor C2/payload host). 1 new domain.
+
+Total: 306 static rules + 14 chain rules = 320.
+
+Sources:
+- Socket.dev (primary): https://socket.dev/blog/trapdoor-crypto-stealer-npm-pypi-crates
+- The Hacker News: https://thehackernews.com/2026/05/trapdoor-supply-chain-attack-spreads.html
+- GBHackers: https://gbhackers.com/hackers-compromise-34-npm-pypi-and-crates-packages/
+- The Block: https://www.theblock.co/post/402458/researchers-flag-trapdoor-malware-campaign-targeting-crypto-developer-environments-including-aptos-sui-and-solana
+
+Candidates researched and already covered: Zero-width Unicode steganography (EVASION-004), Clinejection prompt injection (PINJ-005), Cline@2.3.0 openclaw supply chain (vuln_db NPM-CLINE-2026-03), Mini Shai-Hulud TanStack/Mistral wave-3 (MAL-081), Mini Shai-Hulud @antv wave-4 (MAL-084), Mini Shai-Hulud Nx Console wave-4 (MAL-085), CVE-2026-26118 Microsoft MCP SSRF (PSV rule), CVE-2026-20205 Splunk MCP disclosure (PSV rule), CVE-2026-23478 Cal.com JWT bypass (PSV-086), Cline kanban WebSocket CVE-2026-44211 (PSV-074), GlassWorm OpenVSX extension (MAL-066).
+
 ## 2026.05.24.1
 
 Pattern update 2026-05-24. One new rule: PSV-086 (Cal.com JWT callback authentication bypass, CVE-2026-23478, CVSS 10.0).

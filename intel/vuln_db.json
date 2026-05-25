@@ -170,6 +170,36 @@
         "fixed": "REMOVED",
         "summary": "TeamPCP wave-4 supply-chain compromise. durabletask==1.4.3 injects a dropper that fetches rope.pyz from check.git-service.com and deploys a Linux disk wiper and cloud credential stealer."
       }
+    },
+    "cryptowallet-safety": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). Mirrors the npm payload; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "defi-risk-scanner": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "eth-security-auditor": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). First package published in this campaign (May 22 2026 20:20 UTC). All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
     }
   },
   "cursor": {
@@ -3221,6 +3251,56 @@
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-13"
+      }
+    },
+    "token-usage-tracker": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer. Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores (Sui/Solana/Aptos), AWS credentials, GitHub tokens, browser data, and plants zero-width Unicode prompt-injection instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "wallet-security-checker": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer. Same trap-core.js payload as token-usage-tracker. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "defi-env-auditor": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "prompt-engineering-toolkit": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "llm-context-compressor": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
       }
     }
   }
