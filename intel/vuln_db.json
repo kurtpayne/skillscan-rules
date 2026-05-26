@@ -1272,7 +1272,7 @@
     }
   },
   "_meta": {
-    "generated": "2026-05-25",
+    "generated": "2026-05-26",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
@@ -1729,6 +1729,10 @@
         "id": "PYSEC-2024-38",
         "severity": "medium",
         "fixed": "9d34ad0ee8a0dfbbcce06f76c2d5d851085024fc"
+      },
+      "0.136.3": {
+        "id": "MAL-2026-4750",
+        "severity": "medium"
       }
     },
     "uvicorn": {
