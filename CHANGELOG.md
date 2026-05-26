@@ -1,5 +1,20 @@
 # SkillScan Rules Changelog
 
+## 2026.05.26.1
+
+Pattern update 2026-05-26. No new rule IDs. Enrichment of MAL-086 (TrapDoor): expanded pattern to cover all 34 confirmed malicious packages (previously only 13 of 34 were named); added 16 npm, 4 PyPI, and 6 Crates.io packages to vuln DB.
+
+- **MAL-086** (critical, enriched): **TrapDoor — full package coverage** — Expanded the MAL-086 detection pattern and vuln DB to cover all confirmed TrapDoor packages. Previously only 13 of 34 packages were named (5 npm, 3 PyPI, 2 Crates.io partially named, 0 Crates.io in vuln DB). Now covers all 21 npm packages (`token-usage-tracker`, `wallet-security-checker`, `defi-env-auditor`, `prompt-engineering-toolkit`, `llm-context-compressor`, `async-pipeline-builder`, `build-scripts-utils`, `chain-key-validator`, `crypto-credential-scanner`, `defi-threat-scanner`, `deployment-key-auditor`, `dev-env-bootstrapper`, `eth-wallet-sentinel`, `mnemonic-safety-check`, `model-switch-router`, `node-setup-helpers`, `project-init-tools`, `solidity-deploy-guard`, `wallet-backup-verifier`, `web3-secrets-detector`, `workspace-config-loader`), all 7 PyPI packages (`cryptowallet-safety`, `defi-risk-scanner`, `eth-security-auditor`, `data-pipeline-check`, `env-loader-cli`, `git-config-sync`, `solidity-build-guard`), and all 6 Crates.io packages (`sui-move-build-helper`, `move-compiler-tools`, `move-analyzer-build`, `move-project-builder`, `sui-framework-helpers`, `sui-sdk-build-utils`). Also added `cargo` ecosystem to vuln DB with all 6 Crates.io packages.
+
+Vuln DB additions: 16 npm packages + 4 pip packages + 6 cargo packages (all MAL-086, all versions malicious). 26 new entries.
+IOC additions: none.
+
+Sources:
+- Socket.dev (primary): https://socket.dev/blog/trapdoor-crypto-stealer-npm-pypi-crates
+- The Block (Crates.io package list): https://www.theblock.co/post/402458/researchers-flag-trapdoor-malware-campaign-targeting-crypto-developer-environments-including-aptos-sui-and-solana
+
+Candidates researched and already covered: TrapDoor (MAL-086 rule created 2026-05-25 — this update enriches it), CVE-2026-33032 nginx-ui MCPwn (existing rule), CVE-2025-66335 Apache Doris MCP SQLi (existing rule), Apache Pinot MCP auth bypass (existing rule), Alibaba RDS MCP info disclosure (existing rule), CVE-2026-26118 Azure MCP SSRF (existing rule), CVE-2026-20205 Splunk MCP disclosure (existing rule), CVE-2026-33980 Azure Data Explorer MCP KQL injection (existing rule), Bitwarden CLI@2026.4.0 Shai-Hulud (existing rule), CVE-2026-25536 MCP TypeScript SDK race condition (existing rule), CVE-2026-30615 Windsurf zero-click (existing rule), axios RAT (existing rule), PyTorch Lightning Mini Shai-Hulud (existing rule), Mini Shai-Hulud TanStack/Mistral wave-3 (existing rule).
+
 ## 2026.05.25.1
 
 Pattern update 2026-05-25. One new rule: MAL-086 (TrapDoor multi-ecosystem supply-chain credential stealer targeting crypto/AI-dev toolchains).

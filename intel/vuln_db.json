@@ -135,7 +135,7 @@
       "1.0.0": {
         "id": "MAL-083",
         "severity": "critical",
-        "summary": "PromptMink DPRK credential stealer PyPI port (Famous Chollima). Reimplements the @validate-sdk/v2 stealer in Python; adds SSH-key persistence capability. C2: ipfs-url-validator.vercel.app. All versions malicious \u2014 do not install.",
+        "summary": "PromptMink DPRK credential stealer PyPI port (Famous Chollima). Reimplements the @validate-sdk/v2 stealer in Python; adds SSH-key persistence capability. C2: ipfs-url-validator.vercel.app. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-02-23"
@@ -175,7 +175,7 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer (PyPI). Mirrors the npm payload; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). Mirrors the npm payload; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -185,7 +185,7 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer (PyPI). All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -195,7 +195,47 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer (PyPI). First package published in this campaign (May 22 2026 20:20 UTC). All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). First package published in this campaign (May 22 2026 20:20 UTC). All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "data-pipeline-check": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). Auto-executes on import; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "env-loader-cli": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). Auto-executes on import; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "git-config-sync": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). Auto-executes on import; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "solidity-build-guard": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (PyPI). Auto-executes on import; steals SSH keys, crypto wallets, cloud credentials, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -755,7 +795,7 @@
       "cvss": 9.8,
       "cwe": "CWE-78",
       "fixed": null,
-      "summary": "CVE-2026-26015 (CVSS 9.8): DocsGPT hidden STDIO MCP command injection \u2014 attacker changes transport_type to stdio and injects arbitrary OS commands via JSON payload"
+      "summary": "CVE-2026-26015 (CVSS 9.8): DocsGPT hidden STDIO MCP command injection — attacker changes transport_type to stdio and injects arbitrary OS commands via JSON payload"
     }
   },
   "langchain": {
@@ -793,7 +833,7 @@
       "cvss": 10.0,
       "cwe": "CWE-1321",
       "fixed": "19.2.1",
-      "summary": "CVE-2025-55182 (CVSS 10.0): React2Shell \u2014 React Server Components Flight protocol pre-auth RCE via prototype pollution"
+      "summary": "CVE-2025-55182 (CVSS 10.0): React2Shell — React Server Components Flight protocol pre-auth RCE via prototype pollution"
     }
   },
   "upsonic": {
@@ -2854,19 +2894,19 @@
         "id": "CVE-2026-5603",
         "severity": "high",
         "fixed": "1.0.3",
-        "summary": "Command injection via insufficient shellQuote \u2014 Windows cmd.exe metacharacter bypass"
+        "summary": "Command injection via insufficient shellQuote — Windows cmd.exe metacharacter bypass"
       },
       "1.0.1": {
         "id": "CVE-2026-5603",
         "severity": "high",
         "fixed": "1.0.3",
-        "summary": "Command injection via insufficient shellQuote \u2014 Windows cmd.exe metacharacter bypass"
+        "summary": "Command injection via insufficient shellQuote — Windows cmd.exe metacharacter bypass"
       },
       "1.0.2": {
         "id": "CVE-2026-5603",
         "severity": "high",
         "fixed": "1.0.3",
-        "summary": "Command injection via insufficient shellQuote \u2014 Windows cmd.exe metacharacter bypass"
+        "summary": "Command injection via insufficient shellQuote — Windows cmd.exe metacharacter bypass"
       }
     },
     "flowise-components": {
@@ -3221,7 +3261,7 @@
       "1.0.0": {
         "id": "MAL-083",
         "severity": "critical",
-        "summary": "PromptMink DPRK credential stealer (Famous Chollima). Masquerades as data validation library; exfiltrates crypto wallets, SSH keys, and cloud credentials to ipfs-url-validator.vercel.app. All versions malicious \u2014 do not install.",
+        "summary": "PromptMink DPRK credential stealer (Famous Chollima). Masquerades as data validation library; exfiltrates crypto wallets, SSH keys, and cloud credentials to ipfs-url-validator.vercel.app. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2025-10-01"
@@ -3231,7 +3271,7 @@
       "1.0.0": {
         "id": "MAL-083",
         "severity": "critical",
-        "summary": "PromptMink DPRK first-stage bait package (Famous Chollima). Contains no malicious code directly but introduces @validate-sdk/v2 as a transitive dependency. All versions malicious \u2014 do not install.",
+        "summary": "PromptMink DPRK first-stage bait package (Famous Chollima). Contains no malicious code directly but introduces @validate-sdk/v2 as a transitive dependency. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-02-28"
@@ -3241,7 +3281,7 @@
       "3.4.2": {
         "id": "SUP-053",
         "severity": "critical",
-        "summary": "Typosquat of @microsoft/applicationinsights-common. Ships a UPX-compressed ELF backdoor in .claude/ that exfiltrates credentials via Claude Code SessionStart hook to 207.90.194.2:443 (accounts: superbase/micresoft). All versions malicious \u2014 use @microsoft/applicationinsights-common instead.",
+        "summary": "Typosquat of @microsoft/applicationinsights-common. Ships a UPX-compressed ELF backdoor in .claude/ that exfiltrates credentials via Claude Code SessionStart hook to 207.90.194.2:443 (accounts: superbase/micresoft). All versions malicious — use @microsoft/applicationinsights-common instead.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-13"
@@ -3251,7 +3291,7 @@
       "2.43.2": {
         "id": "SUP-053",
         "severity": "critical",
-        "summary": "Typosquat of @types/microsoft-graph. Ships a UPX-compressed ELF backdoor in .claude/ that exfiltrates credentials via Claude Code SessionStart hook to 207.90.194.2:443 (accounts: superbase/micresoft). All versions malicious \u2014 use @types/microsoft-graph instead.",
+        "summary": "Typosquat of @types/microsoft-graph. Ships a UPX-compressed ELF backdoor in .claude/ that exfiltrates credentials via Claude Code SessionStart hook to 207.90.194.2:443 (accounts: superbase/micresoft). All versions malicious — use @types/microsoft-graph instead.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-13"
@@ -3261,7 +3301,7 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer. Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores (Sui/Solana/Aptos), AWS credentials, GitHub tokens, browser data, and plants zero-width Unicode prompt-injection instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer. Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores (Sui/Solana/Aptos), AWS credentials, GitHub tokens, browser data, and plants zero-width Unicode prompt-injection instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -3271,7 +3311,7 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer. Same trap-core.js payload as token-usage-tracker. All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer. Same trap-core.js payload as token-usage-tracker. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -3281,7 +3321,7 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -3291,7 +3331,7 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
@@ -3301,7 +3341,229 @@
       "0.1.0": {
         "id": "MAL-086",
         "severity": "critical",
-        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious \u2014 do not install.",
+        "summary": "TrapDoor supply-chain credential stealer (npm). All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "async-pipeline-builder": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "build-scripts-utils": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "chain-key-validator": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "crypto-credential-scanner": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "defi-threat-scanner": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "deployment-key-auditor": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "dev-env-bootstrapper": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "eth-wallet-sentinel": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "mnemonic-safety-check": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "model-switch-router": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "node-setup-helpers": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "project-init-tools": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "solidity-deploy-guard": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "wallet-backup-verifier": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "web3-secrets-detector": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "workspace-config-loader": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (npm). Executes trap-core.js postinstall hook; steals SSH keys, crypto wallet keystores, AWS credentials, GitHub tokens, and plants zero-width Unicode instructions in .cursorrules/CLAUDE.md. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    }
+  },
+  "cargo": {
+    "sui-move-build-helper": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (Crates.io). Malicious build.rs fires during cargo build; hunts Sui/Move wallet keystores and exfiltrates them XOR-encrypted (key: cargo-build-helper-2026) to GitHub Gists controlled by ddjidd564. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "move-compiler-tools": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (Crates.io). Malicious build.rs fires during cargo build; hunts Sui/Move wallet keystores and exfiltrates them XOR-encrypted (key: cargo-build-helper-2026) to GitHub Gists controlled by ddjidd564. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "move-analyzer-build": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (Crates.io). Malicious build.rs fires during cargo build; hunts Sui/Move wallet keystores and exfiltrates them XOR-encrypted (key: cargo-build-helper-2026) to GitHub Gists controlled by ddjidd564. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "move-project-builder": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (Crates.io). Malicious build.rs fires during cargo build; hunts Sui/Move wallet keystores and exfiltrates them XOR-encrypted (key: cargo-build-helper-2026) to GitHub Gists controlled by ddjidd564. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "sui-framework-helpers": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (Crates.io). Malicious build.rs fires during cargo build; hunts Sui/Move wallet keystores and exfiltrates them XOR-encrypted (key: cargo-build-helper-2026) to GitHub Gists controlled by ddjidd564. Campaign marker P-2024-001. All versions malicious — do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-05-22"
+      }
+    },
+    "sui-sdk-build-utils": {
+      "0.1.0": {
+        "id": "MAL-086",
+        "severity": "critical",
+        "summary": "TrapDoor supply-chain credential stealer (Crates.io). Malicious build.rs fires during cargo build; hunts Sui/Move wallet keystores and exfiltrates them XOR-encrypted (key: cargo-build-helper-2026) to GitHub Gists controlled by ddjidd564. Campaign marker P-2024-001. All versions malicious — do not install.",
         "fixed": null,
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
