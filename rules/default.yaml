@@ -1,4 +1,4 @@
-version: 2026.05.25.1
+version: 2026.05.28.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -16708,6 +16708,155 @@ static_rules:
     They execute trap-core.js via postinstall, steal crypto wallet keys (Sui, Solana, Aptos),
     SSH keys, AWS credentials, and plant hidden zero-width Unicode instructions in .cursorrules
     and CLAUDE.md (campaign marker P-2024-001). Remove immediately and rotate all credentials.
+  test_expect: fires
+- id: PSV-087
+  category: passive_surveillance
+  severity: high
+  confidence: 0.88
+  title: 'Starlette BadHost Host-header auth bypass (CVE-2026-48710, GHSA-86qp-5c8j-p5mr,
+    < 1.0.1) — FastAPI/vLLM/LiteLLM/MCP servers affected'
+  pattern: '(?i)(?:CVE-2026-48710|GHSA-86qp-5c8j-p5mr|PYSEC-2026-161|X41-2026-002|badhost[^\n]{0,80}(?:starlette|vuln|bypass|cve)|starlette[^\n]{0,200}(?:badhost|host[_\s-]?header[_\s-]?(?:inject|bypass|spoof)|request\.url\.path[^\n]{0,80}(?:auth|bypass|spoof)|auth[_\s-]?bypass[^\n]{0,80}(?:host[_\s-]?header|request\.url\.path)|<\s*1\.0\.1[^\n]{0,80}(?:auth|bypass|host[_\s-]?header)))'
+  mitigation: 'CVE-2026-48710 (GHSA-86qp-5c8j-p5mr, PYSEC-2026-161, CVSS 6.5, CWE-444)
+    is an authentication bypass in Starlette versions 0.8.3 through 1.0.0. Starlette
+    reconstructs request.url by concatenating the raw HTTP Host header with the request
+    path without validating the Host value against RFC 9112/RFC 3986 grammar. Authentication
+    middleware that makes access decisions based on request.url.path diverges from the
+    routing engine that uses the raw path scope, allowing an attacker to supply a crafted
+    Host header that makes request.url.path appear to point to an unrestricted route while
+    the actual request targets a protected one. Discovered by X41 D-Sec during an
+    OSTIF-sponsored security audit. Downstream impact is critical: every FastAPI application,
+    vLLM inference server, LiteLLM proxy, and MCP server built on Starlette (approximately
+    325 million weekly downloads) inherits this auth bypass and can be exploited without
+    credentials to access restricted LLM endpoints, extract API keys, and interact with
+    internal agent tooling. Upgrade Starlette to 1.0.1 or later.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-28'
+    updated: '2026-05-28'
+    tags:
+        - passive_surveillance
+        - psv
+        - badhost
+        - starlette
+        - fastapi
+        - auth-bypass
+        - cve-2026-48710
+    last_modified: '2026-05-28'
+    techniques:
+        - id: PSV-087
+          name: Passive surveillance vulnerability
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-05-28'
+      last_modified: '2026-05-28'
+    quality:
+      precision_estimate: 0.88
+      benchmark_set: core-static-v1
+    references:
+        - https://badhost.org/
+        - https://ostif.org/disclosing-the-badhost-vulnerability-in-starlette/
+        - https://www.tenable.com/cve/CVE-2026-48710
+        - https://github.com/encode/starlette/security/advisories/GHSA-86qp-5c8j-p5mr
+  test_input: |
+    ---
+    name: starlette-mcp-server
+    description: MCP server built on Starlette ASGI framework
+    ---
+    # Starlette BadHost Vulnerability (CVE-2026-48710)
+
+    This advisory covers CVE-2026-48710 (GHSA-86qp-5c8j-p5mr, BadHost), a host-header
+    authentication bypass in Starlette < 1.0.1 affecting FastAPI, vLLM, LiteLLM, and
+    MCP servers.
+
+    ## Vulnerability
+
+    Prior to 1.0.1, Starlette does not validate the Host header before reconstructing
+    request.url. Path-based auth middleware that checks request.url.path can be bypassed
+    by an attacker who sends a malformed Host header injecting an extra path component.
+
+    ## Affected
+
+    All Starlette 0.8.3-1.0.0 deployments with path-based auth middleware.
+    FastAPI and vLLM inherit this via their Starlette dependency.
+
+    ## Fix
+
+    Upgrade to starlette >= 1.0.1 (GHSA-86qp-5c8j-p5mr patched).
+    The BadHost auth bypass can be demonstrated with a single-character Host header injection.
+  test_expect: fires
+- id: MAL-087
+  category: malware_pattern
+  severity: critical
+  confidence: 0.95
+  title: 'Malware-Slop: mouse5212-super-formatter npm infostealer targeting Claude
+    AI /mnt/user-data directory (May 2026)'
+  pattern: '(?i)(?:mouse5212[_-]?super[_-]?formatter|malware[_\s-]?slop[^\n]{0,80}(?:npm|claude|user[_-]?data|github)|/mnt/user[_-]?data[^\n]{0,200}(?:github[^\n]{0,80}(?:create[_-]?repo|upload|octokit|push)|archive[_\s-]?deployment[_\s-]?sync|recursive[^\n]{0,80}(?:upload|sync)[^\n]{0,80}github|mouse5212))'
+  mitigation: 'mouse5212-super-formatter is a malicious npm package (all versions)
+    discovered May 27 2026 by OX Security, codenamed Malware-Slop. Its postinstall
+    script masquerades as an "archive deployment sync" utility that validates or initializes
+    a GitHub repository and syncs local workspace files. In reality it authenticates
+    to GitHub using either a GITHUB_TOKEN environment variable found on the victim
+    machine or a hard-coded attacker fallback token, creates a repository under the
+    threat actor GitHub account (mouse5212), and then recursively uploads every file
+    under /mnt/user-data — the dedicated directory used by Anthropic Claude AI for
+    uploads, outputs, and project files — to that remote repository. Approximately 676
+    downloads recorded before removal. Notably the package contained the attacker own
+    hard-coded GitHub private token which was leaked, allowing researchers to trace the
+    exfiltration chain; the token has been invalidated by GitHub. The threat actor likely
+    used AI to generate the malware code without adequate OPSEC review. Remove
+    mouse5212-super-formatter from all projects immediately and rotate any GITHUB_TOKEN
+    or other credentials present in the execution environment. Audit /mnt/user-data
+    for sensitive files that may have been exfiltrated.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-28'
+    updated: '2026-05-28'
+    tags:
+        - malware_pattern
+        - mal
+        - malware-slop
+        - claude-ai-target
+        - npm
+        - credential-stealer
+        - infostealer
+    last_modified: '2026-05-28'
+    techniques:
+        - id: MAL-087
+          name: Malware or malicious behavior
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-05-28'
+      last_modified: '2026-05-28'
+    quality:
+      precision_estimate: 0.95
+      benchmark_set: core-static-v1
+    references:
+        - https://thehackernews.com/2026/05/malicious-npm-package-stole-files-from.html
+        - https://www.ox.security/blog/malware-slop-new-malicious-npm-package-leaks-its-own-github-private-token/
+        - https://www.theregister.com/cyber-crime/2026/05/27/supply-chain-brain-drain-npm-attacker-foolishly-leaks-own-github-private-token/5247424
+  test_input: |
+    ---
+    name: archive-deploy-util
+    description: Internal archive deployment sync utility for CI pipelines
+    ---
+    # Archive Deployment Sync — Security Advisory
+
+    URGENT: The npm package mouse5212-super-formatter (all versions) is a malicious
+    infostealer codenamed Malware-Slop (OX Security, May 27 2026).
+
+    Its postinstall hook uploads all files from /mnt/user-data (the Claude AI user
+    data directory) to a GitHub repository under the threat actor account mouse5212
+    via the GitHub API. The archive deployment sync cover story conceals recursive
+    credential and file exfiltration. A hard-coded attacker GitHub token serves as
+    a fallback when no GITHUB_TOKEN is found in the environment.
+
+    Remove immediately and rotate all credentials.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b

@@ -3306,6 +3306,24 @@
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
       }
+    },
+    "mouse5212-super-formatter": {
+      "all": {
+        "id": "NPM-MOUSE5212-2026-MALWARE-SLOP",
+        "severity": "critical",
+        "fixed": "REMOVED",
+        "summary": "mouse5212-super-formatter: all versions malicious. Postinstall infostealer targeting /mnt/user-data (Anthropic Claude AI tool directory). Recursively uploads files via GitHub API to attacker repository (mouse5212 account). Codenamed Malware-Slop (OX Security, May 27 2026). 676 downloads before removal."
+      }
+    }
+  },
+  "starlette": {
+    "1.0.0": {
+      "affected_range": ">=0.8.3 <1.0.1",
+      "fixed": "1.0.1",
+      "id": "CVE-2026-48710",
+      "published": "2026-05-22",
+      "severity": "medium",
+      "summary": "CVE-2026-48710 (GHSA-86qp-5c8j-p5mr, PYSEC-2026-161, CVSS 6.5, CWE-444): Starlette BadHost \u2014 Host header not validated before reconstructing request.url. Path-based auth middleware can be bypassed by a crafted Host header injecting an extra path component. Affects FastAPI, vLLM, LiteLLM, and all ASGI apps built on Starlette. Upgrade to 1.0.1."
     }
   }
 }

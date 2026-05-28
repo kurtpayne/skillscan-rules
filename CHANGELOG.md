@@ -1,5 +1,27 @@
 # SkillScan Rules Changelog
 
+## 2026.05.28.1
+
+Pattern update 2026-05-28. Two new rules: PSV-087 (Starlette BadHost auth bypass, CVE-2026-48710) and MAL-087 (Malware-Slop, mouse5212-super-formatter Claude AI data exfiltration).
+
+- **PSV-087** (high, new): **Starlette BadHost Host-header auth bypass (CVE-2026-48710, GHSA-86qp-5c8j-p5mr, PYSEC-2026-161, < 1.0.1) — FastAPI/vLLM/LiteLLM/MCP servers affected** — CVE-2026-48710 is an authentication bypass in Starlette versions 0.8.3 through 1.0.0. Starlette reconstructs `request.url` by concatenating the raw HTTP `Host` header with the request path without validating the `Host` value against RFC 9112/RFC 3986 grammar. Because authentication middleware makes access decisions based on `request.url.path` while the ASGI routing engine uses the raw path scope, an attacker can inject an extra path component into the `Host` header to make `request.url.path` point to an unrestricted route while the actual request targets a protected endpoint. Discovered by X41 D-Sec (X41-2026-002) during an OSTIF-sponsored security audit, coordinated disclosure May 22 2026. Downstream impact is critical: every FastAPI application, vLLM inference server, LiteLLM proxy, and MCP server built on Starlette (approximately 325 million weekly downloads) inherits this auth bypass, enabling unauthenticated access to restricted LLM endpoints, credential extraction, and internal agent tool interaction. Upgrade Starlette to 1.0.1 or later. Rule fires on CVE/GHSA/PYSEC IDs or starlette + host-header auth bypass keyword combinations.
+
+- **MAL-087** (critical, new): **Malware-Slop: mouse5212-super-formatter npm infostealer targeting Claude AI /mnt/user-data directory (May 2026)** — `mouse5212-super-formatter` is a malicious npm package (all versions) discovered May 27 2026 by OX Security. Its postinstall script masquerades as an "archive deployment sync" utility: it authenticates to GitHub using either a `GITHUB_TOKEN` environment variable found on the victim machine or a hard-coded attacker fallback token (notably leaked in the package itself — likely the result of AI-generated malware code with poor OPSEC), creates a repository under the threat actor GitHub account (`mouse5212`), and then recursively uploads every file under `/mnt/user-data` — the dedicated directory used by Anthropic Claude AI for uploads, outputs, and project files — to that remote repository. Approximately 676 downloads were recorded before removal. The leaked GitHub private token has been invalidated by GitHub. Remove the package immediately and rotate all credentials accessible in the execution environment. Audit `/mnt/user-data` for sensitive files. Rule fires on the package name, Malware-Slop campaign name + npm/claude/github context, or `/mnt/user-data` combined with GitHub exfiltration behavior.
+
+Vuln DB additions: `starlette/1.0.0` (CVE-2026-48710, affected_range >=0.8.3 <1.0.1, PSV-087). `npm/mouse5212-super-formatter/all` (NPM-MOUSE5212-2026-MALWARE-SLOP, all versions malicious, MAL-087). 2 new entries.
+IOC additions: none.
+
+Total: 308 static rules + 14 chain rules = 322.
+
+Sources:
+- OSTIF/X41 D-Sec (BadHost): https://ostif.org/disclosing-the-badhost-vulnerability-in-starlette/
+- Tenable CVE-2026-48710: https://www.tenable.com/cve/CVE-2026-48710
+- The Hacker News (Malware-Slop): https://thehackernews.com/2026/05/malicious-npm-package-stole-files-from.html
+- OX Security (Malware-Slop): https://www.ox.security/blog/malware-slop-new-malicious-npm-package-leaks-its-own-github-private-token/
+- The Register (Malware-Slop): https://www.theregister.com/cyber-crime/2026/05/27/supply-chain-brain-drain-npm-attacker-foolishly-leaks-own-github-private-token/5247424
+
+Candidates researched and already covered: TrapDoor npm/PyPI/crates supply chain (MAL-086, 2026-05-25), CVE-2026-45321 Mini Shai-Hulud wave-5 TanStack/Mistral (SUP rule + vuln_db), CVE-2026-23478 Cal.com JWT bypass (PSV-086), CVE-2026-33032 nginx-ui MCP auth bypass (PSV rule), CVE-2026-20205 Splunk MCP disclosure (PSV rule), CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2025-49596 MCP Inspector RCE (PSV rule), CVE-2026-22252 LibreChat MCP STDIO RCE (PSV rule), GlassWorm OpenVSX/invisible Unicode (MAL-066 + MAL-085 family).
+
 ## 2026.05.25.1
 
 Pattern update 2026-05-25. One new rule: MAL-086 (TrapDoor multi-ecosystem supply-chain credential stealer targeting crypto/AI-dev toolchains).
