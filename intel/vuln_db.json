@@ -1281,6 +1281,48 @@
       "summary": "CVE-2026-48710 (GHSA-86qp-5c8j-p5mr, PYSEC-2026-161, CVSS 6.5, CWE-444): Starlette BadHost \u2014 Host header not validated before reconstructing request.url. Path-based auth middleware can be bypassed by a crafted Host header injecting an extra path component. Affects FastAPI, vLLM, LiteLLM, and all ASGI apps built on Starlette. Upgrade to 1.0.1."
     }
   },
+  "composer": {
+    "laravel-lang/lang": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/lang: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. The injected src/helpers.php dropper (autoload.files) fetches the DebugElevator credential stealer from flipboxstudio.info and exfiltrates AWS keys, GitHub tokens, SSH keys, .env files, Kubernetes secrets, and crypto wallets. 10.3M combined installs across four laravel-lang packages. No safe tagged version \u2014 pin to pre-attack commit SHA.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    },
+    "laravel-lang/attributes": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/attributes: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    },
+    "laravel-lang/http-statuses": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/http-statuses: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    },
+    "laravel-lang/actions": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/actions: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    }
+  },
   "_meta": {
     "generated": "2026-05-29",
     "source": "OSV.dev (https://osv.dev)",
@@ -2413,6 +2455,11 @@
         "id": "NPM-AXIOS-2026-03",
         "severity": "critical",
         "fixed": "0.29.0"
+      },
+      "1.15.2": {
+        "id": "GHSA-654m-c8p4-x5fp",
+        "severity": "low",
+        "fixed": "1.16.0"
       }
     },
     "fastify": {
@@ -3323,48 +3370,6 @@
         "severity": "critical",
         "fixed": "REMOVED",
         "summary": "mouse5212-super-formatter: all versions malicious. Postinstall infostealer targeting /mnt/user-data (Anthropic Claude AI tool directory). Recursively uploads files via GitHub API to attacker repository (mouse5212 account). Codenamed Malware-Slop (OX Security, May 27 2026). 676 downloads before removal."
-      }
-    }
-  },
-  "composer": {
-    "laravel-lang/lang": {
-      "all-tags-2026-05-22": {
-        "id": "SUP-055",
-        "severity": "critical",
-        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
-        "summary": "laravel-lang/lang: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. The injected src/helpers.php dropper (autoload.files) fetches the DebugElevator credential stealer from flipboxstudio.info and exfiltrates AWS keys, GitHub tokens, SSH keys, .env files, Kubernetes secrets, and crypto wallets. 10.3M combined installs across four laravel-lang packages. No safe tagged version — pin to pre-attack commit SHA.",
-        "affected_range": "all tags rewritten 2026-05-22",
-        "published": "2026-05-22"
-      }
-    },
-    "laravel-lang/attributes": {
-      "all-tags-2026-05-22": {
-        "id": "SUP-055",
-        "severity": "critical",
-        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
-        "summary": "laravel-lang/attributes: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
-        "affected_range": "all tags rewritten 2026-05-22",
-        "published": "2026-05-22"
-      }
-    },
-    "laravel-lang/http-statuses": {
-      "all-tags-2026-05-22": {
-        "id": "SUP-055",
-        "severity": "critical",
-        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
-        "summary": "laravel-lang/http-statuses: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
-        "affected_range": "all tags rewritten 2026-05-22",
-        "published": "2026-05-22"
-      }
-    },
-    "laravel-lang/actions": {
-      "all-tags-2026-05-22": {
-        "id": "SUP-055",
-        "severity": "critical",
-        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
-        "summary": "laravel-lang/actions: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
-        "affected_range": "all tags rewritten 2026-05-22",
-        "published": "2026-05-22"
       }
     }
   }
