@@ -1,5 +1,25 @@
 # SkillScan Rules Changelog
 
+## 2026.05.29.1
+
+Pattern update 2026-05-29. One new rule: SUP-055 (laravel-lang Composer supply chain poisoning — DebugElevator stealer).
+
+- **SUP-055** (critical, new): **laravel-lang supply chain poisoning — DebugElevator stealer via git tag rewrite (all tags backdoored 2026-05-22, C2 flipboxstudio.info)** — Four widely-used Laravel localization Composer packages were supply-chain poisoned on 2026-05-22 22:32 UTC: `laravel-lang/lang`, `laravel-lang/attributes`, `laravel-lang/http-statuses`, and `laravel-lang/actions`. An attacker with push access (via a leaked GitHub PAT) rewrote every existing git tag in all four repositories to point at malicious commits containing a `src/helpers.php` dropper wired into Composer `autoload.files` — it runs on every PHP request upon install. The dropper fetches a cross-platform DebugElevator credential stealer from `https://flipboxstudio.info/payload` (`flipboxstudio[.]info` is a typosquat of the legitimate `flipboxstudio.com`) and executes it, harvesting AWS keys, GitHub tokens, Slack tokens, Stripe secrets, SSH keys, `.env` files, JWTs, Kubernetes secrets, Vault tokens, and crypto wallet recovery phrases. Approximately 700 versions across the four packages were affected (10.3M combined installs). There is no safe tagged version — pin each dependency to a commit SHA predating 2026-05-22 22:32 UTC via upstream branch history. Rule fires on the C2 domain `flipboxstudio.info`, the `DebugElevator` binary name, or `composer require/install/update` referencing any of the four affected packages.
+
+Vuln DB additions: `composer/laravel-lang/lang`, `composer/laravel-lang/attributes`, `composer/laravel-lang/http-statuses`, `composer/laravel-lang/actions` (all SUP-055, all tags rewritten 2026-05-22, critical). 4 new entries.
+IOC additions: `flipboxstudio.info` (SUP-055 DebugElevator stealer C2). 1 new domain.
+
+Total: 309 static rules + 14 chain rules = 323.
+
+Sources:
+- BleepingComputer: https://www.bleepingcomputer.com/news/security/laravel-lang-packages-hijacked-to-deploy-credential-stealing-malware/
+- Snyk advisory: https://snyk.io/blog/laravel-lang-supply-chain-advisory/
+- StepSecurity: https://www.stepsecurity.io/blog/laravel-lang-supply-chain-attack
+- Aikido: https://www.aikido.dev/blog/supply-chain-attack-targets-laravel-lang-packages-with-credential-stealer
+- The Hacker News: https://thehackernews.com/2026/05/laravel-lang-php-packages-compromised.html
+
+Candidates researched and already covered: TrapDoor npm/PyPI/crates (MAL-086), CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2026-30615 Windsurf MCP STDIO injection (PSV rule), CVE-2026-33032 nginx-ui MCP auth bypass (vuln_db), axios npm compromise (SUP rule), Nx Console v18.95.0 (MAL rule).
+
 ## 2026.05.28.1
 
 Pattern update 2026-05-28. Two new rules: PSV-087 (Starlette BadHost auth bypass, CVE-2026-48710) and MAL-087 (Malware-Slop, mouse5212-super-formatter Claude AI data exfiltration).

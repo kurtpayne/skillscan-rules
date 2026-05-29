@@ -11192,7 +11192,8 @@
     "95.85.238.0/24",
     "96.31.94.0/24",
     "98.98.195.0/24",
-    "audit.checkmarx.cx"
+    "audit.checkmarx.cx",
+    "flipboxstudio.info"
   ],
   "urls": [
     "https://apachelicense.vercel.app/getAddress",

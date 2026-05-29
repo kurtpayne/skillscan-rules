@@ -3325,5 +3325,47 @@
         "summary": "mouse5212-super-formatter: all versions malicious. Postinstall infostealer targeting /mnt/user-data (Anthropic Claude AI tool directory). Recursively uploads files via GitHub API to attacker repository (mouse5212 account). Codenamed Malware-Slop (OX Security, May 27 2026). 676 downloads before removal."
       }
     }
+  },
+  "composer": {
+    "laravel-lang/lang": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/lang: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. The injected src/helpers.php dropper (autoload.files) fetches the DebugElevator credential stealer from flipboxstudio.info and exfiltrates AWS keys, GitHub tokens, SSH keys, .env files, Kubernetes secrets, and crypto wallets. 10.3M combined installs across four laravel-lang packages. No safe tagged version — pin to pre-attack commit SHA.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    },
+    "laravel-lang/attributes": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/attributes: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    },
+    "laravel-lang/http-statuses": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/http-statuses: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    },
+    "laravel-lang/actions": {
+      "all-tags-2026-05-22": {
+        "id": "SUP-055",
+        "severity": "critical",
+        "fixed": "pin to commit SHA predating 2026-05-22 22:32 UTC",
+        "summary": "laravel-lang/actions: all git tags were rewritten to malicious commits on 2026-05-22 22:32 UTC. Part of coordinated laravel-lang supply chain attack. See laravel-lang/lang for full details.",
+        "affected_range": "all tags rewritten 2026-05-22",
+        "published": "2026-05-22"
+      }
+    }
   }
 }
