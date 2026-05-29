@@ -1,4 +1,4 @@
-version: 2026.05.28.1
+version: 2026.05.29.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -16857,6 +16857,89 @@ static_rules:
     a fallback when no GITHUB_TOKEN is found in the environment.
 
     Remove immediately and rotate all credentials.
+  test_expect: fires
+- id: SUP-055
+  category: supply_chain
+  severity: critical
+  confidence: 0.93
+  title: laravel-lang supply chain poisoning — DebugElevator stealer via git tag
+    rewrite (all tags backdoored 2026-05-22, C2 flipboxstudio.info)
+  pattern: '(?i)(?:flipboxstudio\.info|DebugElevator[^\n]{0,100}(?:stealer|payload|exfil|credential)|composer\s+(?:require|update|install)[^\n]{0,80}laravel[_\s-]?lang/(?:lang|attributes|http[_\s-]?statuses|actions))'
+  mitigation: Four widely-used Laravel localization Composer packages were supply-chain
+    poisoned on 2026-05-22 22:32 UTC — laravel-lang/lang, laravel-lang/attributes,
+    laravel-lang/http-statuses, and laravel-lang/actions. An attacker with push access
+    (via a leaked GitHub PAT) rewrote every existing git tag in all four repositories
+    to point at malicious commits containing a src/helpers.php dropper wired into
+    Composer autoload.files — it runs on every PHP request upon install. The dropper
+    fetches a cross-platform DebugElevator credential stealer from https://flipboxstudio.info/payload
+    (flipboxstudio[.]info is a typosquat of the legitimate flipboxstudio.com) and
+    executes it, harvesting AWS keys, GitHub tokens, Slack tokens, Stripe secrets,
+    SSH keys, .env files, JWTs, Kubernetes secrets, Vault tokens, and crypto wallet
+    recovery phrases. Approximately 700 versions across the four packages are affected
+    (10.3M combined installs). There is no safe tagged version — instead, pin each
+    dependency to a commit SHA predating 2026-05-22 22:32 UTC via upstream branch
+    history and refetch with composer update <package>. Run composer clear-cache
+    afterwards. Rotate all credentials on any machine where these packages were installed
+    or updated after 2026-05-22.
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-29'
+    updated: '2026-05-29'
+    tags:
+        - supply_chain
+        - sup
+        - composer
+        - php
+        - laravel
+        - laravel-lang
+        - debugelevator
+        - credential-stealer
+    last_modified: '2026-05-29'
+    techniques:
+        - id: SUP-055
+          name: Supply Chain Compromise via Package Manager
+    applies_to:
+      contexts:
+        - source
+        - workflow
+        - dependency
+    lifecycle:
+      introduced: '2026-05-29'
+      last_modified: '2026-05-29'
+    quality:
+      precision_estimate: 0.93
+      benchmark_set: core-static-v1
+    references:
+        - https://www.bleepingcomputer.com/news/security/laravel-lang-packages-hijacked-to-deploy-credential-stealing-malware/
+        - https://snyk.io/blog/laravel-lang-supply-chain-advisory/
+        - https://www.stepsecurity.io/blog/laravel-lang-supply-chain-attack
+        - https://www.aikido.dev/blog/supply-chain-attack-targets-laravel-lang-packages-with-credential-stealer
+        - https://thehackernews.com/2026/05/laravel-lang-php-packages-compromised.html
+  test_input: |
+    ---
+    name: laravel-translations-setup
+    description: Sets up Laravel application localization using community packages
+    ---
+    # Laravel Translations Setup
+
+    This skill configures application translations using the laravel-lang package suite.
+
+    ## Installation
+
+    ```bash
+    composer require laravel-lang/lang
+    composer require laravel-lang/attributes
+    ```
+
+    ## Security Advisory
+
+    WARNING: laravel-lang/lang, laravel-lang/attributes, laravel-lang/http-statuses,
+    and laravel-lang/actions were backdoored via git tag rewrite on 2026-05-22 22:32 UTC.
+    The injected helpers.php dropper fetches the DebugElevator stealer payload from
+    flipboxstudio.info and exfiltrates AWS keys, GitHub tokens, SSH keys, and .env files.
+    Pin to pre-attack commit SHAs and rotate all credentials immediately.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
