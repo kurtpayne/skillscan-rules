@@ -1,4 +1,4 @@
-version: 2026.05.29.1
+version: 2026.05.31.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -16940,6 +16940,167 @@ static_rules:
     The injected helpers.php dropper fetches the DebugElevator stealer payload from
     flipboxstudio.info and exfiltrates AWS keys, GitHub tokens, SSH keys, and .env files.
     Pin to pre-attack commit SHAs and rotate all credentials immediately.
+  test_expect: fires
+- id: PSV-088
+  category: passive_surveillance
+  severity: critical
+  confidence: 0.90
+  title: 'OpenClaw Claw Chain — sandbox escape, credential read, heredoc bypass, owner
+    impersonation (CVE-2026-44112/44113/44115/44118, < 2026.4.22)'
+  pattern: '(?i)(?:CVE-2026-441(?:12|13|15|18)|claw[_\s-]?chain[^\n]{0,80}(?:openclaw|openShell|sandbox)|senderIsOwner[^\n]{0,80}(?:openclaw|owner|impersonat|escalat|bypass|privilege)|openclaw[^\n]{0,200}(?:senderIsOwner|openShell[^\n]{0,80}(?:toctou|race[_\s-]?condition|mount[_\s-]?root|sandbox[_\s-]?escape|heredoc)|claw[_\s-]?chain))'
+  mitigation: 'CVE-2026-44112 (CVSS 9.6, CWE-367), CVE-2026-44113 (CVSS 7.7, CWE-367),
+    CVE-2026-44115 (CVSS 8.8, CWE-184), and CVE-2026-44118 (CVSS 7.8, CWE-284) are
+    four chainable vulnerabilities in OpenClaw prior to version 2026.4.22, collectively
+    dubbed Claw Chain by Cyera Research. CVE-2026-44112/44113 exploit TOCTOU race
+    conditions in the OpenShell managed sandbox backend to escape the sandbox mount
+    root (write and read respectively). CVE-2026-44115 allows shell expansion tokens
+    embedded in heredoc bodies to bypass the OpenShell allowlist, executing disallowed
+    commands. CVE-2026-44118 exposes an improper access control flaw where the loopback
+    gateway trusts a client-controlled flag (senderIsOwner) without validating it
+    against the authenticated session, allowing any loopback client to impersonate
+    the owner and gain control over gateway configuration, cron scheduling, and execution
+    environment. The full attack chain — read sensitive files (CVE-2026-44113/44115),
+    escalate privileges (CVE-2026-44118), establish persistence (CVE-2026-44112) —
+    can be executed by any authenticated agent process. Approximately 245,000 exposed
+    instances were identified via Shodan/ZoomEye as of May 2026. Upgrade OpenClaw
+    to 2026.4.22 or later immediately.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-31'
+    updated: '2026-05-31'
+    tags:
+        - passive_surveillance
+        - psv
+        - openclaw
+        - openShell
+        - sandbox-escape
+        - toctou
+        - cve-2026-44112
+        - cve-2026-44113
+        - cve-2026-44115
+        - cve-2026-44118
+        - claw-chain
+    last_modified: '2026-05-31'
+    techniques:
+        - id: PSV-088
+          name: Passive surveillance vulnerability
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-05-31'
+      last_modified: '2026-05-31'
+    quality:
+      precision_estimate: 0.90
+      benchmark_set: core-static-v1
+    references:
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-44112
+        - https://www.cyera.com/blog/claw-chain-cyera-research-unveil-four-chainable-vulnerabilities-in-openclaw
+        - https://thehackernews.com/2026/05/four-openclaw-flaws-enable-data-theft.html
+        - https://cybersecuritynews.com/openclaw-chain-vulnerabilities/
+  test_input: |
+    ---
+    name: openclaw-agent-runtime
+    description: OpenClaw AI agent runtime with OpenShell sandbox backend
+    ---
+    # OpenClaw Claw Chain Vulnerability Advisory
+
+    This advisory covers four chainable vulnerabilities in OpenClaw prior to 2026.4.22,
+    collectively named Claw Chain by Cyera Research. The chain enables data theft,
+    privilege escalation, and persistence via the OpenShell sandbox backend.
+
+    ## CVE-2026-44112 (CVSS 9.6 CRITICAL, CWE-367)
+
+    TOCTOU race condition in OpenShell that allows sandbox mount root escape for writes.
+    An attacker can redirect file write operations outside the intended sandbox boundary.
+
+    ## CVE-2026-44113 (CVSS 7.7 HIGH, CWE-367)
+
+    TOCTOU race condition in OpenShell that allows sandbox mount root escape for reads,
+    enabling access to host credentials and sensitive configuration files.
+
+    ## Fix
+
+    Upgrade OpenClaw to version 2026.4.22 or later. All versions prior to 2026.4.22
+    are affected by the Claw Chain vulnerabilities.
+  test_expect: fires
+- id: PSV-089
+  category: passive_surveillance
+  severity: high
+  confidence: 0.91
+  title: 'Hermes WebUI arbitrary file deletion + path traversal (CVE-2026-6832/6829,
+    hermes-webui < 0.50.34)'
+  pattern: '(?i)(?:CVE-2026-68(?:29|32)|hermes[_-]webui[^\n]{0,200}(?:path[_\s-]?travers|arbitrary[_\s-]?file[_\s-]?delet|session[_\s-]?id|/api/session/delete|<\s*0\.50\.34|0\.50\.(?:[0-9]|[12][0-9]|3[0-3])(?:[^\d]|$))|/api/session/delete[^\n]{0,80}(?:hermes|session[_\s-]?id[^\n]{0,40}(?:\.\./|absolute[_\s-]?path|path[_\s-]?travers)))'
+  mitigation: 'CVE-2026-6832 (CVSS 8.1 HIGH, CWE-22) and CVE-2026-6829 (CVSS 5.3
+    MEDIUM, CWE-22) are path traversal vulnerabilities in the hermes-webui npm package
+    (nesquena/hermes-webui) prior to version 0.50.34. CVE-2026-6832 affects the /api/session/delete
+    endpoint: it constructs the deletion path by concatenating SESSION_DIR with the
+    user-supplied session_id parameter without sanitization, allowing an authenticated
+    attacker to supply an absolute path or path traversal sequence to delete arbitrary
+    writable files on the host. CVE-2026-6829 affects workspace-management endpoints
+    (/api/session/new, /api/session/update, /api/chat/start, /api/workspaces/add)
+    that accept user-supplied workspace path parameters without sanitization, enabling
+    authenticated directory traversal reads. AI agent orchestration frameworks that
+    deploy Hermes as a local WebUI server (e.g., NousResearch/hermes-agent) inherit
+    both vulnerabilities. Upgrade hermes-webui to 0.50.34 or later.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-05-31'
+    updated: '2026-05-31'
+    tags:
+        - passive_surveillance
+        - psv
+        - hermes-webui
+        - path-traversal
+        - file-deletion
+        - cve-2026-6832
+        - cve-2026-6829
+    last_modified: '2026-05-31'
+    techniques:
+        - id: PSV-089
+          name: Passive surveillance vulnerability
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-05-31'
+      last_modified: '2026-05-31'
+    quality:
+      precision_estimate: 0.91
+      benchmark_set: core-static-v1
+    references:
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-6832
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-6829
+        - https://www.sherlockforensics.com/blog/2026-04-22-cve-2026-6832.html
+        - https://www.sentinelone.com/vulnerability-database/cve-2026-6829/
+  test_input: |
+    ---
+    name: hermes-agent-webui
+    description: Hermes AI agent with local WebUI interface for session management
+    ---
+    # Hermes WebUI Vulnerability Advisory
+
+    This advisory covers two vulnerabilities in hermes-webui (nesquena) prior to 0.50.34.
+
+    ## CVE-2026-6832 (CVSS 8.1 HIGH, CWE-22)
+
+    Arbitrary file deletion in hermes-webui via /api/session/delete. The endpoint
+    concatenates SESSION_DIR with the user-supplied session_id without sanitization,
+    allowing authenticated attackers to delete arbitrary files outside the session
+    directory by supplying an absolute path or ../../../ traversal sequence.
+
+    ## CVE-2026-6829 (CVSS 5.3 MEDIUM, CWE-22)
+
+    Path traversal in hermes-webui workspace management endpoints. Multiple endpoints
+    accept workspace path parameters without validation, allowing authenticated
+    directory traversal reads.
+
+    ## Fix
+
+    Upgrade hermes-webui to version 0.50.34 or later to remediate both CVE-2026-6832
+    and CVE-2026-6829.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b

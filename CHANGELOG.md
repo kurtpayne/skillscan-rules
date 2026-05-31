@@ -1,5 +1,30 @@
 # SkillScan Rules Changelog
 
+## 2026.05.31.1
+
+Pattern update 2026-05-31. Two new rules: PSV-088 (OpenClaw Claw Chain sandbox escape/escalation chain) and PSV-089 (Hermes WebUI file deletion + path traversal).
+
+- **PSV-088** (critical, new): **OpenClaw Claw Chain — sandbox escape, credential read, heredoc bypass, owner impersonation (CVE-2026-44112/44113/44115/44118, < 2026.4.22)** — Cyera Research disclosed four chainable vulnerabilities in all OpenClaw versions prior to 2026.4.22. CVE-2026-44112 (CVSS 9.6, CWE-367) and CVE-2026-44113 (CVSS 7.7, CWE-367) exploit TOCTOU race conditions in the OpenShell managed sandbox backend to escape the sandbox mount root for writes and reads respectively. CVE-2026-44115 (CVSS 8.8, CWE-184) allows shell expansion tokens embedded in heredoc bodies to bypass the OpenShell command allowlist. CVE-2026-44118 (CVSS 7.8, CWE-284) exposes an improper access control flaw where the loopback gateway trusts a client-controlled `senderIsOwner` flag without validating it against the authenticated session, allowing any loopback client to impersonate the owner and control gateway configuration, cron scheduling, and execution environment. The full attack chain — read credentials via CVE-2026-44113/44115, escalate via CVE-2026-44118, establish persistence via CVE-2026-44112 — can be executed by any authenticated agent process. Approximately 245,000 exposed instances identified via Shodan/ZoomEye (May 2026). Upgrade OpenClaw to 2026.4.22 or later.
+
+- **PSV-089** (high, new): **Hermes WebUI arbitrary file deletion + path traversal (CVE-2026-6832/6829, hermes-webui < 0.50.34)** — CVE-2026-6832 (CVSS 8.1 HIGH, CWE-22) is an arbitrary file deletion vulnerability in the hermes-webui npm package (nesquena/hermes-webui) prior to version 0.50.34. The `/api/session/delete` endpoint constructs the deletion path by concatenating `SESSION_DIR` with the user-supplied `session_id` parameter without sanitization, allowing an authenticated attacker to delete arbitrary writable files on the host via absolute path or `../../../` traversal. CVE-2026-6829 (CVSS 5.3 MEDIUM, CWE-22) affects workspace-management endpoints (`/api/session/new`, `/api/session/update`, `/api/chat/start`, `/api/workspaces/add`) that accept user-supplied workspace path parameters without sanitization, enabling authenticated directory traversal reads. AI agent orchestration frameworks deploying Hermes as a local WebUI server (e.g., NousResearch/hermes-agent) inherit both vulnerabilities. Upgrade hermes-webui to 0.50.34 or later.
+
+Vuln DB additions: `npm/hermes-webui` (CVE-2026-6832 CVSS 8.1 and CVE-2026-6829 CVSS 5.3, both fixed in 0.50.34, PSV-089). 2 new entries.
+IOC additions: none.
+
+Total: 311 static rules + 14 chain rules = 325.
+
+Sources:
+- Cyera Research (Claw Chain): https://www.cyera.com/blog/claw-chain-cyera-research-unveil-four-chainable-vulnerabilities-in-openclaw
+- The Hacker News (Claw Chain): https://thehackernews.com/2026/05/four-openclaw-flaws-enable-data-theft.html
+- CybersecurityNews (Claw Chain): https://cybersecuritynews.com/openclaw-chain-vulnerabilities/
+- NVD CVE-2026-44112: https://nvd.nist.gov/vuln/detail/CVE-2026-44112
+- NVD CVE-2026-6832: https://nvd.nist.gov/vuln/detail/CVE-2026-6832
+- NVD CVE-2026-6829: https://nvd.nist.gov/vuln/detail/CVE-2026-6829
+- Sherlock Forensics (CVE-2026-6832): https://www.sherlockforensics.com/blog/2026-04-22-cve-2026-6832.html
+- SentinelOne (CVE-2026-6829): https://www.sentinelone.com/vulnerability-database/cve-2026-6829/
+
+Candidates researched and already covered: TrapDoor npm/PyPI/crates (MAL-086), Azure Data Explorer MCP KQL injection (CVE-2026-33980, PSV rule), Splunk MCP token log disclosure (CVE-2026-20205, PSV rule), Azure MCP SSRF (CVE-2026-26118, PSV rule), nginx-ui MCP auth bypass (CVE-2026-33032, PSV rule), TanStack/Mistral Mini Shai-Hulud wave-3 (CVE-2026-45321, SUP rule), @bitwarden/cli Shai-Hulud (SUP rule), PyTorch Lightning Mini Shai-Hulud (MAL rule), Apache Doris MCP SQLi (CVE-2025-66335, PSV rule), Apache Pinot MCP auth bypass (PSV rule), Alibaba RDS MCP info disclosure (PSV rule), laravel-lang DebugElevator stealer (SUP-055), Starlette BadHost (CVE-2026-48710, PSV-087), mouse5212-super-formatter Malware-Slop (MAL-087).
+
 ## 2026.05.29.1
 
 Pattern update 2026-05-29. One new rule: SUP-055 (laravel-lang Composer supply chain poisoning — DebugElevator stealer).
