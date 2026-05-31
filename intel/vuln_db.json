@@ -3371,6 +3371,26 @@
         "fixed": "REMOVED",
         "summary": "mouse5212-super-formatter: all versions malicious. Postinstall infostealer targeting /mnt/user-data (Anthropic Claude AI tool directory). Recursively uploads files via GitHub API to attacker repository (mouse5212 account). Codenamed Malware-Slop (OX Security, May 27 2026). 676 downloads before removal."
       }
+    },
+    "hermes-webui": {
+      "0.50.33": {
+        "id": "CVE-2026-6832",
+        "severity": "high",
+        "cvss": 8.1,
+        "fixed": "0.50.34",
+        "affected_range": "< 0.50.34",
+        "published": "2026-04-21",
+        "summary": "CVE-2026-6832 (CVSS 8.1 HIGH, CWE-22): Arbitrary file deletion in hermes-webui (nesquena) prior to 0.50.34. The /api/session/delete endpoint constructs the deletion path by concatenating SESSION_DIR with the user-supplied session_id parameter without sanitization, allowing an authenticated attacker to delete arbitrary files outside the session directory via absolute path or path traversal sequence. Also see CVE-2026-6829 (CVSS 5.3, workspace path traversal read) in the same version range. Upgrade to 0.50.34."
+      },
+      "< 0.50.34_6829": {
+        "id": "CVE-2026-6829",
+        "severity": "medium",
+        "cvss": 5.3,
+        "fixed": "0.50.34",
+        "affected_range": "< 0.50.34",
+        "published": "2026-04-21",
+        "summary": "CVE-2026-6829 (CVSS 5.3 MEDIUM, CWE-22): Path traversal in hermes-webui (nesquena) prior to 0.50.34. Workspace management endpoints (/api/session/new, /api/session/update, /api/chat/start, /api/workspaces/add) accept user-supplied workspace path parameters without sanitization, allowing authenticated directory traversal reads. Upgrade to 0.50.34."
+      }
     }
   }
 }
