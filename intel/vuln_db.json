@@ -200,6 +200,17 @@
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
       }
+    },
+    "ms-agent": {
+      "<=1.6.0rc1": {
+        "id": "CVE-2026-2256",
+        "severity": "medium",
+        "cvss": 6.5,
+        "fixed": null,
+        "ghsa": "GHSA-4gc2-344q-r2rw",
+        "cwe": "CWE-77",
+        "summary": "CVE-2026-2256 (GHSA-4gc2-344q-r2rw, CERT VU#431821, CVSS 6.5, CWE-77): ModelScope MS-Agent command injection via prompt-derived input. The check_safe() validation function uses a regex-based denylist that can be bypassed via command obfuscation or encoding, allowing unauthenticated network attackers to execute arbitrary OS commands. No patch available as of 2026-06-01."
+      }
     }
   },
   "cursor": {

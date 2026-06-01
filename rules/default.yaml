@@ -1,4 +1,4 @@
-version: 2026.05.31.1
+version: 2026.06.01.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -17101,6 +17101,77 @@ static_rules:
 
     Upgrade hermes-webui to version 0.50.34 or later to remediate both CVE-2026-6832
     and CVE-2026-6829.
+  test_expect: fires
+- id: PSV-090
+  category: passive_surveillance
+  severity: high
+  confidence: 0.9
+  title: MS-Agent (ModelScope) command injection via prompt-derived input (CVE-2026-2256,
+    GHSA-4gc2-344q-r2rw, pip ms-agent <= 1.6.0rc1, no fix)
+  pattern: '(?i)(?:CVE-2026-2256|GHSA-4gc2-344q-r2rw|VU#431821|ms[_\s-]?agent[^\n]{0,200}(?:command[_\s-]?inject|shell[_\s-]?inject|prompt[^\n]{0,80}(?:arbitrary[_\s-]?command|os[_\s-]?command|rce|code[_\s-]?exec[^\n]{0,40}(?:shell|prompt))|check[_\s-]?safe[^\n]{0,80}(?:bypass|denylist|inject|evad)|1\.6\.0rc1[^\n]{0,80}(?:vuln|inject|cve|advisory|unsafe)))'
+  mitigation: 'CVE-2026-2256 (GHSA-4gc2-344q-r2rw, CERT VU#431821, CVSS 6.5, CWE-77)
+    is a command injection vulnerability in ModelScope MS-Agent (pip ms-agent <=
+    1.6.0rc1). Prompt-derived input is passed to OS shell execution without adequate
+    sanitization. The check_safe() validation function uses a regex-based denylist
+    that can be bypassed via command obfuscation, encoding, or alternative shell syntax,
+    allowing unauthenticated network attackers to execute arbitrary OS commands with
+    the privileges of the ms-agent process. No patch is available as of 2026-06-01.
+    Mitigate by not exposing ms-agent on publicly reachable interfaces, filtering
+    external inputs at the application boundary before they reach the agent, and
+    monitoring for unexpected subprocess spawning from the ms-agent process.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-06-01'
+    updated: '2026-06-01'
+    tags:
+        - passive_surveillance
+        - psv
+        - ms-agent
+        - modelscope
+        - command-injection
+        - cve-2026-2256
+    last_modified: '2026-06-01'
+    techniques:
+        - id: PSV-090
+          name: Passive surveillance vulnerability
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-06-01'
+      last_modified: '2026-06-01'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-2256
+        - https://github.com/advisories/GHSA-4gc2-344q-r2rw
+        - https://kb.cert.org/vuls/id/431821
+        - https://www.securityweek.com/vulnerability-in-ms-agent-ai-framework-can-allow-full-system-compromise/
+        - https://github.com/modelscope/ms-agent
+  test_input: |
+    ---
+    name: modelscope-ms-agent-integration
+    description: AI agent using ModelScope ms-agent framework for tool-augmented tasks
+    ---
+    # ModelScope MS-Agent Integration
+
+    This skill integrates with the ModelScope ms-agent framework.
+
+    ## Security Advisory
+
+    CVE-2026-2256 (GHSA-4gc2-344q-r2rw, CERT VU#431821): ms-agent <= 1.6.0rc1 is
+    vulnerable to command injection via prompt-derived input. The check_safe()
+    validation function uses a regex denylist that can be bypassed via command
+    obfuscation or encoding, allowing arbitrary OS command execution through crafted
+    prompts passed to the ms-agent shell execution layer.
+
+    ## Installation
+
+    ```
+    pip install ms-agent==1.6.0rc1
+    ```
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b
