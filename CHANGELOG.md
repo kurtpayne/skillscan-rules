@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.06.01.1
+
+Pattern update 2026-06-01. One new rule: PSV-090 (MS-Agent ModelScope command injection via prompt-derived input, CVE-2026-2256).
+
+- **PSV-090** (high, new): **MS-Agent (ModelScope) command injection via prompt-derived input (CVE-2026-2256, GHSA-4gc2-344q-r2rw, CERT VU#431821, pip ms-agent <= 1.6.0rc1, no fix)** — CVE-2026-2256 is a command injection vulnerability (CVSS 6.5, CWE-77) in ModelScope's MS-Agent framework (pip `ms-agent`), affecting all versions up to and including 1.6.0rc1. The `check_safe()` validation function attempts to block dangerous OS commands via a regex-based denylist, but the denylist can be bypassed using command obfuscation, encoding, or alternative shell syntax. As a result, prompt-derived input — including content retrieved from external documents, code repositories, or user-supplied text — can reach the agent's shell execution layer without adequate sanitization, enabling unauthenticated network attackers to execute arbitrary OS commands with the privileges of the ms-agent process. Disclosed via GHSA in mid-2026; a PoC was published by Itamar Yochpaz (`CVE-2026-2256-PoC`). No patch is available as of 2026-06-01. Mitigate by not exposing ms-agent on public interfaces, filtering external inputs at the application boundary, and monitoring for unexpected subprocess activity. Rule fires on the CVE/GHSA/CERT IDs or `ms-agent` combined with command injection and version indicators.
+
+Vuln DB additions: `pip/ms-agent` (CVE-2026-2256, CVSS 6.5, CWE-77, all versions <= 1.6.0rc1 affected, no fix). 1 new entry.
+IOC additions: none.
+
+Total: 312 static rules + 14 chain rules = 326.
+
+Sources:
+- GitHub Advisory (GHSA-4gc2-344q-r2rw): https://github.com/advisories/GHSA-4gc2-344q-r2rw
+- CERT/CC VU#431821: https://kb.cert.org/vuls/id/431821
+- SecurityWeek: https://www.securityweek.com/vulnerability-in-ms-agent-ai-framework-can-allow-full-system-compromise/
+- ModelScope ms-agent repository: https://github.com/modelscope/ms-agent
+
+Candidates researched and already covered: CVE-2026-30615 Windsurf MCP STDIO injection (PSV rule), CVE-2026-20205 Splunk MCP token disclosure (PSV rule), CVE-2026-5058 aws-mcp-server RCE (PSV rule), CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2026-32211 Azure DevOps MCP missing auth (PSV rule), CVE-2025-65717 VS Code Live Server CORS exfil (PSV rule), CVE-2026-25592 Semantic Kernel .NET arbitrary file write (PSV rule), CVE-2026-26030 Semantic Kernel Python eval injection (PSV rule), CVE-2026-44338 PraisonAI missing auth (PSV rule), Mini Shai-Hulud wave-4 @antv/echarts-for-react (MAL rule), TrapDoor supply chain npm/PyPI/crates (MAL-086), laravel-lang DebugElevator stealer (SUP-055), Shai-Hulud wave-5 172-package AntV ecosystem (already covered by wave-4 rule MAL-084+), Cisco SD-WAN CVE-2026-20182 (networking infra, out of scope).
+
 ## 2026.05.31.1
 
 Pattern update 2026-05-31. Two new rules: PSV-088 (OpenClaw Claw Chain sandbox escape/escalation chain) and PSV-089 (Hermes WebUI file deletion + path traversal).
