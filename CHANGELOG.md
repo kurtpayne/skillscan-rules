@@ -1,5 +1,25 @@
 # SkillScan Rules Changelog
 
+## 2026.06.02.1
+
+Pattern update 2026-06-02. One new rule: MAL-088 (Miasma: The Spreading Blight — @redhat-cloud-services npm supply chain worm).
+
+- **MAL-088** (critical, new): **Miasma: The Spreading Blight — @redhat-cloud-services npm supply chain worm (kitty-monitor persistence, firedalazer C2, June 2026)** — On June 1, 2026 a compromised Red Hat employee GitHub account was used to inject malicious OIDC-signed GitHub Actions workflows into three RedHatInsights repositories. The attacker leveraged GitHub Actions OIDC tokens to publish backdoored versions of 32 packages in the @redhat-cloud-services npm scope (96 total malicious versions, ~80K combined weekly downloads) with valid SLSA provenance attestations. Each tarball ships a 4.1 MB obfuscated preinstall JavaScript payload that harvests AWS, Azure, GCP, HashiCorp Vault, Kubernetes, GitHub Actions OIDC, npm, Bitwarden, and 1Password credentials. Novel GCP/Azure collectors enumerate every cloud identity the infected host can assume dynamically. The malware installs a persistent `kitty-monitor` daemon (`kitty-monitor.service` on Linux, `com.user.kitty-monitor.plist` on macOS) and uses GitHub commit-search (query: `firedalazer`) as a dead-drop C2 channel. It propagates by injecting hooks into AI developer tools (Claude, Codex, Gemini, Copilot, Kiro, opencode) and VS Code folder-open tasks. Attacker-controlled exfiltration repos carry the description "Miasma: The Spreading Blight". Known-malicious versions include `@redhat-cloud-services/frontend-components` ≤7.7.2 and `@redhat-cloud-services/types@3.6.1`. Attribution is TTP-overlap with TeamPCP; not confirmed to be the same actor. Rule fires on `kitty-monitor.service`, `kitty-monitor.plist`, `firedalazer`, or "Miasma: The Spreading Blight" campaign strings.
+
+Vuln DB additions: `@redhat-cloud-services/frontend-components` (<= 7.7.2, MAL-088) and `@redhat-cloud-services/types` (3.6.1, MAL-088). 2 new entries.
+IOC additions: none (Miasma uses GitHub commit-search as dead-drop C2; no attacker-controlled domain).
+
+Total: 313 static rules + 14 chain rules = 327.
+
+Sources:
+- Wiz Research: https://www.wiz.io/blog/miasma-supply-chain-attack-targeting-redhat-npm-packages
+- The Hacker News: https://thehackernews.com/2026/06/miasma-supply-chain-attack-compromises.html
+- JFrog Security Research: https://research.jfrog.com/post/shai-hulud-miasma-redhat-cloud-services/
+- Snyk: https://snyk.io/blog/miasma-supply-chain-attack-malicious-code-redhat-cloud-services-npm-packages/
+- Aikido Security: https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
+
+Candidates researched and already covered: Mini Shai-Hulud waves 1–4 (@bitwarden/cli, lightning, @tanstack, echarts-for-react — MAL-078/079/081/084), gh-token-monitor machine-wipe (covered in wave-4/5 rules), CVE-2026-5058 aws-mcp-server RCE (PSV rule), CVE-2026-20205 Splunk MCP token disclosure (PSV rule), CVE-2025-65717 VS Code Live Server CORS exfil (PSV rule), SUP-055 laravel-lang DebugElevator stealer (already merged 2026-05-31). Shai-Hulud wave-5 172-package AntV/Mistral ecosystem: existing wave-4 rule MAL-084 covers pattern; no dedicated new rule needed as additional packages follow same payload signature.
+
 ## 2026.06.01.1
 
 Pattern update 2026-06-01. One new rule: PSV-090 (MS-Agent ModelScope command injection via prompt-derived input, CVE-2026-2256).
