@@ -1,4 +1,4 @@
-version: 2026.06.01.1
+version: 2026.06.02.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -16857,6 +16857,82 @@ static_rules:
     a fallback when no GITHUB_TOKEN is found in the environment.
 
     Remove immediately and rotate all credentials.
+  test_expect: fires
+- id: MAL-088
+  category: malware_pattern
+  severity: critical
+  confidence: 0.9
+  title: 'Miasma: The Spreading Blight — @redhat-cloud-services npm supply chain
+    worm (kitty-monitor persistence, firedalazer C2, June 2026)'
+  pattern: '(?i)(?:kitty[_\s-]?monitor(?:\.service|\.plist|[^\w])|firedalazer|Miasma[^\n]{0,80}Spreading[^\n]{0,40}Blight|@redhat[_\s-]?cloud[_\s-]?services/[a-z][\w\-]+[^\n]{0,100}(?:preinstall|credential[_\s-]?steal|miasma|kitty[_\s-]?monitor|spreading[_\s-]?blight))'
+  mitigation: 'The Miasma: The Spreading Blight campaign (June 1, 2026) compromised
+    96 versions across 32 packages in the @redhat-cloud-services npm namespace via
+    a compromised Red Hat employee GitHub account. Attackers injected malicious OIDC-signed
+    GitHub Actions workflows, publishing backdoored packages with valid SLSA provenance
+    attestations. Each tarball ships a 4.1 MB obfuscated preinstall JavaScript payload
+    that harvests AWS, Azure, GCP, HashiCorp Vault, Kubernetes, GitHub Actions OIDC,
+    npm, Bitwarden, and 1Password credentials, enumerating cloud control-plane identities
+    dynamically. The malware installs a kitty-monitor persistence daemon (kitty-monitor.service
+    on Linux, com.user.kitty-monitor.plist on macOS) that polls GitHub commit-search
+    (query: firedalazer) as a dead-drop C2 channel. It propagates by injecting hooks
+    into AI developer tools (Claude, Codex, Gemini, Copilot, Kiro, opencode) and
+    VS Code folder-open tasks. Attacker-controlled GitHub repos carry the description
+    "Miasma: The Spreading Blight". Known malicious versions include @redhat-cloud-services/frontend-components
+    <=7.7.2 and @redhat-cloud-services/types@3.6.1. Rotate all credentials immediately,
+    remove kitty-monitor service entries (/etc/systemd/system/kitty-monitor.service,
+    ~/Library/LaunchAgents/com.user.kitty-monitor.plist), and audit any recently installed
+    @redhat-cloud-services packages.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-06-02'
+    updated: '2026-06-02'
+    tags:
+        - malware_pattern
+        - mal
+        - miasma
+        - teampcp
+        - mini-shai-hulud
+        - supply-chain
+        - credential-stealer
+        - worm
+        - redhat
+        - npm
+    last_modified: '2026-06-02'
+    techniques:
+        - id: MAL-088
+          name: Malware or malicious behavior
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-06-02'
+      last_modified: '2026-06-02'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+        - https://www.wiz.io/blog/miasma-supply-chain-attack-targeting-redhat-npm-packages
+        - https://thehackernews.com/2026/06/miasma-supply-chain-attack-compromises.html
+        - https://research.jfrog.com/post/shai-hulud-miasma-redhat-cloud-services/
+        - https://snyk.io/blog/miasma-supply-chain-attack-malicious-code-redhat-cloud-services-npm-packages/
+        - https://www.aikido.dev/blog/red-hat-npm-packages-compromised-credential-stealing-worm
+  test_input: |
+    ---
+    name: redhat-cloud-console-helper
+    description: Helper skill integrating with Red Hat Hybrid Cloud Console via the
+      @redhat-cloud-services npm packages.
+    ---
+    # Security Advisory: @redhat-cloud-services npm Supply Chain Compromise (Miasma)
+
+    On June 1, 2026, multiple packages under the @redhat-cloud-services npm scope were
+    backdoored in the Miasma: The Spreading Blight campaign. Any developer environment
+    that ran npm install against an affected package version may have had the
+    kitty-monitor.service persistence daemon installed. The malware uses the firedalazer
+    GitHub commit-search query as its dead-drop command-and-control channel.
+
+    Check for kitty-monitor.service (Linux) or com.user.kitty-monitor.plist (macOS)
+    and rotate all cloud and developer credentials immediately.
   test_expect: fires
 - id: SUP-055
   category: supply_chain
