@@ -149,6 +149,14 @@
         "fixed": "4.6.34",
         "ghsa": "GHSA-6rmh-7xcm-cpxj",
         "summary": "CVE-2026-44338 (GHSA-6rmh-7xcm-cpxj, CVSS 7.3, CWE-306): PraisonAI legacy Flask API server (src/praisonai/api_server.py) ships with AUTH_ENABLED=False and AUTH_TOKEN=None. /agents and /chat endpoints fail open to any caller. Active exploitation began within 3h44m of May 14 2026 disclosure. Upgrade to 4.6.34."
+      },
+      "<=4.6.36": {
+        "id": "CVE-2026-44340",
+        "severity": "high",
+        "cvss": 8.7,
+        "fixed": "4.6.37",
+        "ghsa": "GHSA-9q28-ghcr-c4x3",
+        "summary": "CVE-2026-44340 (GHSA-9q28-ghcr-c4x3, CVSS 8.7, CWE-22/CWE-59): PraisonAI pip package <= 4.6.36 _safe_extractall symlink bypass allows arbitrary file write outside dest_dir. Bundle with symlink member (linkname outside dest_dir) plus a traversal file escapes extraction boundary. Upgrade to 4.6.37."
       }
     },
     "durabletask": {
@@ -336,6 +344,14 @@
         "severity": "high",
         "fixed": "2026.3.12",
         "summary": "Authorization bypass in OpenClaw WebSocket connect path (CVE-2026-22172). Allows self-declaration of elevated scopes (operator.admin) without server-side binding, enabling admin-only gateway operations."
+      },
+      "<=2026.2.22": {
+        "id": "CVE-2026-35632",
+        "severity": "medium",
+        "cvss": 6.9,
+        "fixed": null,
+        "ghsa": "GHSA-7xr2-q9vf-x4r5",
+        "summary": "CVE-2026-35632 (GHSA-7xr2-q9vf-x4r5, CVSS 6.9, CWE-61): OpenClaw npm <= 2026.2.22 agents.create/update handlers call fs.appendFile on IDENTITY.md without symlink containment. Attacker plants symlink at IDENTITY.md to write to arbitrary files (/etc/crontab, ~/.ssh/authorized_keys). No fix available."
       }
     },
     "< 2026.3.22 (CVE-2026-35639)": {

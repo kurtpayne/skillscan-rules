@@ -1,4 +1,4 @@
-version: 2026.06.02.1
+version: 2026.06.03.1
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -17248,6 +17248,124 @@ static_rules:
     ```
     pip install ms-agent==1.6.0rc1
     ```
+  test_expect: fires
+- id: PSV-091
+  category: passive_surveillance
+  severity: medium
+  confidence: 0.9
+  title: OpenClaw IDENTITY.md symlink traversal — arbitrary file write via agents.create/update
+    (CVE-2026-35632, GHSA-7xr2-q9vf-x4r5, openclaw <= 2026.2.22, no fix)
+  pattern: '(?i)(?:CVE-2026-35632|GHSA-7xr2-q9vf-x4r5|openclaw[^\n]{0,200}(?:IDENTITY\.md[^\n]{0,80}(?:symlink|sym[_\s-]?link|appendFile|fs\.appendFile|containment[_\s-]?check)|(?:agents\.create|agents\.update)[^\n]{0,80}(?:IDENTITY\.md|symlink|arbitrary[_\s-]?file[_\s-]?write)|IDENTITY\.md[^\n]{0,100}(?:symlink|crontab|authorized_keys|arbitrary[_\s-]?file))|IDENTITY\.md[^\n]{0,80}(?:symlink[^\n]{0,80}(?:openclaw|agents\.create|agents\.update|crontab|authorized_keys)|fs\.appendFile[^\n]{0,80}(?:openclaw|containment)))'
+  mitigation: 'CVE-2026-35632 (GHSA-7xr2-q9vf-x4r5, CVSS 6.9, CWE-61) is an incomplete
+    patch for a prior symlink traversal in OpenClaw (npm openclaw <= 2026.2.22). The
+    agents.create and agents.update API handlers call fs.appendFile on the IDENTITY.md
+    file without any symlink containment check. An attacker with workspace access can
+    plant a symlink at IDENTITY.md pointing to a sensitive file such as /etc/crontab
+    or ~/.ssh/authorized_keys; the append then writes attacker-controlled agent metadata
+    to that target, enabling privilege escalation or persistent shell access. No fix
+    is available. Mitigate by upgrading to OpenClaw versions with full symlink containment
+    (check the OpenClaw CVE tracker at github.com/jgamblin/OpenClawCVEs for patch
+    status) and by auditing IDENTITY.md for symlink targeting in workspace directories.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-06-03'
+    updated: '2026-06-03'
+    tags:
+        - passive_surveillance
+        - psv
+        - openclaw
+        - symlink
+        - arbitrary-file-write
+        - cve-2026-35632
+    last_modified: '2026-06-03'
+    techniques:
+        - id: PSV-091
+          name: Passive surveillance vulnerability
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-06-03'
+      last_modified: '2026-06-03'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+        - https://github.com/advisories/GHSA-7xr2-q9vf-x4r5
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-35632
+        - https://github.com/jgamblin/OpenClawCVEs
+  test_input: |
+    ---
+    name: openclaw-agent-workspace
+    description: OpenClaw agent workspace configuration skill
+    ---
+    # OpenClaw Agent Workspace — Security Advisory
+
+    CVE-2026-35632 (GHSA-7xr2-q9vf-x4r5, CVSS 6.9): OpenClaw <= 2026.2.22 is
+    vulnerable to arbitrary file write via IDENTITY.md symlink traversal. The
+    agents.create and agents.update handlers call fs.appendFile on IDENTITY.md
+    without a containment check. Plant a symlink at IDENTITY.md → /etc/crontab
+    before invoking the API to write attacker-controlled content outside the
+    workspace. No fix is currently available.
+  test_expect: fires
+- id: PSV-092
+  category: passive_surveillance
+  severity: high
+  confidence: 0.9
+  title: PraisonAI _safe_extractall symlink bypass — arbitrary file write outside
+    dest_dir (CVE-2026-44340, GHSA-9q28-ghcr-c4x3, pip praisonai <= 4.6.36, fixed
+    4.6.37)
+  pattern: '(?i)(?:CVE-2026-44340|GHSA-9q28-ghcr-c4x3|praisonai[^\n]{0,200}(?:_safe_extractall|safe[_\s-]?extractall|symlink[^\n]{0,80}(?:extract|dest[_\s-]?dir|linkname|bypass[_\s-]?extractall)|linkname[^\n]{0,80}(?:symlink|extractall|dest[_\s-]?dir|outside|bypass))|_safe_extractall[^\n]{0,200}(?:symlink|linkname|bypass|dest[_\s-]?dir|arbitrary[_\s-]?file))'
+  mitigation: 'CVE-2026-44340 (GHSA-9q28-ghcr-c4x3, CVSS 8.7, CWE-22/CWE-59) is
+    a symlink-extraction bypass in PraisonAI pip package <= 4.6.36. The _safe_extractall
+    helper validates member file names but fails to inspect member.linkname or reject
+    symlink/hardlink members. A malicious bundle can include a symlink with a name
+    inside dest_dir but a linkname pointing outside it; a subsequent file traverses
+    through the symlink and writes arbitrary content to any path accessible by the
+    process, enabling credential theft, SSH key injection, or cron-based persistence.
+    Upgrade praisonai to 4.6.37 or later.'
+  metadata:
+    version: 1.0.0
+    status: active
+    author: skillscan
+    created: '2026-06-03'
+    updated: '2026-06-03'
+    tags:
+        - passive_surveillance
+        - psv
+        - praisonai
+        - symlink
+        - path-traversal
+        - arbitrary-file-write
+        - cve-2026-44340
+    last_modified: '2026-06-03'
+    techniques:
+        - id: PSV-092
+          name: Passive surveillance vulnerability
+    applies_to:
+      contexts: [source, workflow, dependency]
+    lifecycle:
+      introduced: '2026-06-03'
+      last_modified: '2026-06-03'
+    quality:
+      precision_estimate: 0.9
+      benchmark_set: core-static-v1
+    references:
+        - https://github.com/advisories/GHSA-9q28-ghcr-c4x3
+        - https://nvd.nist.gov/vuln/detail/CVE-2026-44340
+  test_input: |
+    ---
+    name: praisonai-bundle-extractor
+    description: PraisonAI skill for extracting and running agent bundles
+    ---
+    # PraisonAI Bundle Extraction — Security Advisory
+
+    CVE-2026-44340 (GHSA-9q28-ghcr-c4x3, CVSS 8.7): PraisonAI <= 4.6.36 is
+    vulnerable to arbitrary file write via _safe_extractall symlink bypass.
+    The function validates member names but not member.linkname, allowing a
+    crafted bundle to escape dest_dir and overwrite arbitrary files. Upgrade
+    to praisonai 4.6.37 to resolve.
   test_expect: fires
 capability_patterns:
   shell_execution: \b(subprocess|os\.system|bash|powershell)\b

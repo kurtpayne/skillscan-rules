@@ -1,5 +1,25 @@
 # SkillScan Rules Changelog
 
+## 2026.06.03.1
+
+Pattern update 2026-06-03. Two new rules: PSV-091 (OpenClaw IDENTITY.md symlink traversal, CVE-2026-35632) and PSV-092 (PraisonAI _safe_extractall symlink bypass, CVE-2026-44340).
+
+- **PSV-091** (medium, new): **OpenClaw IDENTITY.md symlink traversal — arbitrary file write via agents.create/update (CVE-2026-35632, GHSA-7xr2-q9vf-x4r5, openclaw <= 2026.2.22, no fix)** — CVE-2026-35632 is an incomplete patch for a prior symlink traversal in OpenClaw (npm `openclaw` <= 2026.2.22, CVSS 6.9, CWE-61). The `agents.create` and `agents.update` API handlers call `fs.appendFile` on the `IDENTITY.md` file without any symlink containment check. An attacker with workspace access plants a symlink at `IDENTITY.md` pointing to a sensitive file (e.g., `/etc/crontab`, `~/.ssh/authorized_keys`); the handler then appends attacker-controlled agent metadata to the symlink target. This enables privilege escalation (via crontab) or persistent shell access (via authorized_keys injection). Attack vector is local/low-privilege, no user interaction required. No fix is available as of 2026-06-03 — monitor the OpenClaw CVE tracker (github.com/jgamblin/OpenClawCVEs) for patch status and audit `IDENTITY.md` for symlink targeting in workspace directories.
+
+- **PSV-092** (high, new): **PraisonAI _safe_extractall symlink bypass — arbitrary file write outside dest_dir (CVE-2026-44340, GHSA-9q28-ghcr-c4x3, pip praisonai <= 4.6.36, fixed 4.6.37)** — CVE-2026-44340 (CVSS 8.7, CWE-22/CWE-59) is a symlink-extraction bypass in the PraisonAI pip package <= 4.6.36. The `_safe_extractall` helper validates member file names but fails to inspect `member.linkname` or reject symlink/hardlink members. A malicious bundle includes a symlink member with a name inside `dest_dir` but a `linkname` pointing outside it, followed by a regular file that traverses through the symlink. This allows the attacker to write arbitrary content to any path writable by the process — enabling credential theft, SSH key injection, cron-based persistence, or configuration override. Upgrade `praisonai` to 4.6.37. Disclosed by DHIRAL2908 via GitHub Security Advisory, published 2026-05-11.
+
+Vuln DB additions: `pip/praisonai` (CVE-2026-44340, CVSS 8.7, <= 4.6.36, fixed 4.6.37, PSV-092); `openclaw/openclaw` (CVE-2026-35632, CVSS 6.9, <= 2026.2.22, no fix, PSV-091). 2 new entries.
+IOC additions: none.
+
+Total: 315 static rules + 14 chain rules = 329.
+
+Sources:
+- GitHub Advisory (GHSA-9q28-ghcr-c4x3 / CVE-2026-44340): https://github.com/advisories/GHSA-9q28-ghcr-c4x3
+- GitHub Advisory (GHSA-7xr2-q9vf-x4r5 / CVE-2026-35632): https://github.com/advisories/GHSA-7xr2-q9vf-x4r5
+- OpenClaw CVE tracker: https://github.com/jgamblin/OpenClawCVEs
+
+Candidates researched and already covered: CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2025-65717 Live Server CORS exfil (PSV rule), CVE-2025-65716 Markdown Preview Enhanced RCE (PSV rule), Miasma/@redhat-cloud-services worm (MAL-088), TrapDoor campaign npm/PyPI/crates (MAL-086), Mini Shai-Hulud waves 1–5 (MAL-078/079/081/084/085), TeamPCP GitHub Actions stealer (existing rule). TrustFall: partially covered by enableAllProjectMcpServers marker (PSV-040), CurXecute/MCPoison MCP trust bypass (PSV-050), and Gemini CLI folder-trust bypass (PSV-089); no distinct TrustFall rule as the attack vector (generic folder trust accepting MCP servers) is architecturally captured by existing patterns. SymJack: no CVE assigned, no hard anchors available — not actionable without a package version range or CVE to anchor on.
+
 ## 2026.06.02.1
 
 Pattern update 2026-06-02. One new rule: MAL-088 (Miasma: The Spreading Blight — @redhat-cloud-services npm supply chain worm).
