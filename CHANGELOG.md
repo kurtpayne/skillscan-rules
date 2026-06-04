@@ -1,5 +1,31 @@
 # SkillScan Rules Changelog
 
+## 2026.06.04.1
+
+Pattern update 2026-06-04. Three new rules: MAL-089 (Shai-Hulud source-code leak copycat infostealers), SUP-056 (Mini Shai-Hulud "Here We Go Again" wave — UiPath/OpenSearch/Squawk), SUP-057 (Checkmarx Jenkins AST Plugin supply chain compromise).
+
+- **MAL-089** (critical, new): **Shai-Hulud source-code leak copycat npm infostealers — chalk-tempalte, axois-utils, color-style-utils, @deadcode09284814/axios-util (deadcode09284814; C2 87e0bbc636999b.lhr.life, edcf8b03c84634.lhr.life, 80.200.28.28; Phantom Bot DDoS, May 2026)** — Following TeamPCP's Shai-Hulud source code release, a copycat actor (npm user deadcode09284814) published four malicious packages reusing the leaked infostealer code with no meaningful obfuscation. chalk-tempalte (typosquat of chalk-template) and color-style-utils steal SSH keys, cloud credentials, crypto wallets, and API keys, exfiltrating to 87e0bbc636999b.lhr.life. axois-utils (typosquat of axios-utils) adds a Golang-based DDoS botnet (Phantom Bot) capable of HTTP, TCP, and UDP flood attacks. All four packages also beacon to edcf8b03c84634.lhr.life and 80.200.28.28:2222. Combined weekly downloads reached 2,678. Remove all packages immediately and rotate any exposed credentials.
+
+- **SUP-056** (critical, new): **Mini Shai-Hulud "Here We Go Again" wave — @uipath (65 pkgs), @opensearch-project, Squawk, TanStack/Mistral (170+ pkgs, CVE-2026-45321, TeamPCP, May 11 2026)** — On May 11, 2026, TeamPCP launched the largest Mini Shai-Hulud wave to date, compromising 373 malicious package-version entries across 169 npm package names and multiple PyPI packages (CVE-2026-45321, GHSA-g7cv-rxg3-hmpx). This wave — dubbed "Shai-Hulud: Here We Go Again" — hit 42 @tanstack packages, 65 @uipath packages (including @uipath/codedagent-tool@1.0.1), the @opensearch-project/opensearch JavaScript client, @squawk-db/squawk-runner and related Squawk SQL linter packages, mistralai (PyPI), and guardrails-ai (PyPI). The attack used the same preinstall hook + Bun runtime loader as prior waves and was notably the first to achieve valid SLSA provenance on malicious packages. Beacon repositories carry the description "Shai-Hulud: Here We Go Again". Rule fires on the beacon string and specific victim packages not covered by the existing C2-anchored wave-3 rule (MAL-081).
+
+- **SUP-057** (critical, new): **Checkmarx Jenkins AST Plugin supply chain compromise — malicious version 2026.5.09 (TeamPCP, CVE-2026-33634, CVSS 9.4, May 9–10 2026)** — The checkmarx-ast-scanner Jenkins plugin version 2026.5.09 was backdoored by TeamPCP and published to repo.jenkins-ci.org. The malicious build was live from 2026-05-09 01:25 UTC to 2026-05-10 08:47 UTC, exposing 1,000+ enterprise CI environments. The malware harvests GitHub tokens, AWS/GCP/Azure credentials, SSH keys, and HashiCorp Vault tokens from Jenkins build runners and exfiltrates them to attacker-controlled infrastructure. This is TeamPCP's third Checkmarx supply chain compromise (following GitHub Actions ast/kics and the KICS Docker image). Safe version: 2.0.13-829.vc72453fa_1c16. Note: CVE-2026-33634 is also referenced in existing rule PSV-NNN for the GitHub Actions compromise; this rule adds Jenkins-artifact-specific anchors (checkmarx-ast-scanner, 2026.5.09, plugins.jenkins.io) not covered by the prior rule.
+
+Vuln DB additions: npm/chalk-tempalte (MAL-089), npm/axois-utils (MAL-089), npm/color-style-utils (MAL-089), npm/@deadcode09284814/axios-util (MAL-089), npm/@uipath/codedagent-tool@1.0.1 (SUP-056, CVE-2026-45321), checkmarx-ast-scanner@2026.5.09 (SUP-057, CVE-2026-33634). 6 new entries.
+IOC additions: 2 domains (87e0bbc636999b.lhr.life, edcf8b03c84634.lhr.life), 1 IP (80.200.28.28).
+
+Total: 318 static rules + 14 chain rules = 332.
+
+Sources:
+- MAL-089: https://thehackernews.com/2026/05/four-malicious-npm-packages-deliver.html
+- MAL-089: https://www.bleepingcomputer.com/news/security/leaked-shai-hulud-malware-fuels-new-npm-infostealer-campaign/
+- SUP-056: https://www.ox.security/blog/shai-hulud-here-we-go-again-170-packages-hit-across-npm-pypi/
+- SUP-056: https://research.jfrog.com/post/shai-hulud-here-we-go-again/
+- SUP-056: https://www.securityweek.com/tanstack-mistral-ai-uipath-hit-in-fresh-supply-chain-attack/
+- SUP-057: https://thehackernews.com/2026/05/teampcp-compromises-checkmarx-jenkins.html
+- SUP-057: https://checkmarx.com/blog/ongoing-security-updates/
+
+Candidates researched and already covered: TrapDoor campaign (MAL-086), Miasma @redhat-cloud-services (MAL-088), Mini Shai-Hulud waves 1-4 (MAL-078/079/081/084/085), Flowise CVE-2026-40933 (PSV rule), CVE-2026-26118 Azure MCP SSRF (PSV rule), VS Code extension CVEs 2025-65715/65716/65717 (PSV rules), Windsurf CVE-2026-30615 (PSV rule), OpenClaw Claw Chain CVE-2026-44112/44113/44115/44118 (PSV-088), Checkmarx GitHub Actions CVE-2026-33634 (existing rule).
+
 ## 2026.06.03.1
 
 Pattern update 2026-06-03. Two new rules: PSV-091 (OpenClaw IDENTITY.md symlink traversal, CVE-2026-35632) and PSV-092 (PraisonAI _safe_extractall symlink bypass, CVE-2026-44340).
