@@ -1,5 +1,30 @@
 # SkillScan Rules Changelog
 
+## 2026.06.06.1
+
+Pattern update 2026-06-06. Three new rules: MAL-090 (codexui-android Codex token stealer), SUP-058 (Miasma Phantom Gyp @vapi-ai/server-sdk wave), MAL-091 (IronWorm Rust/eBPF npm attack).
+
+- **MAL-090** (critical, new): **codexui-android npm supply chain — OpenAI Codex token exfiltration to sentry.anyclaw.store (friuns/BrutalStrike, 0.1.82+, May–June 2026)** — The npm package codexui-android (user: friuns / Igor Levochkin / GitHub: BrutalStrike) introduced credential-theft code at version 0.1.82, approximately one month after the package first appeared as 0.1.72 on April 10, 2026. The malicious code reads ~/.codex/auth.json, XOR-encrypts the entire file using the key `anyclaw2026`, and POSTs access_token, refresh_token, id_token, and account_id to `sentry.anyclaw.store/startlog` — an endpoint named to masquerade as the Sentry error-tracking service. The C2 domain anyclaw.store was registered April 12, 2026. Since the refresh_token does not expire, an attacker holding it can silently impersonate the victim indefinitely. The package had 29,000+ weekly downloads; additionally, an Android app (OpenClaw Codex Claude AI Agent, 50,000+ Google Play downloads) bundled the same package in a PRoot sandbox. Disclosed May 27, 2026 by Aikido Security researcher Charlie Eriksen. Remove codexui-android immediately, revoke all Codex sessions via the OpenAI dashboard, and rotate API keys.
+
+- **SUP-058** (critical, new): **Miasma Phantom Gyp wave — @vapi-ai/server-sdk, ai-sdk-ollama, and 55 more npm packages via binding.gyp CI/CD credential theft (liuende501, June 3–4 2026)** — The Miasma Phantom Gyp wave (June 3–4, 2026) compromised 57 npm packages across 286 malicious versions using the novel "Phantom Gyp" technique: a 157-byte binding.gyp file that forces node-gyp command substitution during npm install, bypassing `--ignore-scripts` protections entirely. Primary victims: @vapi-ai/server-sdk (408,000+ monthly downloads, first hit at 23:30 UTC June 3) and ai-sdk-ollama (120,000+ monthly downloads), plus autotel, awaitly, executable-stories, node-env-resolver, wrangler-deploy, and 50 additional packages in the jagreehal maintainer account. The payload harvests npm, GitHub, AWS, GCP, Azure, Kubernetes, and HashiCorp Vault credentials, self-propagates across npm and RubyGems, and exfiltrates via GitHub dead-drop repositories under account liuende501 (236 repos). The wave also forges SLSA v1 provenance attestations on malicious packages. This is the eighth wave in the Shai-Hulud/Miasma (TeamPCP) lineage since September 2025; the first Miasma wave (June 1, 2026, preinstall hook) against @redhat-cloud-services is covered by the existing rule at MAL-088.
+
+- **MAL-091** (critical, new): **IronWorm Rust/eBPF npm infostealer — weavedb-sdk and 35 packages via asteroiddao, Tor C2, backdated claude@ commits (June 4 2026)** — IronWorm is a distinct, separately-attributed Rust-written npm supply chain malware (not Miasma/TeamPCP lineage) that infected 36 packages on June 4, 2026 via compromised npm account asteroiddao. Each compromised package installs a hidden Linux ELF binary at `tools/setup` via a preinstall hook. IronWorm deploys a dual-layer eBPF kernel rootkit that rewrites process lists before monitoring software can observe it, and communicates with the operator over Tor to `/api/agent`. The malware targets 86 environment variables and 20 credential files (OpenAI, Anthropic, AWS, npm, SSH keys, Exodus wallet files). Backdated malicious commits across nine GitHub organizations are attributed to the fake identity `claude <claude@users.noreply.github.com>` to mimic legitimate AI-agent CI activity. The attacker's Ethereum wallet `0x7e28D9889f414B06c19a22A9Bd316f0AC279a4d6` is hardcoded in the binary. Known compromised package: weavedb-sdk@0.45.3.
+
+Vuln DB additions: npm/codexui-android@>=0.1.82 (MAL-090), npm/@vapi-ai/server-sdk (compromised June 3-4 2026, SUP-058), npm/ai-sdk-ollama (compromised June 3-4 2026, SUP-058), npm/weavedb-sdk@0.45.3 (MAL-091). 4 new entries.
+IOC additions: sentry.anyclaw.store, anyclaw.store. 2 new domains.
+
+Total: 321 static rules + 14 chain rules = 335.
+
+Sources:
+- MAL-090: https://www.aikido.dev/blog/codex-remote-ui-steals-ai-tokens
+- MAL-090: https://thehackernews.com/2026/06/openai-codex-authentication-tokens.html
+- SUP-058: https://www.stepsecurity.io/blog/binding-gyp-npm-supply-chain-attack-spreads-like-worm
+- SUP-058: https://www.chainguard.dev/unchained/chainguard-artifacts-safe-from-miasma-phantom-gyp-npm-attack
+- MAL-091: https://www.bleepingcomputer.com/news/security/new-ironworm-malware-hits-36-packages-in-npm-supply-chain-attack/
+- MAL-091: https://www.ox.security/blog/ironworm-supply-chain-malware-hits-npm/
+
+Candidates researched and already covered: TrapDoor campaign (MAL-086), Miasma @redhat-cloud-services wave-1 preinstall hook (MAL-088), Mini Shai-Hulud waves 1-5 (MAL-078/079/081/084/085), SUP-056, Checkmarx Jenkins CVE-2026-33634 (SUP-057), mcp-remote CVE-2025-6514, CVE-2026-35394 mobile-mcp, Shai-Hulud @bitwarden/cli (MAL-078), VS Code/Cursor/Windsurf extension CVEs (existing PSV rules).
+
 ## 2026.06.04.1
 
 Pattern update 2026-06-04. Three new rules: MAL-089 (Shai-Hulud source-code leak copycat infostealers), SUP-056 (Mini Shai-Hulud "Here We Go Again" wave — UiPath/OpenSearch/Squawk), SUP-057 (Checkmarx Jenkins AST Plugin supply chain compromise).
