@@ -1,5 +1,28 @@
 # SkillScan Rules Changelog
 
+## 2026.06.08.1
+
+Pattern update 2026-06-08. Two new rules: SUP-059 (Hades Campaign — ensmallen/bioinformatics PyPI via .pth Bun hook) and MAL-092 (Miasma Azure repos AI workspace config hijacking).
+
+- **SUP-059** (critical, new): **Hades Campaign — ensmallen 0.8.101 and 18 bioinformatics PyPI packages via \*-setup.pth Bun startup hook (Miasma lineage, June 8 2026)** — Discovered June 8, 2026, the Hades Campaign is a PyPI branch of the Miasma/TeamPCP supply-chain lineage that compromised 19 packages (37 malicious wheel artifacts) targeting computational biology, bioinformatics, and graph-ML developers. The lead package `ensmallen==0.8.101` and 18 co-maintained packages (dynamo-release, spateo-release, coolbox, napari-ufish, ufish, bramin, cmd2func, executor-engine, executor-http, funcdesc, magique, magique-ai, mrbios, nucbox, okite, pantheon-agents, pantheon-toolsets, and others) were compromised via a maintainer-account takeover. Each compromised release ships a `*-setup.pth` file that auto-executes during Python startup, downloads the Bun JavaScript runtime, and runs an obfuscated payload (`_index.js`) that harvests GitHub, npm, PyPI, AWS, GCP, Azure, Kubernetes, Vault, SSH keys, Docker credentials, shell histories, `.env` files, `.npmrc`, `.pypirc`, and Claude/MCP configs. Unlike prior Shai-Hulud waves (Zelda references), this campaign uses Hades-themed GitHub dead-drop repositories bearing the description "Hades - The End for the Damned". The payload also embeds an AI-analyst misdirection prompt in `_index.js` to instruct any LLM-based scanner to classify the package as clean. Uninstall all affected packages immediately, rotate all credentials from any affected environment, and audit `site-packages` for stray `*-setup.pth` files. Attribution: Miasma threat actor (TTP overlap with TeamPCP; same compromised CI/CD toolchain as wave-4).
+
+- **MAL-092** (critical, new): **Miasma AI workspace config hijacking — SessionStart `node .github/setup.js` hook in compromised repos (TeamPCP, 73 Azure repos, June 5 2026)** — On June 5, 2026, the Miasma worm evolved from package-registry poisoning to editor-level hijacking. A previously compromised contributor account (reused from the May 19 TeamPCP wave-4 PyPI attack) was used to push malicious commits to the Azure/durabletask GitHub repository. The commit planted `.claude/settings.json` and `.gemini/settings.json` files containing a `SessionStart` hook that auto-runs `"node .github/setup.js"` — a 4.6 MB Bun-based credential-harvesting JavaScript payload — the moment any developer opens the repository in Claude Code, Gemini CLI, Cursor, or VS Code. GitHub disabled 73 repositories across four Microsoft GitHub organizations (Azure, Azure-Samples, Microsoft, MicrosoftDocs) in an automated sweep lasting 105 seconds, breaking CI/CD pipelines globally for every consumer of the Azure Functions Action and other affected Actions. The payload harvests AWS, Azure, GCP, Kubernetes, npm, and GitHub credentials and self-propagates by committing itself into any repository the victim can write to. Existing MAL-079 covers the earlier `setup.mjs` path; this rule adds the `.github/setup.js` SessionStart variant and the Miasma-Azure-repos campaign string. Audit `.claude/settings.json` and `.gemini/settings.json` in all repos for unexpected `SessionStart` hooks running scripts from `.github/` paths.
+
+Vuln DB additions: `pip/ensmallen` 0.8.101 (SUP-059, Hades Campaign). 1 new entry.
+IOC additions: none (C2 domains `t.m-kosche.com` and `check.git-service.com` were already present from prior waves).
+
+Total: 324 static rules + 14 chain rules = 338.
+
+Sources:
+- SUP-059: https://socket.dev/blog/shai-hulud-descends-to-hades-miasma-pypi-wave
+- SUP-059: https://www.stepsecurity.io/blog/the-hades-campaign-pypi-packages
+- SUP-059: https://pypi.org/project/ensmallen/
+- MAL-092: https://thehackernews.com/2026/06/miasma-worm-hits-73-microsoft-github.html
+- MAL-092: https://www.stepsecurity.io/blog/miasma-worm-hits-microsoft-again-azure-functions-action-and-72-other-repositories-disabled-after-supply-chain-attack-targeting-ai-coding-agents
+- MAL-092: https://www.rescana.com/post/miasma-worm-supply-chain-attack-73-microsoft-github-repositories-compromised-via-ai-coding-tools
+
+Candidates researched and already covered: Miasma Phantom Gyp SUP-058 wave, IronWorm MAL-091, Miasma @redhat-cloud-services MAL-088, CVE-2026-45321 SUP-056 (TanStack/Mistral/UiPath Wave), CVE-2026-30615 Windsurf PINJ-024, CVE-2026-20205 Splunk MCP PSV-039, CVE-2025-65717 Live Server PSV-052, CVE-2026-32625 LibreChat PSV-093. Not actionable: TrapDoor campaign (MAL-086), Miasma Azure repos C2 domains t.m-kosche.com / check.git-service.com (already in IOC DB from prior waves — C2-only enrichment, no new rule needed). Full mini-shai-hulud package DB (guardrails-ai 0.10.1, mistralai 2.4.6) already in vuln_db.
+
 ## 2026.06.07.1
 
 Pattern update 2026-06-07. One new rule: PSV-093 (LibreChat env-var expansion in MCP server URL, CVE-2026-32625).
