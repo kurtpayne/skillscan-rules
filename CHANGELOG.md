@@ -1,5 +1,17 @@
 # SkillScan Rules Changelog
 
+## 2026.06.08.2
+
+Enrichment of MAL-086 (TrapDoor). No new rule IDs. Expands the MAL-086 detection pattern to cover all 34 confirmed malicious packages (previously 13 of 34 were named) and adds the missing npm + PyPI packages to the vuln DB.
+
+- **MAL-086** (critical, enriched): **TrapDoor — full package coverage** — Expanded the MAL-086 regex to name all 34 confirmed TrapDoor packages across npm (21), PyPI (7), and Crates.io (6). Added 16 npm and 4 PyPI vuln-DB entries (all versions malicious). The 6 Crates.io package names are covered by the rule pattern; vuln-DB entries are omitted because the scanner has no Cargo.toml parser (a `cargo` ecosystem key would be inert and at risk of being dropped by the intel-refresh seed merge). Rebuild of the stale, conflicting PR #57 onto current main.
+
+Vuln DB additions: 16 npm + 4 pip packages (all MAL-086 / TrapDoor, all versions malicious). 20 new entries.
+
+Sources:
+- Socket.dev (primary): https://socket.dev/blog/trapdoor-crypto-stealer-npm-pypi-crates
+- The Block (Crates.io package list): https://www.theblock.co/post/402458/researchers-flag-trapdoor-malware-campaign-targeting-crypto-developer-environments-including-aptos-sui-and-solana
+
 ## 2026.06.08.1
 
 Pattern update 2026-06-08. Two new rules: SUP-059 (Hades Campaign — ensmallen/bioinformatics PyPI via .pth Bun hook) and MAL-092 (Miasma Azure repos AI workspace config hijacking).

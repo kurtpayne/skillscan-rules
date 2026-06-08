@@ -1,4 +1,4 @@
-version: 2026.06.08.1
+version: 2026.06.08.2
 static_rules:
 - id: MAL-001
   category: malware_pattern
@@ -16628,7 +16628,7 @@ static_rules:
   title: TrapDoor multi-ecosystem supply-chain credential stealer targeting crypto/AI-dev
     toolchains (npm/PyPI/crates.io, CLAUDE.md/.cursorrules zero-width poisoning, May
     2026)
-  pattern: '(?i)(?:trap[-_]?core\.js|P-2024-001|ddjidd564|token[-_]?usage[-_]?tracker|wallet[-_]?security[-_]?checker|defi[-_]?env[-_]?auditor|prompt[-_]?engineering[-_]?toolkit|llm[-_]?context[-_]?compressor|cryptowallet[-_]?safety|defi[-_]?risk[-_]?scanner|eth[-_]?security[-_]?auditor|sui[-_]?move[-_]?build[-_]?helper|move[-_]?compiler[-_]?tools)'
+  pattern: '(?i)(?:trap[-_]?core\.js|P-2024-001|ddjidd564|token[-_]?usage[-_]?tracker|wallet[-_]?security[-_]?checker|defi[-_]?env[-_]?auditor|prompt[-_]?engineering[-_]?toolkit|llm[-_]?context[-_]?compressor|cryptowallet[-_]?safety|defi[-_]?risk[-_]?scanner|eth[-_]?security[-_]?auditor|sui[-_]?move[-_]?build[-_]?helper|move[-_]?compiler[-_]?tools|async[-_]?pipeline[-_]?builder|build[-_]?scripts[-_]?utils|chain[-_]?key[-_]?validator|crypto[-_]?credential[-_]?scanner|defi[-_]?threat[-_]?scanner|deployment[-_]?key[-_]?auditor|dev[-_]?env[-_]?bootstrapper|eth[-_]?wallet[-_]?sentinel|mnemonic[-_]?safety[-_]?check|model[-_]?switch[-_]?router|node[-_]?setup[-_]?helpers|project[-_]?init[-_]?tools|solidity[-_]?deploy[-_]?guard|wallet[-_]?backup[-_]?verifier|web3[-_]?secrets[-_]?detector|workspace[-_]?config[-_]?loader|data[-_]?pipeline[-_]?check|env[-_]?loader[-_]?cli|git[-_]?config[-_]?sync|solidity[-_]?build[-_]?guard|move[-_]?analyzer[-_]?build|move[-_]?project[-_]?builder|sui[-_]?framework[-_]?helpers|sui[-_]?sdk[-_]?build[-_]?utils)'
   mitigation: "TrapDoor is a multi-ecosystem supply-chain campaign (first observed\
     \ May 22 2026) deploying 34 malicious packages and 384+ artifact versions across\
     \ npm (21 packages), PyPI (7 packages), and Crates.io (6 packages). Named packages\
