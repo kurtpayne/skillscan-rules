@@ -1853,6 +1853,11 @@
         "id": "GHSA-mr82-8j83-vxmv",
         "severity": "medium",
         "fixed": "2.4.0"
+      },
+      "v0.0.2": {
+        "id": "PYSEC-2021-47",
+        "severity": "medium",
+        "fixed": "7e83fdd2563ffac081db7ecdf1affa65ef38c468"
       }
     },
     "requests": {
@@ -2072,6 +2077,11 @@
       "4.0.0": {
         "id": "GHSA-r374-rxx8-8654",
         "severity": "low"
+      },
+      "release-1.7.4": {
+        "id": "PYSEC-2018-19",
+        "severity": "medium",
+        "fixed": "fa29bd8446c8eab237f5187d28787727b4610516"
       }
     },
     "jinja2": {
