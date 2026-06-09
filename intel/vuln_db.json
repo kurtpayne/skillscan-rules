@@ -1484,7 +1484,7 @@
     }
   },
   "_meta": {
-    "generated": "2026-06-08",
+    "generated": "2026-06-09",
     "source": "OSV.dev (https://osv.dev)",
     "python_packages_checked": [
       "mcp",
