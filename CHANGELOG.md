@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.06.09.1
+
+Pattern update 2026-06-09. One new rule: MAL-093 (PCPJack cloud credential-stealing worm).
+
+- **MAL-093** (critical, new): **PCPJack cloud credential-stealing worm — /var/lib/.spm, spm-worker.service, cloudfront-js.com C2 (SentinelLABS, CVE-2025-55182/29927/9501/48703, CVE-2026-1357, April 2026)** — PCPJack is a modular, self-propagating cloud credential-stealing worm first identified by SentinelLABS on April 28, 2026. It spreads by exploiting exposed Docker, Kubernetes, Redis, MongoDB, and RayML endpoints via five known CVEs (CVE-2025-55182, CVE-2025-29927, CVE-2026-1357, CVE-2025-9501, CVE-2025-48703). A bootstrap script (bootstrap.sh) downloads six Python payload modules (worm.py/monitor.py, utils.py, _lat.py, _cu.py, _cr.py, _csc.py) from the attacker-controlled S3 bucket spm-cdn-assets-dist-2026.s3.us-east-2.amazonaws.com, storing them in the hidden directory /var/lib/.spm and installing a systemd persistence service /etc/systemd/system/spm-worker.service. Stolen credentials (AWS, Kubernetes, Docker, GitHub, npm, RayML, SSH keys, crypto wallets) are exfiltrated via Telegram-based C2, with HTTPS callbacks to cloudfront-js.com (masquerading as Amazon CloudFront), 213.136.80.73, and 38.242.204.245. Uniquely, PCPJack actively scans and removes competing TeamPCP (Shai-Hulud/Miasma) malware from infected hosts before installing itself. Not a package-registry supply-chain attack; spreads via cloud infrastructure exploits. Rule fires on the distinctive /var/lib/.spm path, spm-worker.service, or cloudfront-js.com C2.
+
+Vuln DB additions: none (PCPJack is a network/infrastructure worm, not a package).
+IOC additions: cloudfront-js.com (C2 masquerading as AWS CloudFront), 213.136.80.73, 38.242.204.245.
+
+Total: 325 static rules + 14 chain rules = 339.
+
+Sources:
+- MAL-093: https://www.sentinelone.com/labs/cloud-worm-evicts-teampcp-and-steals-credentials-at-scale/
+- MAL-093: https://thehackernews.com/2026/05/pcpjack-credential-stealer-exploits-5.html
+- MAL-093: https://www.bleepingcomputer.com/news/security/new-pcpjack-worm-steals-credentials-cleans-teampcp-infections/
+
+Candidates researched and already covered: TrapDoor full package coverage (MAL-086), Hades Campaign bioinformatics PyPI (SUP-059), Miasma Azure repos SessionStart hook (MAL-092), LibreChat env-var MCP URL CVE-2026-32625 (PSV-093), Miasma Phantom Gyp (SUP-058), IronWorm (MAL-091), codexui-android (MAL-090), Miasma @redhat-cloud-services (MAL-088), CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2026-32211 Azure DevOps MCP (PSV rule), CVE-2026-30615 Windsurf (PSV rule), CVE-2026-20205 Splunk MCP (PSV rule), Mini Shai-Hulud waves 1–7 (multiple rules). Not actionable: MCP-themed PyPI typosquats (langchain-core-mcp, openai-mcp, tiktoken-mcp, ray-mcp-server) — same Hades/.pth/Bun/\_index.js payload as SUP-059; no independent package versions confirmed; the broader Hades campaign coverage in SUP-059 pattern partially covers the .pth delivery vector. Hades 18 companion-package vuln_db enrichment deferred — specific malicious version numbers not confirmed at primary sources (stepsecurity.io returning 403).
+
 ## 2026.06.08.2
 
 Enrichment of MAL-086 (TrapDoor). No new rule IDs. Expands the MAL-086 detection pattern to cover all 34 confirmed malicious packages (previously 13 of 34 were named) and adds the missing npm + PyPI packages to the vuln DB.

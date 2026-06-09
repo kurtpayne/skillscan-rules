@@ -1,18 +1,18 @@
 {
-  "version": "2026.06.08.2",
+  "version": "2026.06.09.1",
   "released_at": "2026-04-26T17:15:00.973005+00:00",
   "files": {
     "rules/ast_flows.yaml": {
       "sha256": "31e2cb8954d66d9818e868a7b596bb19585c1569c4475e797fd66f5c14eba25e"
     },
     "rules/default.yaml": {
-      "sha256": "a2b61006e8f00497a417bbd993ed8be7c4dcde5d3fe1c32e5302a1dd7879bcf9"
+      "sha256": "6f03e3c0073191162753a83d4109a8a08d5d31b185ba420ef4842111ab09ef0a"
     },
     "rules/multilang.yaml": {
       "sha256": "1d4784072b02aa40215be0974f87d8832c6bd1e7d0a0d7957e1a4228bce5afe1"
     },
     "intel/ioc_db.json": {
-      "sha256": "0df5ad2d6aa60fb4dd35a32a6e584a30b5f0e7a09e943a30790ec033b2b72f7e"
+      "sha256": "3c6c8ab7e71a1d0d912a6c1ad97b692a1f4dc40cda6658bfce4f2961cd94d04d"
     },
     "intel/managed_sources.json": {
       "sha256": "aef9d1e320a08b256374b1917520d035dfcd78476bd7c5b4895a5cf3e647edce"

@@ -7,7 +7,9 @@
       "spamhaus_drop",
       "urlhaus_hosts"
     ],
-    "note": "Bundled high-precision IOC DB. Hand-curated campaign IOCs are always included. Large feeds (URLhaus URLs, Hagezi TIF, Phishing Army, KADhosts) are runtime-only and merged at scan time via managed_sources.json."
+    "note": "Bundled high-precision IOC DB. Hand-curated campaign IOCs are always included. Large feeds (URLhaus URLs, Hagezi TIF, Phishing Army, KADhosts) are runtime-only and merged at scan time via managed_sources.json.",
+    "version": "2026.06.09.1",
+    "updated": "2026-06-09"
   },
   "domains": [
     "0000153.0000255.0000011.0000125",
@@ -10249,7 +10251,8 @@
     "zzkd.eight-education.lat",
     "zzksh.sm188dvlv.rest",
     "zzpy.dark-salittle.bet",
-    "zzvfyei.dahdahtoys.com"
+    "zzvfyei.dahdahtoys.com",
+    "cloudfront-js.com"
   ],
   "ips": [
     "142.11.206.73",
@@ -10271,7 +10274,9 @@
     "83.142.209.203",
     "91.195.240.123",
     "91.92.242.30",
-    "94.154.172.43"
+    "94.154.172.43",
+    "213.136.80.73",
+    "38.242.204.245"
   ],
   "cidrs": [
     "1.10.16.0/20",
