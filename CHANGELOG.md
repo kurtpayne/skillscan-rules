@@ -1,5 +1,20 @@
 # SkillScan Rules Changelog
 
+## 2026.06.10.1
+
+Pattern update 2026-06-10. One new rule: PSV-094 (Roslyn CodeLens MCP Server CVE-2026-45555).
+
+- **PSV-094** (high, new): **Roslyn CodeLens MCP Server untrusted analyzer execution — arbitrary code run via get_diagnostics (CVE-2026-45555, GHSA-552p-8f74-6x7q, NuGet RoslynCodeLens.Mcp < 1.17.0)** — CVE-2026-45555 (CVSS 7.8 HIGH, CWE-94) is an arbitrary code execution vulnerability in the NuGet package RoslynCodeLens.Mcp versions >= 0.0.9 and < 1.17.0. The `get_diagnostics` MCP tool loads every `DiagnosticAnalyzer` assembly referenced by the target .NET solution without allowlist checks, signature verification, or user confirmation. An attacker who places a crafted `.csproj` referencing a malicious DLL into a location the victim opens with the MCP server achieves arbitrary code execution with the developer's OS privileges. Upgrade to RoslynCodeLens.Mcp 1.17.0 or later.
+
+Vuln DB additions: RoslynCodeLens.Mcp 1.14.0–1.16.0 (CVE-2026-45555).
+IOC additions: none.
+
+Total: 326 static rules + 14 chain rules.
+
+Sources:
+- CVE-2026-45555 / GHSA-552p-8f74-6x7q: https://github.com/MarcelRoozekrans/roslyn-codelens-mcp/security/advisories/GHSA-552p-8f74-6x7q
+- NVD: https://nvd.nist.gov/vuln/detail/CVE-2026-45555
+
 ## 2026.06.09.1
 
 Pattern update 2026-06-09. One new rule: MAL-093 (PCPJack cloud credential-stealing worm).

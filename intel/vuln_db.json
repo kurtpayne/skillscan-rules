@@ -3770,5 +3770,25 @@
         "published": "2026-05-22"
       }
     }
+  },
+  "RoslynCodeLens.Mcp": {
+    "1.16.0": {
+      "id": "CVE-2026-45555",
+      "severity": "high",
+      "fixed": "1.17.0",
+      "summary": "Untrusted Roslyn DiagnosticAnalyzer DLL loading via get_diagnostics enables arbitrary code execution (GHSA-552p-8f74-6x7q, CWE-94). Upgrade to 1.17.0."
+    },
+    "1.15.0": {
+      "id": "CVE-2026-45555",
+      "severity": "high",
+      "fixed": "1.17.0",
+      "summary": "Untrusted Roslyn DiagnosticAnalyzer DLL loading via get_diagnostics enables arbitrary code execution (GHSA-552p-8f74-6x7q, CWE-94). Upgrade to 1.17.0."
+    },
+    "1.14.0": {
+      "id": "CVE-2026-45555",
+      "severity": "high",
+      "fixed": "1.17.0",
+      "summary": "Untrusted Roslyn DiagnosticAnalyzer DLL loading via get_diagnostics enables arbitrary code execution (GHSA-552p-8f74-6x7q, CWE-94). Upgrade to 1.17.0."
+    }
   }
 }
