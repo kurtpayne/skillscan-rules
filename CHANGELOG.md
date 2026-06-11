@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.06.11.1
+
+Pattern update 2026-06-11. One new rule: SUP-060 (Hades wave-2 MCP/AI-framework typosquat PyPI packages).
+
+- **SUP-060** (critical, new): **Hades wave-2 MCP/AI-framework typosquat PyPI packages (langchain-core-mcp 1.4.2, openai-mcp, instructor-mcp, tiktoken-mcp, ray-mcp-server, rsquests, tlask, rlask; Miasma/TeamPCP, June 9 2026)** — Eight fully-fake PyPI packages identified June 9, 2026 as a second wave of the Hades/Miasma/TeamPCP campaign, targeting MCP and AI-framework developers. `langchain-core-mcp@1.4.2` (confirmed version) installs a `langchain_core-setup.pth` file that searches `sys.path` for `_index.js` and executes it with the Bun runtime — the same obfuscated Hades credential-harvesting payload as SUP-059. The typosquat packages `rsquests` (→requests), `tlask` (→flask), and `rlask` (→flask) use the same .pth dropper. `openai-mcp`, `instructor-mcp`, `tiktoken-mcp`, and `ray-mcp-server` are namespace-squatting fakes targeting MCP developers. All versions of all eight packages are malicious. The SUP-059 bioinformatics coverage does not match these package names, so dedicated pattern anchors are required. Prior session deferred these due to unconfirmed versions; `langchain-core-mcp@1.4.2` is now confirmed at primary sources.
+
+Vuln DB additions: langchain-core-mcp 1.4.2, openai-mcp 0.0.1, instructor-mcp 0.0.1, tiktoken-mcp 0.0.1, ray-mcp-server 0.0.1, rsquests 0.0.1, tlask 0.0.1, rlask 0.0.1 (all SUP-060, all versions malicious). 8 new pip entries.
+IOC additions: none (Hades campaign uses GitHub dead-drop repos rather than traditional C2 domains).
+
+Total: 327 static rules + 14 chain rules = 341.
+
+Sources:
+- SUP-060: https://socket.dev/blog/mini-shai-hulud-miasma-and-hades-worms-target-bioinformatics-and-mcp-developers-via-malicious
+- SUP-060: https://www.scworld.com/news/mini-shai-hulud-hades-variant-affects-23-pypi-package-versions
+- SUP-060: https://www.technadu.com/new-pypi-wave-in-mini-shai-hulud-miasma-and-hades-campaign-23-new-malicious-pypi-artifacts/629139/
+
+Candidates researched: Hades bioinformatics (SUP-059, already merged June 8), Miasma @redhat-cloud-services npm (MAL-088, already merged), PCPJack worm (MAL-093, already merged June 9), Roslyn CodeLens MCP (PSV-094, already merged June 10), CVE-2026-26118 Azure MCP SSRF (PSV rule, already merged), CVE-2026-32211 Azure DevOps MCP (PSV rule, already merged), CVE-2026-40933 Flowise MCP RCE (PSV rule, already merged), TrapDoor (MAL-086, already merged), PCPJack MCP OAuth flaws (no hard package/version anchors yet). New actionable: Hades wave-2 MCP typosquats (this update).
+
 ## 2026.06.10.1
 
 Pattern update 2026-06-10. One new rule: PSV-094 (Roslyn CodeLens MCP Server CVE-2026-45555).
