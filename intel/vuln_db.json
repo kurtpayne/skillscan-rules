@@ -267,6 +267,94 @@
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
       }
+    },
+    "langchain-core-mcp": {
+      "1.4.2": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 MCP typosquat (Miasma/TeamPCP, June 9 2026). langchain-core-mcp@1.4.2 installs langchain_core-setup.pth that searches sys.path for _index.js and runs it with Bun; same credential-harvesting payload as SUP-059. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "openai-mcp": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 MCP typosquat (Miasma/TeamPCP, June 9 2026). Fake package targeting MCP developers; Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "instructor-mcp": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 MCP typosquat (Miasma/TeamPCP, June 9 2026). Fake package targeting MCP developers; Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "tiktoken-mcp": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 MCP typosquat (Miasma/TeamPCP, June 9 2026). Fake package targeting MCP/OpenAI developers; Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "ray-mcp-server": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 MCP typosquat (Miasma/TeamPCP, June 9 2026). Fake package targeting MCP/Ray developers; Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "rsquests": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 typosquat of 'requests' (Miasma/TeamPCP, June 9 2026). Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "tlask": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 typosquat of 'flask' (Miasma/TeamPCP, June 9 2026). Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
+    },
+    "rlask": {
+      "0.0.1": {
+        "id": "SUP-060",
+        "severity": "critical",
+        "summary": "Hades wave-2 typosquat of 'flask' (Miasma/TeamPCP, June 9 2026). Bun-based credential stealer via .pth startup hook. All versions malicious \u2014 do not install.",
+        "fixed": null,
+        "affected_range": ">=0.0.1",
+        "published": "2026-06-09",
+        "campaign": "Hades-wave2"
+      }
     }
   },
   "cursor": {
