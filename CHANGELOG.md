@@ -1,5 +1,14 @@
 # SkillScan Rules Changelog
 
+## 2026.06.12.1
+
+Pattern update 2026-06-12. One new rule: PSV-095 (mcp-server-kubernetes tool access control bypass, CVE-2026-46519).
+
+- **PSV-095** (high, new): **mcp-server-kubernetes tool access control bypass (CVE-2026-46519, GHSA-cr22-wjx7-2w6m, < 3.6.0)** — CVE-2026-46519 (CVSS 8.8 HIGH, CWE-863) is an access control bypass in all versions of mcp-server-kubernetes prior to 3.6.0. The environment variables `ALLOW_ONLY_READONLY_TOOLS`, `ALLOW_ONLY_NON_DESTRUCTIVE_TOOLS`, and `ALLOWED_TOOLS` are correctly applied at the `tools/list` endpoint (presentation layer) but are not enforced at the `tools/call` endpoint (execution layer). Any authenticated client that knows a tool name can invoke restricted operations — `kubectl_delete`, `exec_in_pod`, `node_management` — directly via `tools/call`, bypassing all configured restrictions. In environments running with cluster-admin privileges this enables full cluster compromise. Fixed in 3.6.0 (published 2026-05-17). Distinct from CVE-2026-39884 (argument injection in `port_forward`, fixed in 3.5.0). Sources: [GitHub advisory GHSA-cr22-wjx7-2w6m](https://github.com/Flux159/mcp-server-kubernetes/security/advisories/GHSA-cr22-wjx7-2w6m), [NVD CVE-2026-46519](https://nvd.nist.gov/vuln/detail/CVE-2026-46519).
+
+Vuln DB additions: mcp-server-kubernetes CVE-2026-46519 (GHSA-cr22-wjx7-2w6m, CVSS 8.8, CWE-863, < 3.6.0, fixed 3.6.0). 1 new vuln entry.
+IOC additions: none.
+
 ## 2026.06.11.1
 
 Pattern update 2026-06-11. One new rule: SUP-060 (Hades wave-2 MCP/AI-framework typosquat PyPI packages).
