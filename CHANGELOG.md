@@ -1,5 +1,26 @@
 # SkillScan Rules Changelog
 
+## 2026.06.13.1
+
+Pattern update 2026-06-13. Two new rules: SUP-061 (onering v1.4.1 crates.io build.rs source-code exfiltration) and PSV-096 (OpenClaw agent gateway config mutation guard bypass, GHSA-7jm2-g593-4qrc).
+
+- **SUP-061** (high, new): **onering v1.4.1 crates.io supply-chain build.rs source-code exfiltration to Sentry DSN 8197ee42c4f59c83f4cc6d48f5bae821 (RUSTSEC-2026-0175, June 10 2026)** — On June 10, 2026, Aikido Security identified that version 1.4.1 of the crates.io package `onering` (a high-throughput queue/channel library, 18k+ downloads) was compromised with a malicious `build.rs` script. Unlike prior supply-chain campaigns targeting credentials or wallets, this attack targets developer source code: every `cargo build` that includes `onering = "1.4.1"` silently harvests the git diff of the project's latest commit and POSTs it to an attacker-controlled Sentry ingest endpoint (DSN public key `8197ee42c4f59c83f4cc6d48f5bae821`, org `o4511539639222272`, project `4511539669368912`). The stolen diff is disguised as a Sentry error event to blend in with legitimate crash-reporting traffic. Tracked as RUSTSEC-2026-0175. Remove `onering = "1.4.1"` from all Cargo.toml files, upgrade to 1.4.2+ or pin to <= 1.4.0, and treat any repository that built against this version as having had its latest commit contents disclosed.
+
+- **PSV-096** (high, new): **OpenClaw agent gateway config mutation guard bypass — prompt-injected model can override sandbox/SSRF/plugin policy (GHSA-7jm2-g593-4qrc, openclaw < 2026.4.20, no CVE assigned)** — GHSA-7jm2-g593-4qrc is a prompt-injection-amplification vulnerability in OpenClaw (npm `openclaw`) prior to 2026.4.20. The agent-facing `gateway config.patch` and `config.apply` endpoints perform shallow validation that omits several operator-trusted configuration paths (sandbox policy, plugin enablement, gateway auth/TLS, hook routing, MCP server configuration, SSRF policy, filesystem hardening). A prompt-injected model that momentarily obtains access to an owner-level gateway tool can persist changes to these protected settings — surviving the current session and affecting all future agents. This converts a transient prompt injection into durable infrastructure compromise without leaving obvious indicators. Upgrade OpenClaw to 2026.4.20. Fixed by implementing deep recursive validation of operator-trusted paths and blocking model-driven mutations for per-agent overrides and array-entry patching.
+
+Vuln DB additions: crates.io/onering 1.4.1 (RUSTSEC-2026-0175, SUP-061); openclaw < 2026.4.20 (GHSA-7jm2-g593-4qrc, PSV-096). 2 new entries.
+IOC additions: none (Sentry DSN key 8197ee42c4f59c83f4cc6d48f5bae821 anchors the onering exfil rule directly; the legitimate Sentry ingest domain is not added to IOC DB).
+
+Total: 330 static rules + 14 chain rules = 344.
+
+Sources:
+- SUP-061: https://www.aikido.dev/blog/compromised-rust-crate-onering-performs-code-exfiltration
+- SUP-061: https://rustsec.org/advisories/RUSTSEC-2026-0175.html
+- PSV-096: https://github.com/openclaw/openclaw/security/advisories/GHSA-7jm2-g593-4qrc
+- PSV-096: https://www.vulncheck.com/advisories/openclaw-gateway-config-mutation-guard-bypass-via-agent-tool-access
+
+Candidates researched and already covered: TrapDoor campaign (MAL-086+), Hades bioinformatics/wave-2 (SUP-059/060), Miasma @redhat-cloud-services (MAL-088), PCPJack worm (MAL-093), Mini Shai-Hulud waves 1–7 (multiple rules), CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2026-32211 Azure DevOps MCP (PSV rule), CVE-2026-30615 Windsurf PINJ (PSV rule), CVE-2026-40933 Flowise MCP RCE (PSV rule), CVE-2026-30861 WeKnora RCE (PSV rule), CVE-2026-46519 mcp-server-kubernetes (PSV-095), OpenClaw log poisoning GHSA-g27f-9qjv-22pm (PSV rule), OpenClaw MCP stdio GHSA-MJ59-H3Q9-GHFH (PSV-069).
+
 ## 2026.06.12.1
 
 Pattern update 2026-06-12. One new rule: PSV-095 (mcp-server-kubernetes tool access control bypass, CVE-2026-46519).
