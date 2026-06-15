@@ -1,5 +1,27 @@
 # SkillScan Rules Changelog
 
+## 2026.06.15.1
+
+Pattern update 2026-06-15. Two new rules: PSV-097 (n8n-mcp authenticated SSRF cluster, CVE-2026-44694 + GHSA-8g7g-hmwm-6rv2, < 2.50.2) and PSV-098 (mcp-ssh-tool path traversal + timing side-channel, GHSA-j7h9-2jh7-g967, <= 2.1.0).
+
+- **PSV-097** (high, new): **n8n-mcp authenticated SSRF cluster — webhook/API-client path traversal and telemetry credential exposure (CVE-2026-44694, GHSA-8g7g-hmwm-6rv2, < 2.50.2)** — Two advisories affect n8n-mcp before 2.50.2. **CVE-2026-44694** (GHSA-cmrh-wvq6-wm9r, CVSS 7.2, CWE-367/CWE-918): authenticated SSRF via webhook trigger URLs, n8n API client configuration, and the `x-n8n-url` HTTP header in multi-tenant deployments. Callers with valid MCP session credentials can force the server to make outbound requests to internal hosts, AWS IMDS, and other cloud metadata services; response bodies are returned in full, enabling IAM credential extraction. **GHSA-8g7g-hmwm-6rv2** (High, no CVE assigned): path traversal via a crafted workflow id causes the n8n API client to send requests carrying the API key to same-origin internal paths, bypassing handler-level access controls; validated webhook/form/chat trigger URLs follow redirects to hosts that would otherwise fail allowlist checks; telemetry payloads contain unredacted operation diffs that, on default opt-in instances, upload bearer tokens, API keys, and webhook secrets. Upgrade to n8n-mcp >= 2.50.2, restrict network egress, and run in stdio mode where multi-tenant HTTP is not needed. Rotate all bearer tokens and API keys on affected instances.
+
+- **PSV-098** (high, new): **mcp-ssh-tool file-transfer path traversal and bearer-token timing side-channel (GHSA-j7h9-2jh7-g967, <= 2.1.0)** — GHSA-j7h9-2jh7-g967 (CVSS v4.0 8.7 HIGH, CWE-22 / CWE-208) affects mcp-ssh-tool npm versions <= 2.1.0. The file transfer tool enforces a path allowlist using a prefix check that can be defeated by directory traversal sequences (e.g. `../../`), allowing MCP callers to read or write files outside the declared transfer root. Separately, the bearer token authentication comparison is non-constant-time, leaking whether a token is valid via a timing side-channel measurable from the network. Fixed in version 2.1.1 (path.resolve() canonicalization before prefix check; constant-time token comparison). Published by the reporter via GitLab Advisory Database, updated in OSV on May 7, 2026.
+
+Vuln DB additions: n8n-mcp CVE-2026-44694 (GHSA-cmrh-wvq6-wm9r, CVSS 7.2, PSV-097, fixed 2.50.2); n8n-mcp GHSA-8g7g-hmwm-6rv2 (High, PSV-097, fixed 2.50.1); mcp-ssh-tool GHSA-j7h9-2jh7-g967 (CVSS v4.0 8.7, PSV-098, fixed 2.1.1). 3 new entries.
+IOC additions: none.
+
+Total: 332 static rules + 14 chain rules = 346.
+
+Sources:
+- PSV-097: https://github.com/czlonkowski/n8n-mcp/security/advisories/GHSA-cmrh-wvq6-wm9r
+- PSV-097: https://advisories.gitlab.com/npm/n8n-mcp/GHSA-8g7g-hmwm-6rv2/
+- PSV-097: https://nvd.nist.gov/vuln/detail/CVE-2026-44694
+- PSV-098: https://advisories.gitlab.com/npm/mcp-ssh-tool/GHSA-j7h9-2jh7-g967/
+- PSV-098: https://dailycve.com/mcp-ssh-tool-policy-bypass-timing-side-channel-ghsa-j7h9-2jh7-g967-high-severity/
+
+Candidates researched and already covered: CVE-2026-26118 Azure MCP SSRF (PSV rule), Hades bioinformatics campaign (SUP-059), Hades wave-2 MCP typosquats (SUP-060), onering RUSTSEC-2026-0175 (SUP-061), OpenClaw GHSA-7jm2-g593-4qrc (PSV-096), Miasma @redhat-cloud-services (MAL-088), TrapDoor campaign (MAL-086), Mini Shai-Hulud waves (multiple rules), LiteLLM backdoor (multiple rules), CVE-2026-22708 Cursor RCE (PSV rule), CVE-2025-66335 Apache Doris MCP SQL injection (PSV rule), alibabacloud-rds-openapi-mcp-server (PSV-079), mcp-pinot-server (PSV-080), CVE-2026-20205 Splunk MCP (PSV rule), codexui-android (MAL rule), GlassWorm OpenVSX (MAL-066), PCPJack worm (MAL-093), n8n-mcp CVE-2026-39974 (PSV-018), n8n-mcp CVE-2026-41495 (PSV-075).
+
 ## 2026.06.13.1
 
 Pattern update 2026-06-13. Two new rules: SUP-061 (onering v1.4.1 crates.io build.rs source-code exfiltration) and PSV-096 (OpenClaw agent gateway config mutation guard bypass, GHSA-7jm2-g593-4qrc).
