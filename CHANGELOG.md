@@ -1,5 +1,23 @@
 # SkillScan Rules Changelog
 
+## 2026.06.16.1
+
+Pattern update 2026-06-16. One new rule: SUP-062 (Solana FakeFix supply-chain credential and keypair stealer, PassWord1337, June 2026).
+
+- **SUP-062** (critical, new): **Solana FakeFix supply-chain credential and keypair stealer (PassWord1337, npm/@solana-labs/spl-toke, solana-web3-stable, June 2026)** — JFrog Security Research (June 12, 2026) identified 24 malicious npm and PyPI packages distributed in the Solana FakeFix campaign. Threat actor PassWord1337 opened GitHub issues in Solana open-source projects falsely advertising these packages as stable-build fixes for @solana/web3.js dependency resolution errors. Key npm packages: `@solana-labs/spl-toke` (typosquat of @solana-labs/spl-token — note missing trailing 'n'), `solana-web3-stable`, `solana-rpc-client`. Additional packages across PyPI mimicked Solana and Solana-adjacent tooling. On npm, a postinstall lifecycle hook fires a JavaScript payload that harvests Solana keypair files (`.json` wallet files), SSH private keys, AWS credential files (`~/.aws/credentials`), `.env` files, and environment variables whose names contain `KEY`, `SECRET`, `MNEMONIC`, or `PASSWORD`. On PyPI, malicious code executes at import time inside `__init__.py`. All stolen data is forwarded in real time to an attacker-controlled Telegram bot. The typosquat `@solana-labs/spl-toke` is particularly dangerous because package managers silently accept the misspelling and the package otherwise presents a normal-looking README. No CVE assigned (malware campaign). Remove all FakeFix packages immediately, rotate all Solana wallet keys and developer credentials, and audit for unexpected outbound Telegram API traffic.
+
+Vuln DB additions: npm/@solana-labs/spl-toke (all, malicious, SUP-062); npm/solana-web3-stable (all, malicious, SUP-062); npm/solana-rpc-client (all, malicious, SUP-062). 3 new entries.
+IOC additions: none (Telegram API domain not added — legitimate use conflict).
+
+Total: 333 static rules + 14 chain rules = 347.
+
+Sources:
+- SUP-062: https://research.jfrog.com/malicious-packages/solana-fakefix-campaign/
+- SUP-062: https://gbhackers.com/solana-fakefix-campaign/
+- SUP-062: https://cybersecuritynews.com/solana-fakefix-campaign-uses-25-malicious-npm-and-pypi-packages/
+
+Candidates researched and already covered: Miasma @redhat-cloud-services npm (MAL rule), Miasma Azure 73 repos (MAL rule), Hades PyPI .pth bioinformatics wave (SUP-059), Hades wave-2 MCP typosquats (SUP-060), codexui-android (MAL-090), IronWorm Rust/eBPF (MAL-093), TanStack Mini Shai-Hulud wave-3 (MAL-081), node-gyp binding.gyp @vapi-ai/server-sdk (MAL rule), TrapDoor CLAUDE.md/cursorrules (MAL-086), axios 1.14.1/0.30.4 (MAL rule), CVE-2026-26118 Azure MCP SSRF (PSV rule), CVE-2026-30615 Windsurf STDIO (PSV rule), CVE-2026-22688 WeKnora (PSV rule), CVE-2026-30861 WeKnora npx-p bypass (PSV rule), CVE-2026-30625 Upsonic (PSV rule), CVE-2026-40933 Flowise MCP RCE (PSV rule), CVE-2026-41264 Flowise CSV RCE (PSV rule), CVE-2026-33252 MCP Go SDK CSRF (PSV rule), PSV-095 mcp-server-kubernetes, PSV-096 OpenClaw config bypass, PSV-097 n8n-mcp SSRF, PSV-098 mcp-ssh-tool traversal, SUP-061 onering crates.io.
+
 ## 2026.06.15.1
 
 Pattern update 2026-06-15. Two new rules: PSV-097 (n8n-mcp authenticated SSRF cluster, CVE-2026-44694 + GHSA-8g7g-hmwm-6rv2, < 2.50.2) and PSV-098 (mcp-ssh-tool path traversal + timing side-channel, GHSA-j7h9-2jh7-g967, <= 2.1.0).
