@@ -12,14 +12,14 @@
       "sha256": "1d4784072b02aa40215be0974f87d8832c6bd1e7d0a0d7957e1a4228bce5afe1"
     },
     "intel/ioc_db.json": {
-      "sha256": "ddbac2b042acd460265bb732d20352da343711c448cfc7dff9cb7ac1cb603917"
+      "sha256": "d49b30565a1e922e5de48c37dbab5ac35b24ceea9cb3d4de81c3456a41e03175"
     },
     "intel/managed_sources.json": {
       "sha256": "aef9d1e320a08b256374b1917520d035dfcd78476bd7c5b4895a5cf3e647edce"
     },
     "intel/vuln_db.json": {
-      "sha256": "0aa3160767991b7f5a0ea32b98a716f5f683843c66e74c6183ae1cd0ef92322a"
+      "sha256": "285852b428a89798a5e9ba1f17bfeecf4893e00985379b14258a82e6bfe47fd9"
     }
   },
-  "updated": "2026-06-15"
+  "updated": "2026-06-16"
 }
