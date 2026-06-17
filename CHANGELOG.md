@@ -1,5 +1,24 @@
 # SkillScan Rules Changelog
 
+## 2026.06.17.1
+
+Pattern update 2026-06-17. One new rule: SUP-063 (Mastra AI framework npm scope takeover via easy-day-js typosquat, June 2026).
+
+- **SUP-063** (critical, new): **Mastra AI framework npm scope takeover via easy-day-js typosquat (ehindero, 23.254.164.92 C2, June 2026)** — On June 17 2026, an attacker using a hijacked former-contributor npm account (ehindero) republished 141 packages in the @mastra AI framework scope — including `@mastra/core`, `mastra`, and `create-mastra` — injecting `easy-day-js` as a phantom dependency. `easy-day-js` is a typosquat of the popular `dayjs` date library. The attacker staged the attack over two days: `easy-day-js@1.11.21` (published June 16 at 07:05 UTC by npm user `sergey2016`) was a clean, functional copy of dayjs designed to pass initial scrutiny. `easy-day-js@1.11.22` (tagged `latest`, published June 17 at ~01:12 UTC) added an obfuscated postinstall hook that fetches a stage-2 cross-platform RAT from `23.254.164.92:8000/update/49890878`, executes it, then deletes the hook to cover its tracks. The RAT harvests browser history, credentials stored across 160+ cryptocurrency wallet browser extensions, and installs persistence on Windows, macOS, and Linux. The combined weekly download exposure exceeds 1.1 million installs. npm has since unpublished `easy-day-js@1.11.22` and revoked the ehindero account's scope access. No CVE/GHSA assigned as of disclosure (too new). Rule anchors on the typosquat package name (`easy-day-js`), C2 IP (`23.254.164.92`), and stage-2 endpoint path (`/update/49890878`). Rotate all browser credentials, session tokens, and crypto wallet keys if affected packages were installed between 01:12–09:00 UTC June 17 2026.
+
+Vuln DB additions: npm/easy-day-js@1.11.22 (malicious, SUP-063). 1 new entry.
+IOC additions: 23.254.164.92 (C2 IP, Mastra easy-day-js stage-2 RAT host). 1 new IP.
+
+Total: 334 static rules + 14 chain rules = 348.
+
+Sources:
+- SUP-063: https://www.stepsecurity.io/blog/mastra-npm-packages-compromised-using-easy-day-js
+- SUP-063: https://thehackernews.com/2026/06/144-mastra-npm-packages-compromised-via.html
+- SUP-063: https://socket.dev/blog/mastra-npm-packages-compromised
+- SUP-063: https://safedep.io/mastra-npm-scope-takeover-supply-chain-attack/
+
+Candidates researched and already covered: Miasma @redhat-cloud-services npm (MAL-088), Miasma Azure repos (MAL-092), CVE-2026-26118 Azure MCP SSRF (PSV), CVE-2026-2256 ModelScope MS-Agent (PSV-090), CVE-2026-22708 Cursor shell builtins (PSV-008), TrapDoor CLAUDE.md/cursorrules (MAL-086), postmark-mcp BCC harvesting (MAL-055), @azure-devops/mcp missing auth (PSV-040, PSV-053), Mini Shai-Hulud TanStack/Mistral (MAL-081), Hades wave-2 MCP typosquats (SUP-060), SUP-062 Solana FakeFix. All previously covered.
+
 ## 2026.06.16.1
 
 Pattern update 2026-06-16. One new rule: SUP-062 (Solana FakeFix supply-chain credential and keypair stealer, PassWord1337, June 2026).

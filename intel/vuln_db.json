@@ -4034,6 +4034,14 @@
         "affected_range": ">=0.0.1",
         "published": "2026-05-22"
       }
+    },
+    "easy-day-js": {
+      "1.11.22": {
+        "id": "SUP-063",
+        "severity": "critical",
+        "fixed": "REMOVE \u2014 do not use easy-day-js; it is a typosquat. Use dayjs instead.",
+        "summary": "easy-day-js@1.11.22 is a malicious typosquat of the dayjs date library, distributed via a hijacked @mastra contributor account (ehindero) on June 17 2026. The postinstall hook fetches and executes a stage-2 RAT from 23.254.164.92:8000/update/49890878 that harvests browser credentials, crypto wallet data, and installs persistence. 141 @mastra packages were compromised. Remove immediately and rotate all credentials."
+      }
     }
   }
 }
